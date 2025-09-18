@@ -7,11 +7,25 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Ticket, Train, AlertCircle } from "lucide-react";
+import { Ticket } from "lucide-react";
 import type { Booking } from "@/lib/types";
 import { trains } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
 import { rescheduleMissedTrain } from "@/ai/flows/reschedule-missed-train";
+import type { RescheduleMissedTrainInput, RescheduleMissedTrainOutput } from "@/ai/flows/reschedule-missed-train";
+
+// A simple badge component to avoid creating a new file for it
+const Badge = ({className, ...props}: React.HTMLAttributes<HTMLDivElement> & {variant?: 'default' | 'destructive' | 'outline'}) => {
+    const baseClasses = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold";
+    const variantClasses = {
+        default: "bg-primary text-primary-foreground",
+        destructive: "bg-destructive text-destructive-foreground",
+        outline: "text-foreground"
+    }
+    const variant = props.variant || 'default';
+    return <div className={`${baseClasses} ${variantClasses[variant]} ${className}`} {...props} />
+}
+
 
 export default function ProfilePage() {
   const { isAuthenticated, user, addBooking, updateBookingStatus } = useAuth();
@@ -42,7 +56,7 @@ export default function ProfilePage() {
     setIsRescheduling(booking.id);
 
     try {
-      const result = await rescheduleMissedTrain({
+      const result: RescheduleMissedTrainOutput = await rescheduleMissedTrain({
         missedBooking: booking,
         allTrains: trains,
         userId: user.email,
@@ -125,7 +139,7 @@ export default function ProfilePage() {
               <CardTitle>Profile Details</CardTitle>
               <CardDescription>Manage your personal information.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Name</label>
                 <p>{user.name}</p>
@@ -148,7 +162,7 @@ export default function ProfilePage() {
             <div className="space-y-4">
               {user.bookings.map(booking => (
                 <Card key={booking.id} className={booking.status?.startsWith('missed') ? 'bg-muted/50' : ''}>
-                  <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4">
                       <div className="flex gap-4 items-center">
                         <div className="bg-primary/10 p-3 rounded-lg">
                             <Ticket className="w-6 h-6 text-primary"/>
@@ -181,15 +195,4 @@ export default function ProfilePage() {
       </div>
     </div>
   );
-}
-
-// A simple badge component to avoid creating a new file for it
-const Badge = ({className, ...props}: React.HTMLAttributes<HTMLDivElement> & {variant?: 'default' | 'destructive' | 'outline'}) => {
-    const baseClasses = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold";
-    const variantClasses = {
-        default: "bg-primary text-primary-foreground",
-        destructive: "bg-destructive text-destructive-foreground",
-        outline: "text-foreground"
-    }
-    return <div className={`${baseClasses} ${variantClasses[props.variant || 'default']} ${className}`} {...props} />
 }

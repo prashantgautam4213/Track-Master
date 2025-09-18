@@ -48,23 +48,19 @@ const BookingSchema = z.object({
 });
 
 
-export const RescheduleMissedTrainInputSchema = z.object({
+const RescheduleMissedTrainInputSchema = z.object({
   missedBooking: BookingSchema,
   allTrains: z.array(TrainSchema),
   userId: z.string(),
 });
 export type RescheduleMissedTrainInput = z.infer<typeof RescheduleMissedTrainInputSchema>;
 
-export const RescheduleMissedTrainOutputSchema = z.object({
+const RescheduleMissedTrainOutputSchema = z.object({
   success: z.boolean(),
   message: z.string(),
   newBooking: BookingSchema.optional(),
 });
 export type RescheduleMissedTrainOutput = z.infer<typeof RescheduleMissedTrainOutputSchema>;
-
-export async function rescheduleMissedTrain(input: RescheduleMissedTrainInput): Promise<RescheduleMissedTrainOutput> {
-  return rescheduleMissedTrainFlow(input);
-}
 
 const rescheduleMissedTrainFlow = ai.defineFlow(
   {
@@ -94,7 +90,7 @@ const rescheduleMissedTrainFlow = ai.defineFlow(
     // Find the next available train with seats in any class
     let newBooking: Booking | undefined;
     let newTrain: Train | undefined;
-    let newClass: (typeof TrainClassSchema)['_type'] | undefined;
+    let newClass: z.infer<typeof TrainClassSchema> | undefined;
 
     for (const train of sameDayTrains) {
       // Prefer same class or better
@@ -150,3 +146,7 @@ const rescheduleMissedTrainFlow = ai.defineFlow(
     };
   }
 );
+
+export async function rescheduleMissedTrain(input: RescheduleMissedTrainInput): Promise<RescheduleMissedTrainOutput> {
+  return rescheduleMissedTrainFlow(input);
+}
