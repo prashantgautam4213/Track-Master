@@ -66,13 +66,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!currentUser) return null;
       const updatedUser = {
         ...currentUser,
-        bookings: [...currentUser.bookings, booking],
+        bookings: [booking, ...currentUser.bookings], // Add to the top of the list
       };
       // Mock data update
       if (currentUser.email === mockUser.email) {
-        mockUser.bookings.push(booking);
+        mockUser.bookings.unshift(booking);
       } else if (currentUser.email === demoUser.email) {
-        demoUser.bookings.push(booking);
+        demoUser.bookings.unshift(booking);
       }
       return updatedUser;
     });
@@ -87,9 +87,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           return { ...currentUser, bookings: updatedBookings };
       });
       // Also update mock data
-      const bookingToUpdate = mockUser.bookings.find(b => b.id === bookingId);
-      if (bookingToUpdate) {
-        bookingToUpdate.status = status;
+      const bookingToUpdateDemo = demoUser.bookings.find(b => b.id === bookingId);
+      if (bookingToUpdateDemo) {
+        bookingToUpdateDemo.status = status;
+      }
+      const bookingToUpdateMock = mockUser.bookings.find(b => b.id === bookingId);
+      if (bookingToUpdateMock) {
+        bookingToUpdateMock.status = status;
       }
   };
 

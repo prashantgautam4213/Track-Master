@@ -37,6 +37,8 @@ function SearchResults() {
         (train) => train.from === from && train.to === to
     );
 
+    const bookingDate = format(date, 'yyyy-MM-dd');
+
     return (
         <div className="container mx-auto py-10">
             <div className="mb-8">
@@ -75,25 +77,27 @@ function SearchResults() {
                             </CardHeader>
                             <CardContent className="p-4 grid gap-4 md:grid-cols-3">
                                 {train.classes.map(cls => (
-                                    <div key={cls.name} className="border rounded-lg p-3">
-                                        <h4 className="font-semibold">{cls.name}</h4>
-                                        {cls.availability > 0 ? (
-                                            <>
-                                                <p className="text-sm text-green-600 font-medium mt-1">{cls.availability} seats available</p>
-                                                <p className="text-lg font-bold mt-2">${cls.price.toFixed(2)}</p>
-                                            </>
-                                        ) : (
-                                            <p className="text-sm text-red-600 font-medium mt-1">Not Available</p>
-                                        )}
+                                    <div key={cls.name} className="border rounded-lg p-4 flex flex-col justify-between">
+                                        <div>
+                                            <h4 className="font-semibold">{cls.name}</h4>
+                                            {cls.availability > 0 ? (
+                                                <>
+                                                    <p className="text-sm text-green-600 font-medium mt-1">{cls.availability} seats available</p>
+                                                    <p className="text-lg font-bold mt-2">${cls.price.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">/ seat</span></p>
+                                                </>
+                                            ) : (
+                                                <p className="text-sm text-red-600 font-medium mt-1">Not Available</p>
+                                            )}
+                                        </div>
+                                        <Button asChild disabled={cls.availability === 0} className="mt-4">
+                                            <Link href={`/book/${train.id}?class=${cls.name}&date=${bookingDate}`}>
+                                                <Ticket className="w-4 h-4 mr-2" />
+                                                Book Now
+                                            </Link>
+                                        </Button>
                                     </div>
                                 ))}
                             </CardContent>
-                             <CardFooter className="bg-muted/50 p-4 flex justify-end">
-                                <Button disabled={train.classes.every(c => c.availability === 0)}>
-                                    <Ticket className="w-4 h-4 mr-2" />
-                                    Book Now
-                                </Button>
-                            </CardFooter>
                         </Card>
                     ))}
                 </div>

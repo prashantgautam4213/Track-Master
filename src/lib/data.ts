@@ -147,3 +147,18 @@ export const demoUser: User = {
     email: 'demo@example.com',
     bookings: []
 }
+
+// In a real application, this would be a database call.
+// For this prototype, we'll just modify the in-memory array.
+export function updateTrainAvailability(trainId: string, className: 'Economy' | 'Business' | 'First', passengers: number) {
+    const train = trains.find(t => t.id === trainId);
+    if (!train) return false;
+
+    const trainClass = train.classes.find(c => c.name === className);
+    if (!trainClass) return false;
+
+    if (trainClass.availability < passengers) return false;
+
+    trainClass.availability -= passengers;
+    return true;
+}
