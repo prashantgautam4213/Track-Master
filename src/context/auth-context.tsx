@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import type { User } from '@/lib/types';
-import { mockUser } from '@/lib/data';
+import { mockUser, demoUser } from '@/lib/data';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -23,6 +23,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (email === 'alex.doe@example.com' && pass === 'password123') {
       setIsAuthenticated(true);
       setUser(mockUser);
+      return true;
+    }
+    if (email === 'demo@example.com' && pass === 'password') {
+      setIsAuthenticated(true);
+      setUser(demoUser);
       return true;
     }
     return false;

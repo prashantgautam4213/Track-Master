@@ -120,3 +120,9 @@ export const mockUser: User = {
     email: 'alex.doe@example.com',
     bookings: mockBookings
 }
+
+export const demoUser: User = {
+    name: 'Demo User',
+    email: 'demo@example.com',
+    bookings: []
+}

@@ -19,7 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
-  password: z.string().min(8, "Password must be at least 8 characters."),
+  password: z.string().min(8, "Password must be at least 8 characters.").or(z.string().min(1)),
 });
 
 export function LoginForm() {
@@ -30,8 +30,8 @@ export function LoginForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "alex.doe@example.com",
-      password: "password123",
+      email: "demo@example.com",
+      password: "password",
     },
   });
 
