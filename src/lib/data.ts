@@ -42,6 +42,21 @@ export const trains: Train[] = [
       { name: 'First', availability: 0, price: 320 },
     ],
   },
+   {
+    id: 'T457',
+    name: 'Coastal Starlight II',
+    number: '457',
+    from: 'Union Station, Los Angeles',
+    to: 'King Street Station, Seattle',
+    departureTime: '13:30',
+    arrivalTime: '21:30',
+    duration: '8h 0m',
+    classes: [
+      { name: 'Economy', availability: 10, price: 95 },
+      { name: 'Business', availability: 5, price: 190 },
+      { name: 'First', availability: 2, price: 340 },
+    ],
+  },
   {
     id: 'T789',
     name: 'Keystone Service',
@@ -92,25 +107,31 @@ export const trains: Train[] = [
 const mockBookings: Booking[] = [
     {
       id: 'B001',
+      trainId: 'T123',
       trainName: 'Metropolis Express',
       trainNumber: '123',
       date: '2024-08-15',
+      departureTime: '08:00',
       from: 'Grand Central Terminal, NY',
       to: 'Union Station, Chicago',
       class: 'Business',
       passengers: 1,
       totalPrice: 250,
+      status: 'upcoming'
     },
     {
       id: 'B002',
+      trainId: 'T789',
       trainName: 'Keystone Service',
       trainNumber: '789',
       date: '2024-07-20',
+      departureTime: '09:15',
       from: '30th Street Station, PA',
       to: 'Grand Central Terminal, NY',
       class: 'Economy',
       passengers: 2,
       totalPrice: 110,
+      status: 'upcoming'
     }
 ]
 

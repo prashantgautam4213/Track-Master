@@ -1,17 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Ticket } from "lucide-react";
+import { Ticket, Train, AlertCircle } from "lucide-react";
+import type { Booking } from "@/lib/types";
+import { trains } from "@/lib/data";
+import { useToast } from "@/hooks/use-toast";
+import { rescheduleMissedTrain } from "@/ai/flows/reschedule-missed-train";
 
 export default function ProfilePage() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, addBooking, updateBookingStatus } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
+  const [isRescheduling, setIsRescheduling] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -19,10 +25,84 @@ export default function ProfilePage() {
     }
   }, [isAuthenticated, router]);
 
+  const canReschedule = (booking: Booking) => {
+    if (booking.status === 'missed-rescheduled' || booking.status === 'missed-failed') return false;
+
+    const train = trains.find(t => t.id === booking.trainId);
+    if (!train) return false;
+
+    const departureDateTime = new Date(`${booking.date}T${train.departureTime}`);
+    const oneHourAfterDeparture = new Date(departureDateTime.getTime() + 60 * 60 * 1000);
+    
+    return new Date() > oneHourAfterDeparture;
+  };
+
+  const handleReschedule = async (booking: Booking) => {
+    if (!user) return;
+    setIsRescheduling(booking.id);
+
+    try {
+      const result = await rescheduleMissedTrain({
+        missedBooking: booking,
+        allTrains: trains,
+        userId: user.email,
+      });
+
+      if (result.success && result.newBooking) {
+        addBooking(result.newBooking);
+        updateBookingStatus(booking.id, 'missed-rescheduled');
+        toast({
+          title: "Reschedule Successful",
+          description: `You've been booked on ${result.newBooking.trainName} at ${result.newBooking.departureTime}.`,
+        });
+      } else {
+        updateBookingStatus(booking.id, 'missed-failed');
+        toast({
+          variant: "destructive",
+          title: "Reschedule Failed",
+          description: result.message,
+        });
+      }
+    } catch (error) {
+      console.error("Reschedule error:", error);
+      updateBookingStatus(booking.id, 'missed-failed');
+      toast({
+        variant: "destructive",
+        title: "An Error Occurred",
+        description: "Could not reschedule the train. Please contact support.",
+      });
+    } finally {
+      setIsRescheduling(null);
+    }
+  };
+
+
   if (!isAuthenticated || !user) {
     // You can add a loader here
     return null;
   }
+
+  const getBookingStatus = (booking: Booking) => {
+    switch (booking.status) {
+        case 'missed-rescheduled':
+            return <Badge variant="default" className="bg-green-600">Rescheduled</Badge>;
+        case 'missed-failed':
+            return <Badge variant="destructive">Reschedule Failed</Badge>;
+        default:
+            if (canReschedule(booking)) {
+                return (
+                    <Button
+                        size="sm"
+                        onClick={() => handleReschedule(booking)}
+                        disabled={isRescheduling === booking.id}
+                    >
+                        {isRescheduling === booking.id ? 'Rescheduling...' : 'Raise Missed Train Query'}
+                    </Button>
+                );
+            }
+            return <Badge variant="outline">Upcoming</Badge>;
+    }
+  };
 
   return (
     <div className="container mx-auto py-10">
@@ -67,21 +147,22 @@ export default function ProfilePage() {
           {user.bookings.length > 0 ? (
             <div className="space-y-4">
               {user.bookings.map(booking => (
-                <Card key={booking.id}>
+                <Card key={booking.id} className={booking.status?.startsWith('missed') ? 'bg-muted/50' : ''}>
                   <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                       <div className="flex gap-4 items-center">
                         <div className="bg-primary/10 p-3 rounded-lg">
                             <Ticket className="w-6 h-6 text-primary"/>
                         </div>
                         <div>
-                            <p className="font-semibold">{booking.trainName}</p>
+                            <p className="font-semibold">{booking.trainName} ({booking.trainNumber})</p>
                             <p className="text-sm text-muted-foreground">{booking.from} to {booking.to}</p>
-                            <p className="text-sm text-muted-foreground">Date: {booking.date}</p>
+                            <p className="text-sm text-muted-foreground">Date: {booking.date} at {booking.departureTime}</p>
+                            <p className="text-sm text-muted-foreground">{booking.class} class</p>
                         </div>
                       </div>
-                      <div className="text-left sm:text-right">
+                      <div className="text-left sm:text-right space-y-2">
                           <p className="font-bold text-lg">${booking.totalPrice.toFixed(2)}</p>
-                          <p className="text-sm">{booking.class} class</p>
+                          {getBookingStatus(booking)}
                       </div>
                   </CardContent>
                 </Card>
@@ -100,4 +181,15 @@ export default function ProfilePage() {
       </div>
     </div>
   );
+}
+
+// A simple badge component to avoid creating a new file for it
+const Badge = ({className, ...props}: React.HTMLAttributes<HTMLDivElement> & {variant?: 'default' | 'destructive' | 'outline'}) => {
+    const baseClasses = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold";
+    const variantClasses = {
+        default: "bg-primary text-primary-foreground",
+        destructive: "bg-destructive text-destructive-foreground",
+        outline: "text-foreground"
+    }
+    return <div className={`${baseClasses} ${variantClasses[props.variant || 'default']} ${className}`} {...props} />
 }

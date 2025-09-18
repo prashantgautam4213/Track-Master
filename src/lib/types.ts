@@ -18,14 +18,17 @@ export type Train = {
 
 export type Booking = {
   id: string;
+  trainId: string;
   trainName: string;
   trainNumber: string;
-  date: string;
+  date: string; // YYYY-MM-DD
+  departureTime: string; // HH:MM
   from: string;
   to: string;
   passengers: number;
   totalPrice: number;
   class: TrainClass['name'];
+  status?: 'upcoming' | 'missed-rescheduled' | 'missed-failed';
 };
 
 export type User = {
