@@ -7,7 +7,7 @@ import { useAuth } from '@/context/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { v4 as uuidv4 } from 'uuid';
 import { format, parseISO } from 'date-fns';
-import { ArrowLeft, BaggageClaim, Calendar, Clock, Minus, Plus, TrainFront, Users, CreditCard, Landmark, QrCode, Tag, Sparkles } from 'lucide-react';
+import { ArrowLeft, BaggageClaim, Calendar, Clock, Minus, Plus, TrainFront, Users, CreditCard, Landmark, Sparkles } from 'lucide-react';
 
 import { trains, updateTrainAvailability } from '@/lib/data';
 import type { Train, TrainClass, Booking } from '@/lib/types';
@@ -47,7 +47,7 @@ function BookingComponent() {
     useEffect(() => {
         if (!isAuthenticated) {
             const currentPath = `/book/${trainId}?${searchParams.toString()}`;
-            router.push('/login');
+            router.push(`/login?redirect=${encodeURIComponent(currentPath)}`);
         }
     }, [isAuthenticated, router, trainId, searchParams]);
 
@@ -131,7 +131,14 @@ function BookingComponent() {
     };
     
     if (!isAuthenticated) {
-        return <div className="flex items-center justify-center h-full"><p>Redirecting to login...</p></div>;
+        return (
+            <div className="container mx-auto py-10">
+                 <div className="flex flex-col items-center justify-center h-full">
+                    <p className="mb-4">You need to be logged in to book a train.</p>
+                    <Skeleton className="h-96 w-full max-w-6xl" />
+                 </div>
+            </div>
+        )
     }
 
     if (!train || !trainClass || !date) {
@@ -265,5 +272,3 @@ export default function BookingPage() {
         </Suspense>
     )
 }
-
-    

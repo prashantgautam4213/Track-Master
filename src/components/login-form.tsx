@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,8 +24,10 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   const { toast } = useToast();
+  const redirectUrl = searchParams.get('redirect');
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -39,7 +41,7 @@ export function LoginForm() {
     const success = login(data.email, data.password);
     if (success) {
       toast({ title: "Login Successful", description: "Welcome back!" });
-      router.push("/profile");
+      router.push(redirectUrl || "/profile");
     } else {
       toast({
         variant: "destructive",
