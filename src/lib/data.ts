@@ -28,6 +28,21 @@ export const trains: Train[] = [
     ],
   },
   {
+    id: 'T124',
+    name: 'Metropolis Express II',
+    number: '124',
+    from: 'Grand Central Terminal, NY',
+    to: 'Union Station, Chicago',
+    departureTime: '11:00',
+    arrivalTime: '01:00',
+    duration: '14h 0m',
+    classes: [
+      { name: 'Economy', availability: 120, price: 125 },
+      { name: 'Business', availability: 30, price: 260 },
+      { name: 'First', availability: 5, price: 420 },
+    ],
+  },
+  {
     id: 'T456',
     name: 'Coastal Starlight',
     number: '456',
