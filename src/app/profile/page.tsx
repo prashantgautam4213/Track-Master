@@ -40,11 +40,15 @@ export default function ProfilePage() {
   }, [isAuthenticated, router]);
 
   const canReschedule = (booking: Booking) => {
-    if (booking.status === 'missed-rescheduled' || booking.status === 'missed-failed') return false;
+    // A booking can only be rescheduled if it hasn't been attempted before.
+    if (booking.status === 'missed-rescheduled' || booking.status === 'missed-failed') {
+      return false;
+    }
 
     const train = trains.find(t => t.id === booking.trainId);
     if (!train) return false;
 
+    // Check if the current time is at least 1 hour after the departure time.
     const departureDateTime = new Date(`${booking.date}T${train.departureTime}`);
     const oneHourAfterDeparture = new Date(departureDateTime.getTime() + 60 * 60 * 1000);
     
@@ -97,25 +101,40 @@ export default function ProfilePage() {
   }
 
   const getBookingStatus = (booking: Booking) => {
-    switch (booking.status) {
-        case 'missed-rescheduled':
-            return <Badge variant="default" className="bg-green-600">Rescheduled</Badge>;
-        case 'missed-failed':
-            return <Badge variant="destructive">Reschedule Failed</Badge>;
-        default:
-            if (canReschedule(booking)) {
-                return (
-                    <Button
-                        size="sm"
-                        onClick={() => handleReschedule(booking)}
-                        disabled={isRescheduling === booking.id}
-                    >
-                        {isRescheduling === booking.id ? 'Rescheduling...' : 'Raise Missed Train Query'}
-                    </Button>
-                );
-            }
-            return <Badge variant="outline">Upcoming</Badge>;
+    if (booking.status === 'missed-rescheduled') {
+      return <Badge variant="default" className="bg-green-600">Rescheduled</Badge>;
     }
+    
+    if (booking.status === 'missed-failed') {
+      return <Badge variant="destructive">Reschedule Failed</Badge>;
+    }
+
+    if (canReschedule(booking)) {
+      return (
+        <Button
+            size="sm"
+            onClick={() => handleReschedule(booking)}
+            disabled={isRescheduling === booking.id}
+        >
+            {isRescheduling === booking.id ? 'Rescheduling...' : 'Raise Missed Train Query'}
+        </Button>
+      );
+    }
+    
+    // Default status for upcoming trains or missed trains not yet eligible for reschedule
+    const departureDateTime = new Date(`${booking.date}T${booking.departureTime}`);
+    if (new Date() > departureDateTime && booking.status !== 'missed-rescheduled' && booking.status !== 'missed-failed') {
+        const train = trains.find(t => t.id === booking.trainId);
+        if (train) {
+             const oneHourAfterDeparture = new Date(new Date(`${booking.date}T${train.departureTime}`).getTime() + 60 * 60 * 1000);
+             if (new Date() > oneHourAfterDeparture) {
+                 return <Badge variant="destructive">Missed</Badge>;
+             }
+        }
+    }
+
+
+    return <Badge variant="outline">Upcoming</Badge>;
   };
 
   return (
