@@ -10,7 +10,7 @@ interface AuthContextType {
   login: (email: string, pass: string) => boolean;
   logout: () => void;
   register: (name: string, email: string, pass: string) => boolean;
-  addBooking: (booking: Booking) => void;
+  addBooking: (booking: Booking, oldBookingId?: string) => void;
   updateBookingStatus: (bookingId: string, status: Booking['status']) => void;
 }
 
@@ -61,18 +61,42 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return true;
   };
   
-  const addBooking = (booking: Booking) => {
+  const addBooking = (booking: Booking, oldBookingId?: string) => {
     setUser(currentUser => {
       if (!currentUser) return null;
+      
+      let updatedBookings;
+      if (oldBookingId) {
+        // This is a reschedule, replace the old booking
+        updatedBookings = currentUser.bookings.map(b => 
+            b.id === oldBookingId ? booking : b
+        );
+      } else {
+        // This is a new booking
+        updatedBookings = [booking, ...currentUser.bookings];
+      }
+
       const updatedUser = {
         ...currentUser,
-        bookings: [booking, ...currentUser.bookings], // Add to the top of the list
+        bookings: updatedBookings,
       };
+
       // Mock data update
+      const updateUserBookings = (userToUpdate: User) => {
+        if (oldBookingId) {
+            const index = userToUpdate.bookings.findIndex(b => b.id === oldBookingId);
+            if (index !== -1) {
+                userToUpdate.bookings[index] = booking;
+            }
+        } else {
+            userToUpdate.bookings.unshift(booking);
+        }
+      };
+
       if (currentUser.email === mockUser.email) {
-        mockUser.bookings.unshift(booking);
+        updateUserBookings(mockUser);
       } else if (currentUser.email === demoUser.email) {
-        demoUser.bookings.unshift(booking);
+        updateUserBookings(demoUser);
       }
       return updatedUser;
     });

@@ -88,7 +88,6 @@ const rescheduleMissedTrainFlow = ai.defineFlow(
     }
 
     // Find the next available train with seats in any class
-    let newBooking: Booking | undefined;
     let newTrain: Train | undefined;
     let newClass: z.infer<typeof TrainClassSchema> | undefined;
 
@@ -119,8 +118,8 @@ const rescheduleMissedTrainFlow = ai.defineFlow(
     // Create a new booking object
     // In a real application, this would be an atomic database transaction
     // to decrement seat availability and create the new booking.
-    newBooking = {
-        id: uuidv4(),
+    const newBooking: Booking = {
+        id: missedBooking.id, // Use the same ID to ensure replacement
         trainId: newTrain.id,
         trainName: newTrain.name,
         trainNumber: newTrain.number,
@@ -131,7 +130,7 @@ const rescheduleMissedTrainFlow = ai.defineFlow(
         class: newClass.name,
         passengers: missedBooking.passengers,
         totalPrice: newClass.price * missedBooking.passengers,
-        status: 'upcoming',
+        status: 'missed-rescheduled', // Set status to 'missed-rescheduled'
     };
     
     // Here you would update the database:

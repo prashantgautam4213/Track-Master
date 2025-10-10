@@ -51,8 +51,8 @@ export default function ProfilePage() {
       });
 
       if (result.success && result.newBooking) {
-        addBooking(result.newBooking);
-        updateBookingStatus(booking.id, 'missed-rescheduled');
+        // Pass the old booking ID to replace it
+        addBooking(result.newBooking, booking.id);
         toast({
           title: "Reschedule Successful",
           description: `You've been booked on ${result.newBooking.trainName} at ${result.newBooking.departureTime}.`,
