@@ -39,14 +39,6 @@ export default function ProfilePage() {
     }
   }, [isAuthenticated, router]);
 
-  const canReschedule = (booking: Booking) => {
-    if (booking.status === 'missed-rescheduled' || booking.status === 'missed-failed') {
-      return false;
-    }
-    const departureDateTime = new Date(`${booking.date}T${booking.departureTime}`);
-    return new Date() > departureDateTime;
-  };
-
   const handleReschedule = async (booking: Booking) => {
     if (!user) return;
     setIsRescheduling(booking.id);
@@ -93,15 +85,19 @@ export default function ProfilePage() {
   }
 
   const getBookingStatus = (booking: Booking) => {
+    // If status is already set, display that status badge.
     if (booking.status === 'missed-rescheduled') {
       return <Badge variant="default" className="bg-green-600">Rescheduled</Badge>;
     }
-    
     if (booking.status === 'missed-failed') {
       return <Badge variant="destructive">Reschedule Failed</Badge>;
     }
 
-    if (canReschedule(booking)) {
+    const departureDateTime = new Date(`${booking.date}T${booking.departureTime}`);
+    const isMissed = new Date() > departureDateTime;
+
+    // If the train is missed and has no status, it's eligible for reschedule.
+    if (isMissed && !booking.status) {
       return (
         <Button
             size="sm"
@@ -113,13 +109,12 @@ export default function ProfilePage() {
       );
     }
     
-    // Default status for upcoming trains or missed trains not yet eligible for reschedule
-    const departureDateTime = new Date(`${booking.date}T${booking.departureTime}`);
-    if (new Date() > departureDateTime && !booking.status) {
-         return <Badge variant="destructive">Missed</Badge>;
+    // If it's missed but not eligible (e.g. status was set by another logic), show missed.
+    if(isMissed) {
+        return <Badge variant="destructive">Missed</Badge>;
     }
 
-
+    // Otherwise, it's an upcoming train.
     return <Badge variant="outline">Upcoming</Badge>;
   };
 
