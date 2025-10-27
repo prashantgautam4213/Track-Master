@@ -37,8 +37,8 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    const success = login(data.email, data.password);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const success = await login(data.email, data.password);
     if (success) {
       toast({ title: "Login Successful", description: "Welcome back!" });
       router.push(redirectUrl || "/profile");
@@ -80,8 +80,8 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          Login
+        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? 'Logging In...' : 'Login'}
         </Button>
       </form>
     </Form>

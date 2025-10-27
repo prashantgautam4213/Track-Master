@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import type { Booking } from '@/lib/types';
 import { useFirebase, useUser } from '@/firebase/provider';
 import { 
-  initiateEmailSignIn, 
-  initiateEmailSignUp 
-} from '@/firebase/non-blocking-login';
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { addDocumentNonBlocking, setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { collection, doc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
@@ -23,9 +23,9 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: UserProfile | null;
   isUserLoading: boolean;
-  login: (email: string, pass: string) => void;
+  login: (email: string, pass: string) => Promise<boolean>;
   logout: () => void;
-  register: (name: string, email: string, pass: string) => void;
+  register: (name: string, email: string, pass: string) => Promise<boolean>;
   addBooking: (booking: Booking, oldBookingId?: string) => void;
   updateBookingStatus: (bookingId: string, status: Booking['status']) => void;
 }
@@ -37,12 +37,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { user: firebaseUser, isUserLoading } = useUser();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
-  // When Firebase user changes, we can fetch their profile from Firestore
-  // This is a placeholder as we don't have a profile collection yet.
   useEffect(() => {
     if (firebaseUser) {
-      // Here you would fetch the user profile from Firestore
-      // For now, we'll create a mock profile from the auth user
       const profile: UserProfile = {
         uid: firebaseUser.uid,
         email: firebaseUser.email || 'No email',
@@ -55,29 +51,52 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [firebaseUser, userProfile?.bookings]);
 
-  const login = (email: string, pass: string) => {
-    initiateEmailSignIn(auth, email, pass);
+  const login = async (email: string, pass: string) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+      return true;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
+    }
   };
 
   const logout = async () => {
     await signOut(auth);
   };
 
-  const register = (name: string, email: string, pass: string) => {
-    // This is a simplified version. A real app would handle the result of this.
-    initiateEmailSignUp(auth, email, pass);
-    // We should ideally create the user profile doc *after* successful creation,
-    // using onAuthStateChanged listener to trigger it only once.
-    // For now, we are creating it optimistically.
-    // In a real app, you might use a Cloud Function trigger `onUserCreate`.
-    const userRef = doc(firestore, 'users', email); // Using email as ID for simplicity, UID is better
-    setDocumentNonBlocking(userRef, { name, email }, { merge: true });
+  const register = async (name: string, email: string, pass: string) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+      const user = userCredential.user;
+      
+      // Create user profile in Firestore
+      const userRef = doc(firestore, 'users', user.uid);
+      await setDocumentNonBlocking(userRef, { uid: user.uid, name, email });
+      
+      return true;
+    } catch (error: any) {
+        if (error.code === 'auth/email-already-in-use') {
+            // Re-throw specific error to be caught in the form
+            throw new Error('email-already-in-use');
+        }
+        console.error("Registration error:", error);
+        return false;
+    }
   };
   
   const addBooking = (booking: Booking, oldBookingId?: string) => {
     if (!userProfile) return;
     const bookingRef = collection(firestore, 'users', userProfile.uid, 'bookings');
-    addDocumentNonBlocking(bookingRef, booking);
+    
+    if (oldBookingId) {
+        // If it's a reschedule, we replace the old booking document
+        const oldBookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', oldBookingId);
+        setDocumentNonBlocking(oldBookingRef, booking, {});
+    } else {
+        // For a new booking, add a new document
+        addDocumentNonBlocking(bookingRef, booking);
+    }
   };
   
   const updateBookingStatus = (bookingId: string, status: Booking['status']) => {
