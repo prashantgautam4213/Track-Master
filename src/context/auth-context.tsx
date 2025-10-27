@@ -1,15 +1,31 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import type { User, Booking } from '@/lib/types';
-import { mockUser, demoUser } from '@/lib/data';
+import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import type { Booking } from '@/lib/types';
+import { useFirebase, useUser } from '@/firebase/provider';
+import { 
+  initiateEmailSignIn, 
+  initiateEmailSignUp 
+} from '@/firebase/non-blocking-login';
+import { addDocumentNonBlocking, setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { collection, doc } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
+
+// Extended user profile stored in Firestore
+export interface UserProfile {
+  uid: string;
+  email: string;
+  name: string;
+  bookings?: Booking[]; // Bookings might be a subcollection
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: User | null;
-  login: (email: string, pass: string) => boolean;
+  user: UserProfile | null;
+  isUserLoading: boolean;
+  login: (email: string, pass: string) => void;
   logout: () => void;
-  register: (name: string, email: string, pass: string) => boolean;
+  register: (name: string, email: string, pass: string) => void;
   addBooking: (booking: Booking, oldBookingId?: string) => void;
   updateBookingStatus: (bookingId: string, status: Booking['status']) => void;
 }
@@ -17,113 +33,71 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { auth, firestore } = useFirebase();
+  const { user: firebaseUser, isUserLoading } = useUser();
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
+  // When Firebase user changes, we can fetch their profile from Firestore
+  // This is a placeholder as we don't have a profile collection yet.
+  useEffect(() => {
+    if (firebaseUser) {
+      // Here you would fetch the user profile from Firestore
+      // For now, we'll create a mock profile from the auth user
+      const profile: UserProfile = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email || 'No email',
+        name: firebaseUser.displayName || 'No Name',
+        bookings: userProfile?.bookings || [], // Preserve bookings across auth changes
+      };
+      setUserProfile(profile);
+    } else {
+      setUserProfile(null);
+    }
+  }, [firebaseUser, userProfile?.bookings]);
 
   const login = (email: string, pass: string) => {
-    // Mock login logic
-    if (email === 'alex.doe@example.com' && pass === 'password123') {
-      setIsAuthenticated(true);
-      setUser(mockUser);
-      return true;
-    }
-    if (email === 'demo@example.com' && pass === 'password') {
-      setIsAuthenticated(true);
-      setUser(demoUser);
-      return true;
-    }
-    return false;
+    initiateEmailSignIn(auth, email, pass);
   };
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
+  const logout = async () => {
+    await signOut(auth);
   };
 
   const register = (name: string, email: string, pass: string) => {
-    // Mock register logic
-    console.log('Registering user:', { name, email, pass });
-    setIsAuthenticated(true);
-    const newUser = { name, email, bookings: [] };
-    // In a real app, you'd save this to a DB. Here we just set it in state.
-    setUser(newUser);
-    // Also update our mock data for session persistence on reload etc.
-    // This is a hack for the prototype.
-    if(typeof window !== 'undefined') {
-      try {
-        const users = JSON.parse(localStorage.getItem('users') || '{}');
-        users[email] = newUser;
-        localStorage.setItem('users', JSON.stringify(users));
-      } catch (e) {
-        console.error("Could not save user to local storage", e)
-      }
-    }
-    return true;
+    // This is a simplified version. A real app would handle the result of this.
+    initiateEmailSignUp(auth, email, pass);
+    // We should ideally create the user profile doc *after* successful creation,
+    // using onAuthStateChanged listener to trigger it only once.
+    // For now, we are creating it optimistically.
+    // In a real app, you might use a Cloud Function trigger `onUserCreate`.
+    const userRef = doc(firestore, 'users', email); // Using email as ID for simplicity, UID is better
+    setDocumentNonBlocking(userRef, { name, email }, { merge: true });
   };
   
   const addBooking = (booking: Booking, oldBookingId?: string) => {
-    setUser(currentUser => {
-      if (!currentUser) return null;
-      
-      let updatedBookings;
-      if (oldBookingId) {
-        // This is a reschedule, replace the old booking
-        updatedBookings = currentUser.bookings.map(b => 
-            b.id === oldBookingId ? booking : b
-        );
-      } else {
-        // This is a new booking
-        updatedBookings = [booking, ...currentUser.bookings];
-      }
-
-      const updatedUser = {
-        ...currentUser,
-        bookings: updatedBookings,
-      };
-
-      // Mock data update
-      const updateUserBookings = (userToUpdate: User) => {
-        if (oldBookingId) {
-            const index = userToUpdate.bookings.findIndex(b => b.id === oldBookingId);
-            if (index !== -1) {
-                userToUpdate.bookings[index] = booking;
-            }
-        } else {
-            userToUpdate.bookings.unshift(booking);
-        }
-      };
-
-      if (currentUser.email === mockUser.email) {
-        updateUserBookings(mockUser);
-      } else if (currentUser.email === demoUser.email) {
-        updateUserBookings(demoUser);
-      }
-      return updatedUser;
-    });
+    if (!userProfile) return;
+    const bookingRef = collection(firestore, 'users', userProfile.uid, 'bookings');
+    addDocumentNonBlocking(bookingRef, booking);
   };
   
   const updateBookingStatus = (bookingId: string, status: Booking['status']) => {
-      setUser(currentUser => {
-          if (!currentUser) return null;
-          const updatedBookings = currentUser.bookings.map(b => 
-              b.id === bookingId ? { ...b, status } : b
-          );
-          return { ...currentUser, bookings: updatedBookings };
-      });
-      // Also update mock data
-      const bookingToUpdateDemo = demoUser.bookings.find(b => b.id === bookingId);
-      if (bookingToUpdateDemo) {
-        bookingToUpdateDemo.status = status;
-      }
-      const bookingToUpdateMock = mockUser.bookings.find(b => b.id === bookingId);
-      if (bookingToUpdateMock) {
-        bookingToUpdateMock.status = status;
-      }
+      if (!userProfile) return;
+      const bookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', bookingId);
+      setDocumentNonBlocking(bookingRef, { status }, { merge: true });
   };
 
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, register, addBooking, updateBookingStatus }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated: !!firebaseUser, 
+      user: userProfile, 
+      isUserLoading,
+      login, 
+      logout, 
+      register, 
+      addBooking, 
+      updateBookingStatus 
+    }}>
       {children}
     </AuthContext.Provider>
   );

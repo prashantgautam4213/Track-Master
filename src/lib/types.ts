@@ -32,6 +32,7 @@ export type Booking = {
 };
 
 export type User = {
+  uid: string;
   name: string;
   email: string;
   bookings: Booking[];

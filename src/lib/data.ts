@@ -359,49 +359,6 @@ export const trains: Train[] = [
   },
 ];
 
-const mockBookings: Booking[] = [
-    {
-      id: 'B001',
-      trainId: 'T123',
-      trainName: 'Mumbai Rajdhani',
-      trainNumber: '12951',
-      date: '2024-08-15',
-      departureTime: '17:00',
-      from: 'Mumbai Central, MH',
-      to: 'New Delhi, DL',
-      class: 'Business',
-      passengers: 1,
-      totalPrice: 3500,
-      status: 'upcoming'
-    },
-    {
-      id: 'B002',
-      trainId: 'T789',
-      trainName: 'Howrah Rajdhani',
-      trainNumber: '12301',
-      date: '2024-07-20',
-      departureTime: '16:50',
-      from: 'Howrah Junction, WB',
-      to: 'New Delhi, DL',
-      class: 'Economy',
-      passengers: 2,
-      totalPrice: 4400,
-      status: 'upcoming'
-    }
-]
-
-
-export const mockUser: User = {
-    name: 'Alex Doe',
-    email: 'alex.doe@example.com',
-    bookings: mockBookings
-}
-
-export const demoUser: User = {
-    name: 'Demo User',
-    email: 'demo@example.com',
-    bookings: []
-}
 
 // In a real application, this would be a database call.
 // For this prototype, we'll just modify the in-memory array.
