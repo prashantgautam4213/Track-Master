@@ -4,12 +4,10 @@ import { useMemo, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { trains } from '@/lib/data';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import type { Train } from '@/lib/types';
 
-type SortKey = 'name' | 'departureTime' | 'duration';
+type SortKey = 'name' | 'departureTime' | 'duration' | 'from';
 
 export default function TrainsPage() {
   const [sortKey, setSortKey] = useState<SortKey>('name');
@@ -17,16 +15,19 @@ export default function TrainsPage() {
 
   const sortedTrains = useMemo(() => {
     const sorted = [...trains].sort((a, b) => {
-      if (sortKey === 'duration') {
-        const durationA = parseInt(a.duration.split('h')[0]) * 60 + parseInt(a.duration.split('h')[1].replace('m', ''));
-        const durationB = parseInt(b.duration.split('h')[0]) * 60 + parseInt(b.duration.split('h')[1].replace('m', ''));
-        return durationA - durationB;
+      switch (sortKey) {
+        case 'duration':
+          const durationA = parseInt(a.duration.split('h')[0]) * 60 + parseInt(a.duration.split('h')[1].replace('m', ''));
+          const durationB = parseInt(b.duration.split('h')[0]) * 60 + parseInt(b.duration.split('h')[1].replace('m', ''));
+          return durationA - durationB;
+        case 'departureTime':
+          return a.departureTime.localeCompare(b.departureTime);
+        case 'from':
+          return a.from.localeCompare(b.from);
+        case 'name':
+        default:
+          return a.name.localeCompare(b.name);
       }
-      if (sortKey === 'departureTime') {
-        return a.departureTime.localeCompare(b.departureTime);
-      }
-      // default to name
-      return a.name.localeCompare(b.name);
     });
 
     if (sortOrder === 'desc') {
@@ -66,7 +67,11 @@ export default function TrainsPage() {
                   Train {getSortIcon('name')}
                 </Button>
               </TableHead>
-              <TableHead>Route</TableHead>
+              <TableHead>
+                 <Button variant="ghost" onClick={() => handleSort('from')}>
+                  Route {getSortIcon('from')}
+                </Button>
+              </TableHead>
               <TableHead>
                 <Button variant="ghost" onClick={() => handleSort('departureTime')}>
                   Timings {getSortIcon('departureTime')}
