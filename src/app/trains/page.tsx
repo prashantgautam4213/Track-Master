@@ -3,19 +3,25 @@
 import { useMemo, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { trains } from '@/lib/data';
-import { ArrowDown, ArrowUp, ChevronsUpDown, Clock, Route, Train } from 'lucide-react';
+import { trains, stations } from '@/lib/data';
+import { ArrowDown, ArrowUp, ChevronsUpDown, Clock, Route, Train, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type SortKey = 'name' | 'departureTime' | 'duration' | 'from';
 
 export default function TrainsPage() {
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [selectedStation, setSelectedStation] = useState<string>('All');
 
   const sortedTrains = useMemo(() => {
-    const sorted = [...trains].sort((a, b) => {
+    const filteredTrains = selectedStation === 'All'
+      ? trains
+      : trains.filter(train => train.from === selectedStation);
+
+    const sorted = [...filteredTrains].sort((a, b) => {
       switch (sortKey) {
         case 'duration':
           const durationA = parseInt(a.duration.split('h')[0]) * 60 + parseInt(a.duration.split('h')[1].replace('m', ''));
@@ -35,7 +41,7 @@ export default function TrainsPage() {
       return sorted.reverse();
     }
     return sorted;
-  }, [sortKey, sortOrder]);
+  }, [sortKey, sortOrder, selectedStation]);
   
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -66,7 +72,26 @@ export default function TrainsPage() {
         <h1 className="text-3xl font-bold font-headline">Train Schedules</h1>
       </div>
       
-      <div className="mb-4">
+      <div className="mb-4 space-y-4">
+        <Card>
+            <CardContent className="p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <label htmlFor="station-filter" className="text-sm font-medium">Filter by Departure Station:</label>
+                </div>
+                <Select value={selectedStation} onValueChange={setSelectedStation}>
+                  <SelectTrigger id="station-filter" className="w-full md:w-[280px]">
+                    <SelectValue placeholder="Select a station" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Stations</SelectItem>
+                    {stations.map(station => (
+                      <SelectItem key={station} value={station}>{station}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+            </CardContent>
+        </Card>
         <Card>
             <CardContent className="p-4 flex flex-wrap items-center gap-2">
                 <span className="text-sm font-medium mr-2">Sort by:</span>
@@ -80,7 +105,6 @@ export default function TrainsPage() {
             </CardContent>
         </Card>
       </div>
-
 
       <div className="border rounded-lg">
         <Table>
@@ -135,8 +159,8 @@ export default function TrainsPage() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  No train schedules available.
+                <TableCell colSpan={5} className="text-center h-24">
+                  No train schedules found for the selected station.
                 </TableCell>
               </TableRow>
             )}
