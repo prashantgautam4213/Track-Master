@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Database } from 'lucide-react';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 export default function AdminPage() {
   const { firestore } = useFirebase();
@@ -16,51 +18,68 @@ export default function AdminPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isDone, setIsDone] = useState(false);
 
-  const handleSeedDatabase = async () => {
+  const handleSeedDatabase = () => {
     setIsLoading(true);
-    try {
-      if (!firestore) {
+    if (!firestore) {
+      toast({
+        variant: 'destructive',
+        title: 'Firestore not available',
+        description: 'Please try again later.',
+      });
+      setIsLoading(false);
+      return;
+    }
+    const trainsCollection = collection(firestore, 'trains');
+    const batch = writeBatch(firestore);
+
+    // Firestore batches are limited to 500 operations.
+    if (mockTrains.length > 499) {
         toast({
-          variant: 'destructive',
-          title: 'Firestore not available',
-          description: 'Please try again later.',
+            variant: 'destructive',
+            title: 'Error Seeding Database',
+            description: 'Too many trains to seed in one batch (max 500).',
         });
         setIsLoading(false);
         return;
-      }
-      const trainsCollection = collection(firestore, 'trains');
-      const batch = writeBatch(firestore);
-
-      // Firestore batches are limited to 500 operations.
-      // We can add logic to handle more if needed.
-      if (mockTrains.length > 499) {
-        throw new Error('Too many trains to seed in one batch.');
-      }
-
-      mockTrains.forEach(train => {
-        // In Firestore, we use the train ID from the mock data
-        // as the document ID for consistency.
-        const docRef = doc(trainsCollection.firestore, trainsCollection.path, train.id);
-        batch.set(docRef, train);
-      });
-
-      await batch.commit();
-
-      toast({
-        title: 'Database Seeded!',
-        description: `${mockTrains.length} train documents have been added to Firestore.`,
-      });
-      setIsDone(true);
-    } catch (error: any) {
-      console.error('Error seeding database:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error Seeding Database',
-        description: error.message || 'An unexpected error occurred.',
-      });
-    } finally {
-      setIsLoading(false);
     }
+
+    mockTrains.forEach(train => {
+      // In Firestore, we use the train ID from the mock data
+      // as the document ID for consistency.
+      const docRef = doc(trainsCollection, train.id);
+      batch.set(docRef, train);
+    });
+
+    batch.commit()
+      .then(() => {
+        toast({
+          title: 'Database Seeded!',
+          description: `${mockTrains.length} train documents have been added to Firestore.`,
+        });
+        setIsDone(true);
+      })
+      .catch((serverError) => {
+        // Here we create and emit the detailed error for debugging.
+        // The error is constructed for a batch write, so we can't pinpoint a single document,
+        // but we can provide context for the 'trains' collection path.
+        const contextualError = new FirestorePermissionError({
+          path: 'trains', // The path for a batch write
+          operation: 'write',
+          // We can't include a single document's data, but we can signal it was a batch.
+          requestResourceData: { note: `Batch write for ${mockTrains.length} documents.` },
+        });
+        errorEmitter.emit('permission-error', contextualError);
+        
+        // Also show a user-facing toast.
+        toast({
+          variant: 'destructive',
+          title: 'Error Seeding Database',
+          description: 'Permission denied. Check security rules.',
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
