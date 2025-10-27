@@ -72,7 +72,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Create user profile in Firestore
       const userRef = doc(firestore, 'users', user.uid);
-      await setDocumentNonBlocking(userRef, { uid: user.uid, name, email });
+      // The second argument for options was missing, causing the function to fail.
+      setDocumentNonBlocking(userRef, { uid: user.uid, name, email }, {});
       
       return true;
     } catch (error: any) {
