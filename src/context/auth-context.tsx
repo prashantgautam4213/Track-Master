@@ -1,23 +1,15 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import type { Booking } from '@/lib/types';
+import type { Booking, UserProfile } from '@/lib/types';
 import { useFirebase, useUser } from '@/firebase/provider';
 import { 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth';
-import { addDocumentNonBlocking, setDocumentNonBlocking, updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
-import { collection, doc } from 'firebase/firestore';
-import { signOut } from 'firebase/auth';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
-// Extended user profile stored in Firestore
-export interface UserProfile {
-  uid: string;
-  email: string;
-  name: string;
-  bookings?: Booking[]; // Bookings might be a subcollection
-}
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -39,17 +31,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (firebaseUser) {
+      // Note: In a real app, you'd fetch the profile from Firestore here
+      // to get roles or other persistent data. For this demo, we'll
+      // construct it from the auth object.
       const profile: UserProfile = {
         uid: firebaseUser.uid,
         email: firebaseUser.email || 'No email',
         name: firebaseUser.displayName || 'No Name',
-        bookings: userProfile?.bookings || [], // Preserve bookings across auth changes
       };
       setUserProfile(profile);
     } else {
       setUserProfile(null);
     }
-  }, [firebaseUser, userProfile?.bookings]);
+  }, [firebaseUser]);
 
   const login = async (email: string, pass: string) => {
     try {
@@ -72,7 +66,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Create user profile in Firestore
       const userRef = doc(firestore, 'users', user.uid);
-      setDocumentNonBlocking(userRef, { uid: user.uid, name, email }, {});
+      // CORRECTED: Use `setDoc` directly and correctly. This was the bug.
+      await setDoc(userRef, { uid: user.uid, name, email });
       
       return true;
     } catch (error: any) {
@@ -87,22 +82,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const addBooking = (booking: Booking, oldBookingId?: string) => {
     if (!userProfile) return;
-    const bookingRef = collection(firestore, 'users', userProfile.uid, 'bookings');
     
     if (oldBookingId) {
         // If it's a reschedule, we replace the old booking document
-        const oldBookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', oldBookingId);
-        setDocumentNonBlocking(oldBookingRef, booking, {});
+        const bookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', oldBookingId);
+        setDoc(bookingRef, booking, { merge: true });
     } else {
         // For a new booking, add a new document
-        addDocumentNonBlocking(bookingRef, booking);
+        const bookingRef = collection(firestore, 'users', userProfile.uid, 'bookings');
+        addDoc(bookingRef, booking);
     }
   };
   
   const updateBookingStatus = (bookingId: string, status: Booking['status']) => {
       if (!userProfile) return;
       const bookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', bookingId);
-      updateDocumentNonBlocking(bookingRef, { status });
+      setDoc(bookingRef, { status }, { merge: true });
   };
 
 

@@ -31,9 +31,9 @@ export type Booking = {
   status?: 'upcoming' | 'missed-rescheduled' | 'missed-failed';
 };
 
-export type User = {
+// This represents the data stored in the /users/{uid} document in Firestore
+export type UserProfile = {
   uid: string;
   name: string;
   email: string;
-  bookings: Booking[];
 };
