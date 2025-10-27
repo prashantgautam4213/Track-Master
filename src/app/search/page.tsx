@@ -1,23 +1,35 @@
 "use client";
 
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ArrowRight, Clock, Users, TrainFront, Ticket } from 'lucide-react';
+import { Clock, Ticket, TrainFront } from 'lucide-react';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
+import { collection, query, where } from 'firebase/firestore';
 
-import { trains } from '@/lib/data';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useCollection, useFirebase } from '@/firebase';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import type { Train } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function SearchResults() {
     const searchParams = useSearchParams();
     const from = searchParams.get('from');
     const to = searchParams.get('to');
     const dateStr = searchParams.get('date');
+    const { firestore } = useFirebase();
+
+    const trainsQuery = useMemo(() => {
+        if (!from || !to) return null;
+        return query(
+            collection(firestore, 'trains'),
+            where('from', '==', from),
+            where('to', '==', to)
+        );
+    }, [firestore, from, to]);
+
+    const { data: results, isLoading } = useCollection<Train>(trainsQuery);
 
     if (!from || !to || !dateStr) {
         return (
@@ -32,11 +44,6 @@ function SearchResults() {
     }
     
     const date = parseISO(dateStr);
-
-    const results = trains.filter(
-        (train) => train.from === from && train.to === to
-    );
-
     const bookingDate = format(date, 'yyyy-MM-dd');
 
     return (
@@ -48,7 +55,23 @@ function SearchResults() {
                 </p>
             </div>
 
-            {results.length > 0 ? (
+            {isLoading ? (
+                <div className="grid gap-6">
+                    {[...Array(3)].map((_, i) => (
+                        <Card key={i} className="overflow-hidden">
+                             <CardHeader className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 bg-muted/50 p-4">
+                                <Skeleton className="h-8 w-1/2" />
+                                <Skeleton className="h-8 w-1/3" />
+                             </CardHeader>
+                             <CardContent className="p-4 grid gap-4 md:grid-cols-3">
+                                <Skeleton className="h-28 w-full" />
+                                <Skeleton className="h-28 w-full" />
+                                <Skeleton className="h-28 w-full" />
+                             </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            ) : results && results.length > 0 ? (
                 <div className="grid gap-6">
                     {results.map((train: Train) => (
                         <Card key={train.id} className="overflow-hidden">
@@ -121,3 +144,5 @@ export default function SearchPage() {
         </Suspense>
     );
 }
+
+    

@@ -5,11 +5,11 @@ import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
 import { useToast } from '@/hooks/use-toast';
-import { v4 as uuidv4 } from 'uuid';
 import { format, parseISO } from 'date-fns';
 import { ArrowLeft, BaggageClaim, Calendar, Clock, Minus, Plus, TrainFront, Users, CreditCard, Landmark, Sparkles } from 'lucide-react';
+import { doc } from 'firebase/firestore';
 
-import { trains, updateTrainAvailability } from '@/lib/data';
+import { useDoc, useFirebase } from '@/firebase';
 import type { Train, TrainClass, Booking } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -29,8 +29,19 @@ function BookingComponent() {
     const searchParams = useSearchParams();
     const { isAuthenticated, user, addBooking } = useAuth();
     const { toast } = useToast();
+    const { firestore } = useFirebase();
 
-    const [train, setTrain] = useState<Train | null>(null);
+    const trainId = params.trainId as string;
+    const className = searchParams.get('class') as TrainClass['name'];
+    const dateStr = searchParams.get('date');
+
+    const trainRef = useMemo(() => {
+        if (!trainId) return null;
+        return doc(firestore, 'trains', trainId);
+    }, [firestore, trainId]);
+
+    const { data: train, isLoading: isTrainLoading } = useDoc<Train>(trainRef);
+
     const [trainClass, setTrainClass] = useState<TrainClass | null>(null);
     const [date, setDate] = useState<Date | null>(null);
     const [passengers, setPassengers] = useState(1);
@@ -40,28 +51,22 @@ function BookingComponent() {
     const [couponApplied, setCouponApplied] = useState(false);
     const [couponError, setCouponError] = useState('');
 
-    const trainId = params.trainId as string;
-    const className = searchParams.get('class') as TrainClass['name'];
-    const dateStr = searchParams.get('date');
-
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!isAuthenticated && !isTrainLoading) {
             const currentPath = `/book/${trainId}?${searchParams.toString()}`;
             router.push(`/login?redirect=${encodeURIComponent(currentPath)}`);
         }
-    }, [isAuthenticated, router, trainId, searchParams]);
+    }, [isAuthenticated, isTrainLoading, router, trainId, searchParams]);
 
     useEffect(() => {
-        const foundTrain = trains.find(t => t.id === trainId);
-        if (foundTrain) {
-            setTrain(foundTrain);
-            const foundClass = foundTrain.classes.find(c => c.name === className);
+        if (train) {
+            const foundClass = train.classes.find(c => c.name === className);
             setTrainClass(foundClass || null);
         }
         if (dateStr) {
             setDate(parseISO(dateStr));
         }
-    }, [trainId, className, dateStr]);
+    }, [train, className, dateStr]);
     
     const basePrice = useMemo(() => {
         if (!trainClass) return 0;
@@ -88,45 +93,36 @@ function BookingComponent() {
 
 
     const handleBooking = () => {
-        if (!train || !trainClass || !date) return;
+        if (!train || !trainClass || !date || !user) return;
         setIsBooking(true);
 
-        // Simulate payment processing
+        // In a real app, you would use a transaction to update availability
+        // For this demo, we'll optimistically create the booking
         setTimeout(() => {
-            const success = updateTrainAvailability(train.id, trainClass.name, passengers);
+            const newBooking: Booking = {
+                id: '', // Firestore will generate this
+                trainId: train.id,
+                trainName: train.name,
+                trainNumber: train.number,
+                date: format(date, 'yyyy-MM-dd'),
+                departureTime: train.departureTime,
+                from: train.from,
+                to: train.to,
+                passengers,
+                totalPrice: totalPrice,
+                class: trainClass.name,
+                status: 'upcoming',
+            };
 
-            if (success) {
-                const newBooking: Booking = {
-                    id: uuidv4(),
-                    trainId: train.id,
-                    trainName: train.name,
-                    trainNumber: train.number,
-                    date: format(date, 'yyyy-MM-dd'),
-                    departureTime: train.departureTime,
-                    from: train.from,
-                    to: train.to,
-                    passengers,
-                    totalPrice: totalPrice,
-                    class: trainClass.name,
-                    status: 'upcoming',
-                };
+            addBooking(newBooking);
 
-                addBooking(newBooking);
+            toast({
+                title: 'Booking Successful!',
+                description: `Your trip from ${train.from} to ${train.to} is confirmed.`,
+            });
 
-                toast({
-                    title: 'Booking Successful!',
-                    description: `Your trip from ${train.from} to ${train.to} is confirmed.`,
-                });
+            router.push('/profile');
 
-                router.push('/profile');
-            } else {
-                toast({
-                    variant: 'destructive',
-                    title: 'Booking Failed',
-                    description: 'Seats are no longer available. Please try another search.',
-                });
-                setIsBooking(false);
-            }
         }, 1500); // 1.5 second delay to simulate payment
     };
     
@@ -141,14 +137,36 @@ function BookingComponent() {
         )
     }
 
-    if (!train || !trainClass || !date) {
+    if (isTrainLoading || !train || !trainClass || !date) {
         return (
-            <div className="container mx-auto py-10 text-center">
-                <Skeleton className="h-8 w-64 mx-auto" />
-                <Skeleton className="h-4 w-80 mx-auto mt-4" />
-                <div className="mt-8">
-                     <Button disabled><ArrowLeft className="mr-2 h-4 w-4" />Back to Search</Button>
-                </div>
+            <div className="container mx-auto py-10">
+                <Skeleton className="h-9 w-48 mb-4" />
+                <Card>
+                    <CardHeader>
+                        <Skeleton className="h-8 w-64" />
+                        <Skeleton className="h-4 w-80 mt-2" />
+                    </CardHeader>
+                    <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pt-6">
+                        <div className="lg:col-span-1 space-y-6">
+                            <Skeleton className="h-12 w-full" />
+                            <Separator />
+                            <Skeleton className="h-24 w-full" />
+                            <Separator />
+                            <Skeleton className="h-16 w-full" />
+                        </div>
+                        <div className="lg:col-span-1 space-y-6">
+                            <Skeleton className="h-8 w-48" />
+                            <Skeleton className="h-32 w-full" />
+                            <Skeleton className="h-16 w-full" />
+                        </div>
+                        <div className="bg-muted/50 rounded-lg p-6 lg:col-span-1">
+                             <Skeleton className="h-40 w-full" />
+                        </div>
+                    </CardContent>
+                    <CardFooter>
+                         <Skeleton className="h-12 w-48 ml-auto" />
+                    </CardFooter>
+                </Card>
             </div>
         )
     }
@@ -256,7 +274,7 @@ function BookingComponent() {
 
                 </CardContent>
                 <CardFooter>
-                    <Button size="lg" className="w-full md:w-auto ml-auto" onClick={handleBooking} disabled={isBooking}>
+                    <Button size="lg" className="w-full md:w-auto ml-auto" onClick={handleBooking} disabled={isBooking || trainClass.availability < passengers}>
                         {isBooking ? 'Processing Payment...' : `Pay $${totalPrice.toFixed(2)} & Confirm`}
                     </Button>
                 </CardFooter>
@@ -272,3 +290,5 @@ export default function BookingPage() {
         </Suspense>
     )
 }
+
+    
