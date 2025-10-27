@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Create user profile in Firestore
       const userRef = doc(firestore, 'users', user.uid);
-      // CORRECTED: Use `setDoc` directly and correctly. This was the bug.
       await setDoc(userRef, { uid: user.uid, name, email });
       
       return true;
