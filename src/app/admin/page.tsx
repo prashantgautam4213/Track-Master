@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useFirebase } from '@/firebase';
-import { collection, writeBatch } from 'firebase/firestore';
+import { collection, writeBatch, doc } from 'firebase/firestore';
 import { trains as mockTrains } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,15 @@ export default function AdminPage() {
   const handleSeedDatabase = async () => {
     setIsLoading(true);
     try {
+      if (!firestore) {
+        toast({
+          variant: 'destructive',
+          title: 'Firestore not available',
+          description: 'Please try again later.',
+        });
+        setIsLoading(false);
+        return;
+      }
       const trainsCollection = collection(firestore, 'trains');
       const batch = writeBatch(firestore);
 
@@ -31,7 +40,7 @@ export default function AdminPage() {
       mockTrains.forEach(train => {
         // In Firestore, we use the train ID from the mock data
         // as the document ID for consistency.
-        const docRef = collection(trainsCollection.firestore, trainsCollection.path, train.id);
+        const docRef = doc(trainsCollection.firestore, trainsCollection.path, train.id);
         batch.set(docRef, train);
       });
 
@@ -86,7 +95,7 @@ export default function AdminPage() {
                 <AlertTitle>Next Steps</AlertTitle>
                 <AlertDescription>
                     You can now go to your Firebase Console to view and edit the train data in the 'trains' collection. Any changes you make there will be reflected in the application.
-                </AlerDescription>
+                </AlertDescription>
             </Alert>
           )}
         </CardContent>
