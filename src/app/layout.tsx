@@ -5,6 +5,7 @@ import Footer from '@/components/footer';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase';
+import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
   title: 'Track Master',
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <FirebaseClientProvider>
           <AuthProvider>
+            <FirebaseErrorListener />
             <div className="flex min-h-screen flex-col">
               <Header />
               <main className="flex-grow">{children}</main>

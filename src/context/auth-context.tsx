@@ -7,7 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { addDocumentNonBlocking, setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { addDocumentNonBlocking, setDocumentNonBlocking, updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { collection, doc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 
@@ -72,7 +72,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Create user profile in Firestore
       const userRef = doc(firestore, 'users', user.uid);
-      // The second argument for options was missing, causing the function to fail.
       setDocumentNonBlocking(userRef, { uid: user.uid, name, email }, {});
       
       return true;
@@ -103,7 +102,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const updateBookingStatus = (bookingId: string, status: Booking['status']) => {
       if (!userProfile) return;
       const bookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', bookingId);
-      setDocumentNonBlocking(bookingRef, { status }, { merge: true });
+      updateDocumentNonBlocking(bookingRef, { status });
   };
 
 
