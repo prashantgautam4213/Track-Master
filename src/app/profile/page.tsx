@@ -1,32 +1,34 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Ticket } from "lucide-react";
-import type { Booking, Train } from "@/lib/types";
-import { useToast } from "@/hooks/use-toast";
-import { rescheduleMissedTrain } from "@/ai/flows/reschedule-missed-train";
-import type { RescheduleMissedTrainOutput } from "@/ai/flows/reschedule-missed-train";
-import { useCollection, useFirebase, useUser } from "@/firebase";
-import { collection, query } from "firebase/firestore";
+import { useEffect, useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/auth-context';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { Ticket } from 'lucide-react';
+import type { Booking, Train } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
+import { rescheduleMissedTrain } from '@/ai/flows/reschedule-missed-train';
+import type { RescheduleMissedTrainOutput } from '@/ai/flows/reschedule-missed-train';
+import { useCollection, useFirebase, useUser, useMemoFirebase } from '@/firebase';
+import { collection, query } from 'firebase/firestore';
 
 // A simple badge component to avoid creating a new file for it
-const Badge = ({className, ...props}: React.HTMLAttributes<HTMLDivElement> & {variant?: 'default' | 'destructive' | 'outline'}) => {
-    const baseClasses = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold";
-    const variantClasses = {
-        default: "bg-primary text-primary-foreground",
-        destructive: "bg-destructive text-destructive-foreground",
-        outline: "text-foreground"
-    }
-    const variant = props.variant || 'default';
-    return <div className={`${baseClasses} ${variantClasses[variant]} ${className}`} {...props} />
-}
-
+const Badge = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { variant?: 'default' | 'destructive' | 'outline' }) => {
+  const baseClasses = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold';
+  const variantClasses = {
+    default: 'bg-primary text-primary-foreground',
+    destructive: 'bg-destructive text-destructive-foreground',
+    outline: 'text-foreground',
+  };
+  const variant = props.variant || 'default';
+  return <div className={`${baseClasses} ${variantClasses[variant]} ${className}`} {...props} />;
+};
 
 export default function ProfilePage() {
   const { isAuthenticated, user: userProfile, updateBookingStatus, addBooking } = useAuth();
@@ -36,18 +38,18 @@ export default function ProfilePage() {
   const { firestore } = useFirebase();
   const [isRescheduling, setIsRescheduling] = useState<string | null>(null);
 
-  const bookingsQuery = useMemo(() => {
+  const bookingsQuery = useMemoFirebase(() => {
     if (!firebaseUser) return null;
     return collection(firestore, 'users', firebaseUser.uid, 'bookings');
   }, [firestore, firebaseUser]);
   const { data: bookings, isLoading: areBookingsLoading } = useCollection<Booking>(bookingsQuery);
 
-  const trainsQuery = useMemo(() => query(collection(firestore, 'trains')), [firestore]);
+  const trainsQuery = useMemoFirebase(() => query(collection(firestore, 'trains')), [firestore]);
   const { data: allTrains, isLoading: areTrainsLoading } = useCollection<Train>(trainsQuery);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push("/login");
+      router.push('/login');
     }
   }, [isAuthenticated, router]);
 
@@ -65,24 +67,24 @@ export default function ProfilePage() {
       if (result.success && result.newBooking) {
         addBooking(result.newBooking, booking.id);
         toast({
-          title: "Reschedule Successful",
+          title: 'Reschedule Successful',
           description: `You've been booked on ${result.newBooking.trainName} at ${result.newBooking.departureTime}.`,
         });
       } else {
         updateBookingStatus(booking.id, 'missed-failed');
         toast({
-          variant: "destructive",
-          title: "Reschedule Failed",
+          variant: 'destructive',
+          title: 'Reschedule Failed',
           description: result.message,
         });
       }
     } catch (error) {
-      console.error("Reschedule error:", error);
+      console.error('Reschedule error:', error);
       updateBookingStatus(booking.id, 'missed-failed');
       toast({
-        variant: "destructive",
-        title: "An Error Occurred",
-        description: "Could not reschedule the train. Please contact support.",
+        variant: 'destructive',
+        title: 'An Error Occurred',
+        description: 'Could not reschedule the train. Please contact support.',
       });
     } finally {
       setIsRescheduling(null);
@@ -105,11 +107,11 @@ export default function ProfilePage() {
       if (!booking.status) {
         return (
           <Button
-              size="sm"
-              onClick={() => handleReschedule(booking)}
-              disabled={isRescheduling === booking.id || areTrainsLoading}
+            size="sm"
+            onClick={() => handleReschedule(booking)}
+            disabled={isRescheduling === booking.id || areTrainsLoading}
           >
-              {isRescheduling === booking.id ? 'Rescheduling...' : 'Raise Missed Train Query'}
+            {isRescheduling === booking.id ? 'Rescheduling...' : 'Raise Missed Train Query'}
           </Button>
         );
       }
@@ -166,32 +168,40 @@ export default function ProfilePage() {
         <div className="md:col-span-2">
           <h2 className="text-2xl font-bold font-headline mb-4">Booking History</h2>
           {areBookingsLoading ? (
-             <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                <p>Loading your bookings...</p>
-             </div>
+            <div className="text-center py-20 border-2 border-dashed rounded-lg">
+              <p>Loading your bookings...</p>
+            </div>
           ) : bookings && bookings.length > 0 ? (
             <div className="space-y-4">
-              {bookings.sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(booking => (
-                <Card key={booking.id} className={booking.status?.startsWith('missed') ? 'bg-muted/50' : ''}>
-                  <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4">
+              {bookings
+                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                .map((booking) => (
+                  <Card key={booking.id} className={booking.status?.startsWith('missed') ? 'bg-muted/50' : ''}>
+                    <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4">
                       <div className="flex gap-4 items-center">
                         <div className="bg-primary/10 p-3 rounded-lg">
-                            <Ticket className="w-6 h-6 text-primary"/>
+                          <Ticket className="w-6 h-6 text-primary" />
                         </div>
                         <div>
-                            <p className="font-semibold">{booking.trainName} ({booking.trainNumber})</p>
-                            <p className="text-sm text-muted-foreground">{booking.from} to {booking.to}</p>
-                            <p className="text-sm text-muted-foreground">Date: {booking.date} at {booking.departureTime}</p>
-                            <p className="text-sm text-muted-foreground">{booking.class} class</p>
+                          <p className="font-semibold">
+                            {booking.trainName} ({booking.trainNumber})
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {booking.from} to {booking.to}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Date: {booking.date} at {booking.departureTime}
+                          </p>
+                          <p className="text-sm text-muted-foreground">{booking.class} class</p>
                         </div>
                       </div>
                       <div className="text-left sm:text-right space-y-2">
-                          <p className="font-bold text-lg">${booking.totalPrice.toFixed(2)}</p>
-                          {getBookingStatus(booking)}
+                        <p className="font-bold text-lg">${booking.totalPrice.toFixed(2)}</p>
+                        {getBookingStatus(booking)}
                       </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
           ) : (
             <div className="text-center py-20 border-2 border-dashed rounded-lg">
@@ -207,5 +217,3 @@ export default function ProfilePage() {
     </div>
   );
 }
-
-    
