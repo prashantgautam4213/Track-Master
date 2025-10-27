@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { LogOut, Menu, Search, Ticket, Train, User as UserIcon, Cog } from 'lucide-react';
+import { LogOut, Menu, Search, Ticket, Train, User as UserIcon } from 'lucide-react';
 
 import { useAuth } from '@/context/auth-context';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,6 @@ const navLinks = [
   { href: '/search', label: 'Search Trains', icon: Search },
   { href: '/trains', label: 'All Schedules', icon: Train },
   { href: '/fare-enquiry', label: 'Fare Enquiry', icon: Ticket },
-  { href: '/admin', label: 'Admin', icon: Cog },
 ];
 
 export default function Header() {

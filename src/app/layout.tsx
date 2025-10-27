@@ -4,8 +4,6 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
-import { FirebaseClientProvider } from '@/firebase';
-import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
   title: 'Track Master',
@@ -25,17 +23,14 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <FirebaseClientProvider>
-          <AuthProvider>
-            <FirebaseErrorListener />
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-grow">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-          </AuthProvider>
-        </FirebaseClientProvider>
+        <AuthProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

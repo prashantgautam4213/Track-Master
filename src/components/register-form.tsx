@@ -37,34 +37,17 @@ export function RegisterForm() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-        const success = await register(data.name, data.email, data.password);
-        if (success) {
-            toast({ title: 'Registration Successful', description: 'Welcome to Track Master!' });
-            router.push('/profile');
-        } else {
-            // This case might be hit if a non-specific error occurs
-            toast({
-                variant: 'destructive',
-                title: 'Registration Failed',
-                description: 'An unexpected error occurred. Please try again.',
-            });
-        }
-    } catch (error: any) {
-        if (error.message === 'email-already-in-use') {
-            toast({
-                variant: 'destructive',
-                title: 'Registration Failed',
-                description: 'This email address is already in use. Please use a different email or log in.',
-            });
-        } else {
-             toast({
-                variant: 'destructive',
-                title: 'Registration Failed',
-                description: 'An unexpected error occurred. Please try again.',
-            });
-        }
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    const success = register(data.name, data.email, data.password);
+    if (success) {
+      toast({ title: 'Registration Successful', description: 'Welcome to Track Master!' });
+      router.push('/profile');
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Registration Failed',
+        description: 'This email address is already in use.',
+      });
     }
   }
 
@@ -110,8 +93,8 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
+        <Button type="submit" className="w-full">
+          Create Account
         </Button>
       </form>
     </Form>

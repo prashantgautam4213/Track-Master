@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,14 +8,11 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Ticket } from 'lucide-react';
-import type { Booking, Train } from '@/lib/types';
+import type { Booking } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
-import { rescheduleMissedTrain } from '@/ai/flows/reschedule-missed-train';
-import type { RescheduleMissedTrainOutput } from '@/ai/flows/reschedule-missed-train';
-import { useCollection, useFirebase, useUser, useMemoFirebase } from '@/firebase';
-import { collection, query } from 'firebase/firestore';
+import { trains as allTrains } from '@/lib/data';
+import { v4 as uuidv4 } from 'uuid';
 
-// A simple badge component to avoid creating a new file for it
 const Badge = ({
   className,
   ...props
@@ -31,21 +28,10 @@ const Badge = ({
 };
 
 export default function ProfilePage() {
-  const { isAuthenticated, user: userProfile, updateBookingStatus, addBooking } = useAuth();
-  const { user: firebaseUser } = useUser();
+  const { isAuthenticated, user, bookings, updateBooking, addBooking } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const { firestore } = useFirebase();
   const [isRescheduling, setIsRescheduling] = useState<string | null>(null);
-
-  const bookingsQuery = useMemoFirebase(() => {
-    if (!firebaseUser) return null;
-    return collection(firestore, 'users', firebaseUser.uid, 'bookings');
-  }, [firestore, firebaseUser]);
-  const { data: bookings, isLoading: areBookingsLoading } = useCollection<Booking>(bookingsQuery);
-
-  const trainsQuery = useMemoFirebase(() => query(collection(firestore, 'trains')), [firestore]);
-  const { data: allTrains, isLoading: areTrainsLoading } = useCollection<Train>(trainsQuery);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -54,41 +40,69 @@ export default function ProfilePage() {
   }, [isAuthenticated, router]);
 
   const handleReschedule = async (booking: Booking) => {
-    if (!firebaseUser || !allTrains) return;
+    if (!user) return;
     setIsRescheduling(booking.id);
 
-    try {
-      const result: RescheduleMissedTrainOutput = await rescheduleMissedTrain({
-        missedBooking: booking,
-        allTrains: allTrains,
-        userId: firebaseUser.uid,
+    // Mock AI rescheduling logic
+    setTimeout(() => {
+      const missedDepartureTime = new Date(`${booking.date}T${booking.departureTime}`).getTime();
+
+      const sameDayTrains = allTrains.filter(train => {
+        const departureTime = new Date(`${booking.date}T${train.departureTime}`).getTime();
+        return (
+          train.from === booking.from &&
+          train.to === booking.to &&
+          departureTime > missedDepartureTime
+        );
       });
 
-      if (result.success && result.newBooking) {
-        addBooking(result.newBooking, booking.id);
+      let newBooking: Booking | undefined;
+      let message = "No alternative trains found for the same day.";
+      let success = false;
+
+      if (sameDayTrains.length > 0) {
+        const nextTrain = sameDayTrains[0];
+        const sameClass = nextTrain.classes.find(c => c.name === booking.class && c.availability >= booking.passengers);
+        if (sameClass) {
+          const createdBooking: Booking = {
+            id: uuidv4(),
+            trainId: nextTrain.id,
+            trainName: nextTrain.name,
+            trainNumber: nextTrain.number,
+            date: booking.date,
+            departureTime: nextTrain.departureTime,
+            from: nextTrain.from,
+            to: nextTrain.to,
+            passengers: booking.passengers,
+            totalPrice: sameClass.price * booking.passengers,
+            class: sameClass.name,
+            status: 'upcoming'
+          };
+          newBooking = createdBooking;
+          success = true;
+          message = `Successfully rescheduled to ${nextTrain.name}.`;
+        } else {
+            message = "Found alternative trains, but none have sufficient seat availability in the same class.";
+        }
+      }
+
+      if (success && newBooking) {
+        addBooking(newBooking);
+        updateBooking(booking.id, { ...booking, status: 'missed-rescheduled' });
         toast({
           title: 'Reschedule Successful',
-          description: `You've been booked on ${result.newBooking.trainName} at ${result.newBooking.departureTime}.`,
+          description: message,
         });
       } else {
-        updateBookingStatus(booking.id, 'missed-failed');
+        updateBooking(booking.id, { ...booking, status: 'missed-failed' });
         toast({
           variant: 'destructive',
           title: 'Reschedule Failed',
-          description: result.message,
+          description: message,
         });
       }
-    } catch (error) {
-      console.error('Reschedule error:', error);
-      updateBookingStatus(booking.id, 'missed-failed');
-      toast({
-        variant: 'destructive',
-        title: 'An Error Occurred',
-        description: 'Could not reschedule the train. Please contact support.',
-      });
-    } finally {
       setIsRescheduling(null);
-    }
+    }, 1500);
   };
 
   const getBookingStatus = (booking: Booking) => {
@@ -102,28 +116,26 @@ export default function ProfilePage() {
       return <Badge variant="destructive">Reschedule Failed</Badge>;
     }
 
+    if (isMissed && !booking.status) {
+      return (
+        <Button
+          size="sm"
+          onClick={() => handleReschedule(booking)}
+          disabled={isRescheduling === booking.id}
+        >
+          {isRescheduling === booking.id ? 'Rescheduling...' : 'Raise Missed Train Query'}
+        </Button>
+      );
+    }
+    
     if (isMissed) {
-      // If it's missed and has no status, it's eligible for reschedule.
-      if (!booking.status) {
-        return (
-          <Button
-            size="sm"
-            onClick={() => handleReschedule(booking)}
-            disabled={isRescheduling === booking.id || areTrainsLoading}
-          >
-            {isRescheduling === booking.id ? 'Rescheduling...' : 'Raise Missed Train Query'}
-          </Button>
-        );
-      }
-      // If it's missed but has some other status (or already handled)
-      return <Badge variant="destructive">Missed</Badge>;
+         return <Badge variant="destructive">Missed</Badge>;
     }
 
     return <Badge variant="outline">Upcoming</Badge>;
   };
 
-  if (!isAuthenticated || !userProfile) {
-    // You can add a loader here
+  if (!isAuthenticated || !user) {
     return null;
   }
 
@@ -132,12 +144,12 @@ export default function ProfilePage() {
       <div className="flex items-center gap-4 mb-8">
         <Avatar className="h-20 w-20">
           <AvatarFallback className="text-3xl bg-primary/20 text-primary">
-            {userProfile.name.charAt(0)}
+            {user.name.charAt(0)}
           </AvatarFallback>
         </Avatar>
         <div>
-          <h1 className="text-3xl font-bold font-headline">{userProfile.name}</h1>
-          <p className="text-muted-foreground">{userProfile.email}</p>
+          <h1 className="text-3xl font-bold font-headline">{user.name}</h1>
+          <p className="text-muted-foreground">{user.email}</p>
         </div>
       </div>
 
@@ -151,27 +163,23 @@ export default function ProfilePage() {
             <CardContent className="space-y-4 pt-6">
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Name</label>
-                <p>{userProfile.name}</p>
+                <p>{user.name}</p>
               </div>
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Email</label>
-                <p>{userProfile.email}</p>
+                <p>{user.email}</p>
               </div>
               <Separator />
               <div className="space-y-2">
-                <Button className="w-full">Update Profile</Button>
-                <Button variant="outline" className="w-full">Change Password</Button>
+                <Button className="w-full" disabled>Update Profile</Button>
+                <Button variant="outline" className="w-full" disabled>Change Password</Button>
               </div>
             </CardContent>
           </Card>
         </div>
         <div className="md:col-span-2">
           <h2 className="text-2xl font-bold font-headline mb-4">Booking History</h2>
-          {areBookingsLoading ? (
-            <div className="text-center py-20 border-2 border-dashed rounded-lg">
-              <p>Loading your bookings...</p>
-            </div>
-          ) : bookings && bookings.length > 0 ? (
+          {bookings && bookings.length > 0 ? (
             <div className="space-y-4">
               {bookings
                 .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -208,7 +216,7 @@ export default function ProfilePage() {
               <h3 className="text-xl font-semibold">No Bookings Yet</h3>
               <p className="text-muted-foreground mt-2">Start your journey by searching for trains.</p>
               <Button asChild className="mt-4">
-                <a href="/search">Search Trains</a>
+                <a href="/">Search Trains</a>
               </Button>
             </div>
           )}

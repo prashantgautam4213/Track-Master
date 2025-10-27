@@ -19,7 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
-  password: z.string().min(8, "Password must be at least 8 characters.").or(z.string().min(1)),
+  password: z.string().min(1, "Password is required."),
 });
 
 export function LoginForm() {
@@ -38,20 +38,15 @@ export function LoginForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      await login(data.email, data.password);
+    const success = login(data.email, data.password);
+    if (success) {
       toast({ title: "Login Successful", description: "Welcome back!" });
       router.push(redirectUrl || "/profile");
-    } catch (error: any) {
-      // Handle Firebase auth errors
-      let description = "An unexpected error occurred. Please try again.";
-      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        description = "Invalid email or password. Please try again.";
-      }
+    } else {
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: description,
+        description: "Invalid email or password. Please try again.",
       });
     }
   }
@@ -85,8 +80,8 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Logging In...' : 'Login'}
+        <Button type="submit" className="w-full">
+          Login
         </Button>
       </form>
     </Form>

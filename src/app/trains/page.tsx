@@ -1,17 +1,10 @@
 'use client';
 
-import { useMemo } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { useCollection, useFirebase, useMemoFirebase } from '@/firebase';
-import { collection, query } from 'firebase/firestore';
-import type { Train } from '@/lib/types';
-import { Skeleton } from '@/components/ui/skeleton';
+import { trains } from '@/lib/data';
 
 export default function TrainsPage() {
-  const { firestore } = useFirebase();
-  const trainsQuery = useMemoFirebase(() => query(collection(firestore, 'trains')), [firestore]);
-  const { data: trains, isLoading } = useCollection<Train>(trainsQuery);
 
   return (
     <div className="container mx-auto py-10">
@@ -28,27 +21,7 @@ export default function TrainsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              [...Array(5)].map((_, i) => (
-                <TableRow key={i}>
-                  <TableCell>
-                    <Skeleton className="h-5 w-32" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-5 w-48" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-5 w-24" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-5 w-16" />
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Skeleton className="h-5 w-36 ml-auto" />
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : trains ? (
+            {trains && trains.length > 0 ? (
               trains.map((train) => (
                 <TableRow key={train.id}>
                   <TableCell>

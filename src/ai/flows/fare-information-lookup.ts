@@ -1,15 +1,14 @@
 'use server';
 
 /**
- * @fileOverview A fare information lookup AI agent.
+ * @fileOverview A fare information lookup utility.
  *
  * - fareInformationLookup - A function that handles the fare information lookup process.
  * - FareInformationLookupInput - The input type for the fareInformationLookup function.
  * - FareInformationLookupOutput - The return type for the fareInformationLookup function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { z } from 'zod';
 
 const FareInformationLookupInputSchema = z.object({
   departureStation: z.string().describe('The departure station.'),
@@ -25,31 +24,12 @@ const FareInformationLookupOutputSchema = z.object({
 export type FareInformationLookupOutput = z.infer<typeof FareInformationLookupOutputSchema>;
 
 export async function fareInformationLookup(input: FareInformationLookupInput): Promise<FareInformationLookupOutput> {
-  return fareInformationLookupFlow(input);
+  // Mocked response since backend is removed.
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        fareInformation: `Fare for ${input.trainClass} from ${input.departureStation} to ${input.arrivalStation} on ${input.date} typically ranges from $50 to $150. Prices may vary based on demand and time of booking. Early bookings often get the best rates.`
+      });
+    }, 1000);
+  });
 }
-
-const fareInformationLookupPrompt = ai.definePrompt({
-  name: 'fareInformationLookupPrompt',
-  input: {schema: FareInformationLookupInputSchema},
-  output: {schema: FareInformationLookupOutputSchema},
-  prompt: `You are a travel assistant providing fare information for train routes.
-
-  Provide a detailed fare information for the route between {{departureStation}} and {{arrivalStation}} on {{date}} in {{trainClass}} class.
-  Include potential price ranges and possible discounts, taking into account that prices are estimates.
-  Consider various factors such as time of day, and day of week.
-  Do not include information about booking tickets, payment methods or anything else not directly related to fare information.
-  Response should not be more than 200 words.
-  `,
-});
-
-const fareInformationLookupFlow = ai.defineFlow(
-  {
-    name: 'fareInformationLookupFlow',
-    inputSchema: FareInformationLookupInputSchema,
-    outputSchema: FareInformationLookupOutputSchema,
-  },
-  async input => {
-    const {output} = await fareInformationLookupPrompt(input);
-    return output!;
-  }
-);

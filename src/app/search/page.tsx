@@ -1,13 +1,11 @@
 'use client';
 
-import { Suspense, useMemo } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Clock, Ticket, TrainFront } from 'lucide-react';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
-import { collection, query, where } from 'firebase/firestore';
-
-import { useCollection, useFirebase, useMemoFirebase } from '@/firebase';
+import { trains as allTrains } from '@/lib/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { Train } from '@/lib/types';
@@ -18,14 +16,20 @@ function SearchResults() {
   const from = searchParams.get('from');
   const to = searchParams.get('to');
   const dateStr = searchParams.get('date');
-  const { firestore } = useFirebase();
+  
+  const [results, setResults] = useState<Train[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const trainsQuery = useMemoFirebase(() => {
-    if (!from || !to) return null;
-    return query(collection(firestore, 'trains'), where('from', '==', from), where('to', '==', to));
-  }, [firestore, from, to]);
-
-  const { data: results, isLoading } = useCollection<Train>(trainsQuery);
+  useEffect(() => {
+    setIsLoading(true);
+    if (from && to) {
+      const filteredTrains = allTrains.filter(
+        train => train.from === from && train.to === to
+      );
+      setResults(filteredTrains);
+    }
+    setIsLoading(false);
+  }, [from, to]);
 
   if (!from || !to || !dateStr) {
     return (
