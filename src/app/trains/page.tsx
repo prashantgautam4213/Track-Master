@@ -10,13 +10,12 @@ import type { Train as TrainType } from '@/lib/types';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function TrainsPage() {
-  const [fromStation, setFromStation] = useState('');
-  const [toStation, setToStation] = useState('');
+  const [fromStation, setFromStation] = useState<string | undefined>();
+  const [toStation, setToStation] = useState<string | undefined>();
   
   const filteredTrains = useMemo(() => {
     let results = trains;
@@ -108,12 +107,12 @@ export default function TrainsPage() {
               <div className="w-full flex-1 grid md:grid-cols-2 gap-4">
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Select value={fromStation} onValueChange={setFromStation}>
+                  <Select value={fromStation} onValueChange={(value) => setFromStation(value === 'all' ? undefined : value)}>
                     <SelectTrigger className="pl-10 h-12 text-base">
                       <SelectValue placeholder="From station..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Stations</SelectItem>
+                      <SelectItem value="all">All Stations</SelectItem>
                       {stations.map(station => (
                         <SelectItem key={`from-${station}`} value={station}>{station}</SelectItem>
                       ))}
@@ -122,12 +121,12 @@ export default function TrainsPage() {
                 </div>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Select value={toStation} onValueChange={setToStation}>
+                  <Select value={toStation} onValueChange={(value) => setToStation(value === 'all' ? undefined : value)}>
                     <SelectTrigger className="pl-10 h-12 text-base">
                       <SelectValue placeholder="To station..." />
                     </SelectTrigger>
                     <SelectContent>
-                       <SelectItem value="">All Stations</SelectItem>
+                       <SelectItem value="all">All Stations</SelectItem>
                       {stations.map(station => (
                         <SelectItem key={`to-${station}`} value={station}>{station}</SelectItem>
                       ))}
