@@ -21,7 +21,7 @@ const mockBookings: Booking[] = [
         to: 'New Delhi, DL',
         passengers: 1,
         totalPrice: 3500,
-        class: 'Business',
+        class: '2AC',
         status: 'upcoming',
     }
 ];

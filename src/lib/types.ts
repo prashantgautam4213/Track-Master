@@ -1,6 +1,6 @@
 
 export type TrainClass = {
-  name: 'Economy' | 'Business' | 'First';
+  name: '1AC' | '2AC' | '3AC' | '3AC Eco' | 'Sleeper';
   availability: number;
   price: number;
 };

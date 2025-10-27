@@ -23,9 +23,9 @@ export const trains: Train[] = [
     arrivalTime: '08:15',
     duration: '15h 20m',
     classes: [
-      { name: 'Economy', availability: 145, price: 2150 },
-      { name: 'Business', availability: 35, price: 3550 },
-      { name: 'First', availability: 8, price: 5450 },
+      { name: '1AC', availability: 8, price: 5450 },
+      { name: '2AC', availability: 35, price: 3550 },
+      { name: '3AC', availability: 145, price: 2150 },
     ],
   },
   {
@@ -38,9 +38,10 @@ export const trains: Train[] = [
     arrivalTime: '15:50',
     duration: '16h 25m',
     classes: [
-      { name: 'Economy', availability: 210, price: 1950 },
-      { name: 'Business', availability: 50, price: 3300 },
-      { name: 'First', availability: 12, price: 4800 },
+      { name: '1AC', availability: 12, price: 4800 },
+      { name: '2AC', availability: 50, price: 3300 },
+      { name: '3AC', availability: 210, price: 1950 },
+      { name: 'Sleeper', availability: 400, price: 850 },
     ],
   },
   {
@@ -53,9 +54,9 @@ export const trains: Train[] = [
     arrivalTime: '08:30',
     duration: '15h 30m',
     classes: [
-      { name: 'Economy', availability: 150, price: 2100 },
-      { name: 'Business', availability: 40, price: 3500 },
-      { name: 'First', availability: 10, price: 5400 },
+      { name: '1AC', availability: 10, price: 5400 },
+      { name: '2AC', availability: 40, price: 3500 },
+      { name: '3AC', availability: 150, price: 2100 },
     ],
   },
   {
@@ -68,9 +69,10 @@ export const trains: Train[] = [
     arrivalTime: '10:55',
     duration: '17h 45m',
     classes: [
-      { name: 'Economy', availability: 120, price: 2000 },
-      { name: 'Business', availability: 30, price: 3300 },
-      { name: 'First', availability: 5, price: 5200 },
+      { name: '1AC', availability: 5, price: 5200 },
+      { name: '2AC', availability: 30, price: 3300 },
+      { name: '3AC', availability: 120, price: 2000 },
+      { name: 'Sleeper', availability: 350, price: 800 },
     ],
   },
    // 2. New Delhi <=> Chennai Central
@@ -84,9 +86,10 @@ export const trains: Train[] = [
     arrivalTime: '06:15',
     duration: '33h 10m',
     classes: [
-        { name: 'Economy', availability: 250, price: 1100 },
-        { name: 'Business', availability: 70, price: 2800 },
-        { name: 'First', availability: 20, price: 4800 },
+        { name: '1AC', availability: 20, price: 4800 },
+        { name: '2AC', availability: 70, price: 2800 },
+        { name: '3AC', availability: 150, price: 1800 },
+        { name: 'Sleeper', availability: 250, price: 1100 },
     ],
   },
   {
@@ -99,9 +102,9 @@ export const trains: Train[] = [
     arrivalTime: '20:45',
     duration: '29h 10m',
     classes: [
-        { name: 'Economy', availability: 180, price: 2500 },
-        { name: 'Business', availability: 60, price: 4100 },
-        { name: 'First', availability: 18, price: 6300 },
+        { name: '1AC', availability: 18, price: 6300 },
+        { name: '2AC', availability: 60, price: 4100 },
+        { name: '3AC', availability: 180, price: 2500 },
     ],
   },
   {
@@ -114,9 +117,10 @@ export const trains: Train[] = [
     arrivalTime: '05:05',
     duration: '34h 15m',
     classes: [
-        { name: 'Economy', availability: 250, price: 1000 },
-        { name: 'Business', availability: 80, price: 2500 },
-        { name: 'First', availability: 20, price: 4500 },
+        { name: '1AC', availability: 20, price: 4500 },
+        { name: '2AC', availability: 80, price: 2500 },
+        { name: '3AC', availability: 180, price: 1500 },
+        { name: 'Sleeper', availability: 250, price: 1000 },
     ],
   },
   {
@@ -129,9 +133,9 @@ export const trains: Train[] = [
     arrivalTime: '10:30',
     duration: '28h 25m',
     classes: [
-      { name: 'Economy', availability: 0, price: 2400 },
-      { name: 'Business', availability: 60, price: 4000 },
-      { name: 'First', availability: 15, price: 6200 },
+      { name: '1AC', availability: 15, price: 6200 },
+      { name: '2AC', availability: 60, price: 4000 },
+      { name: '3AC', availability: 0, price: 2400 },
     ],
   },
   // 3. New Delhi <=> Howrah Junction
@@ -145,9 +149,9 @@ export const trains: Train[] = [
     arrivalTime: '09:55',
     duration: '17h 00m',
     classes: [
-        { name: 'Economy', availability: 10, price: 2250 },
-        { name: 'Business', availability: 20, price: 3850 },
-        { name: 'First', availability: 10, price: 5850 },
+        { name: '1AC', availability: 10, price: 5850 },
+        { name: '2AC', availability: 20, price: 3850 },
+        { name: '3AC', availability: 110, price: 2250 },
     ],
   },
   {
@@ -160,9 +164,9 @@ export const trains: Train[] = [
     arrivalTime: '17:00',
     duration: '23h 20m',
     classes: [
-      { name: 'Economy', availability: 280, price: 870 },
-      { name: 'Business', availability: 90, price: 1550 },
-      { name: 'First', availability: 25, price: 2850 },
+      { name: '1AC', availability: 25, price: 2850 },
+      { name: '2AC', availability: 90, price: 1550 },
+      { name: 'Sleeper', availability: 280, price: 870 },
     ],
   },
   {
@@ -175,9 +179,9 @@ export const trains: Train[] = [
     arrivalTime: '10:00',
     duration: '17h 10m',
     classes: [
-      { name: 'Economy', availability: 5, price: 2200 },
-      { name: 'Business', availability: 25, price: 3800 },
-      { name: 'First', availability: 8, price: 5800 },
+      { name: '1AC', availability: 8, price: 5800 },
+      { name: '2AC', availability: 25, price: 3800 },
+      { name: '3AC', availability: 105, price: 2200 },
     ],
   },
   {
@@ -190,9 +194,9 @@ export const trains: Train[] = [
     arrivalTime: '06:00',
     duration: '22h 00m',
     classes: [
-      { name: 'Economy', availability: 300, price: 850 },
-      { name: 'Business', availability: 100, price: 1500 },
-      { name: 'First', availability: 30, price: 2800 },
+      { name: '1AC', availability: 30, price: 2800 },
+      { name: '2AC', availability: 100, price: 1500 },
+      { name: 'Sleeper', availability: 300, price: 850 },
     ],
   },
   // 4. New Delhi <=> Bengaluru City
@@ -206,9 +210,9 @@ export const trains: Train[] = [
     arrivalTime: '06:40',
     duration: '33h 55m',
     classes: [
-        { name: 'Economy', availability: 180, price: 2550 },
-        { name: 'Business', availability: 45, price: 4250 },
-        { name: 'First', availability: 12, price: 6050 },
+        { name: '1AC', availability: 12, price: 6050 },
+        { name: '2AC', availability: 45, price: 4250 },
+        { name: '3AC', availability: 180, price: 2550 },
     ],
   },
   {
@@ -221,9 +225,10 @@ export const trains: Train[] = [
     arrivalTime: '13:40',
     duration: '41h 20m',
     classes: [
-      { name: 'Economy', availability: 15, price: 980 },
-      { name: 'Business', availability: 8, price: 1950 },
-      { name: 'First', availability: 3, price: 3450 },
+      { name: '1AC', availability: 3, price: 3450 },
+      { name: '2AC', availability: 8, price: 1950 },
+      { name: '3AC Eco', availability: 50, price: 1250 },
+      { name: 'Sleeper', availability: 115, price: 980 },
     ],
   },
   {
@@ -236,9 +241,9 @@ export const trains: Train[] = [
     arrivalTime: '05:30',
     duration: '33h 30m',
     classes: [
-      { name: 'Economy', availability: 200, price: 2500 },
-      { name: 'Business', availability: 50, price: 4200 },
-      { name: 'First', availability: 0, price: 6000 },
+      { name: '1AC', availability: 0, price: 6000 },
+      { name: '2AC', availability: 50, price: 4200 },
+      { name: '3AC', availability: 200, price: 2500 },
     ],
   },
   {
@@ -251,9 +256,10 @@ export const trains: Train[] = [
     arrivalTime: '09:00',
     duration: '37h 40m',
     classes: [
-      { name: 'Economy', availability: 10, price: 950 },
-      { name: 'Business', availability: 5, price: 1900 },
-      { name: 'First', availability: 2, price: 3400 },
+      { name: '1AC', availability: 2, price: 3400 },
+      { name: '2AC', availability: 5, price: 1900 },
+      { name: '3AC Eco', availability: 40, price: 1200 },
+      { name: 'Sleeper', availability: 110, price: 950 },
     ],
   },
   // 5. New Delhi <=> Secunderabad Jn
@@ -267,9 +273,9 @@ export const trains: Train[] = [
     arrivalTime: '14:50',
     duration: '22h 55m',
     classes: [
-      { name: 'Economy', availability: 70, price: 1850 },
-      { name: 'Business', availability: 15, price: 3250 },
-      { name: 'First', availability: 4, price: 5050 },
+      { name: '1AC', availability: 4, price: 5050 },
+      { name: '2AC', availability: 15, price: 3250 },
+      { name: '3AC', availability: 70, price: 1850 },
     ],
   },
   {
@@ -282,8 +288,9 @@ export const trains: Train[] = [
     arrivalTime: '19:30',
     duration: '26h 05m',
     classes: [
-      { name: 'Economy', availability: 200, price: 900 },
-      { name: 'Business', availability: 60, price: 2400 },
+      { name: '2AC', availability: 60, price: 2400 },
+      { name: '3AC Eco', availability: 150, price: 1400 },
+      { name: 'Sleeper', availability: 200, price: 900 },
     ],
   },
   {
@@ -296,9 +303,9 @@ export const trains: Train[] = [
     arrivalTime: '10:35',
     duration: '21h 45m',
     classes: [
-      { name: 'Economy', availability: 80, price: 1800 },
-      { name: 'Business', availability: 20, price: 3200 },
-      { name: 'First', availability: 5, price: 5000 },
+      { name: '1AC', availability: 5, price: 5000 },
+      { name: '2AC', availability: 20, price: 3200 },
+      { name: '3AC', availability: 80, price: 1800 },
     ],
   },
   {
@@ -311,8 +318,9 @@ export const trains: Train[] = [
     arrivalTime: '09:05',
     duration: '26h 40m',
     classes: [
-      { name: 'Economy', availability: 220, price: 920 },
-      { name: 'Business', availability: 55, price: 2450 },
+      { name: '2AC', availability: 55, price: 2450 },
+      { name: '3AC Eco', availability: 140, price: 1420 },
+      { name: 'Sleeper', availability: 220, price: 920 },
     ],
   },
   // 6. New Delhi <=> Pune Junction
@@ -326,9 +334,9 @@ export const trains: Train[] = [
     arrivalTime: '07:10',
     duration: '20h 15m',
     classes: [
-      { name: 'Economy', availability: 100, price: 1700 },
-      { name: 'Business', availability: 30, price: 3000 },
-      { name: 'First', availability: 10, price: 4500 },
+      { name: '1AC', availability: 10, price: 4500 },
+      { name: '2AC', availability: 30, price: 3000 },
+      { name: '3AC', availability: 100, price: 1700 },
     ],
   },
   {
@@ -341,8 +349,9 @@ export const trains: Train[] = [
     arrivalTime: '22:20',
     duration: '31h 20m',
     classes: [
-      { name: 'Economy', availability: 150, price: 950 },
-      { name: 'Business', availability: 40, price: 2500 },
+      { name: '2AC', availability: 40, price: 2500 },
+      { name: '3AC', availability: 100, price: 1500 },
+      { name: 'Sleeper', availability: 150, price: 950 },
     ],
   },
   {
@@ -355,9 +364,9 @@ export const trains: Train[] = [
     arrivalTime: '06:45',
     duration: '19h 35m',
     classes: [
-      { name: 'Economy', availability: 90, price: 1750 },
-      { name: 'Business', availability: 25, price: 3050 },
-      { name: 'First', availability: 8, price: 4550 },
+      { name: '1AC', availability: 8, price: 4550 },
+      { name: '2AC', availability: 25, price: 3050 },
+      { name: '3AC', availability: 90, price: 1750 },
     ],
   },
   {
@@ -370,8 +379,9 @@ export const trains: Train[] = [
     arrivalTime: '15:00',
     duration: '34h 40m',
     classes: [
-      { name: 'Economy', availability: 160, price: 960 },
-      { name: 'Business', availability: 45, price: 2550 },
+      { name: '2AC', availability: 45, price: 2550 },
+      { name: '3AC', availability: 110, price: 1550 },
+      { name: 'Sleeper', availability: 160, price: 960 },
     ],
   },
   // 7. New Delhi <=> Ahmedabad Junction
@@ -385,8 +395,9 @@ export const trains: Train[] = [
     arrivalTime: '06:20',
     duration: '15h 25m',
     classes: [
-      { name: 'Economy', availability: 300, price: 750 },
-      { name: 'Business', availability: 80, price: 1800 },
+      { name: '2AC', availability: 80, price: 1800 },
+      { name: '3AC', availability: 150, price: 1200 },
+      { name: 'Sleeper', availability: 300, price: 750 },
     ],
   },
   {
@@ -399,8 +410,9 @@ export const trains: Train[] = [
     arrivalTime: '09:40',
     duration: '13h 45m',
     classes: [
-      { name: 'Economy', availability: 120, price: 1500 },
-      { name: 'Business', availability: 50, price: 2800 },
+      { name: '1AC', availability: 20, price: 3200 },
+      { name: '2AC', availability: 50, price: 2800 },
+      { name: '3AC', availability: 120, price: 1500 },
     ],
   },
   {
@@ -413,8 +425,9 @@ export const trains: Train[] = [
     arrivalTime: '10:00',
     duration: '14h 45m',
     classes: [
-      { name: 'Economy', availability: 280, price: 760 },
-      { name: 'Business', availability: 70, price: 1820 },
+      { name: '2AC', availability: 70, price: 1820 },
+      { name: '3AC', availability: 140, price: 1220 },
+      { name: 'Sleeper', availability: 280, price: 760 },
     ],
   },
   {
@@ -427,8 +440,9 @@ export const trains: Train[] = [
     arrivalTime: '07:30',
     duration: '12h 40m',
     classes: [
-      { name: 'Economy', availability: 110, price: 1550 },
-      { name: 'Business', availability: 45, price: 2850 },
+      { name: '1AC', availability: 18, price: 3250 },
+      { name: '2AC', availability: 45, price: 2850 },
+      { name: '3AC', availability: 110, price: 1550 },
     ],
   },
   // 8. Mumbai Central <=> Chennai Central
@@ -442,8 +456,9 @@ export const trains: Train[] = [
     arrivalTime: '10:45',
     duration: '22h 00m',
     classes: [
-      { name: 'Economy', availability: 200, price: 900 },
-      { name: 'Business', availability: 60, price: 2300 },
+      { name: '2AC', availability: 60, price: 2300 },
+      { name: '3AC', availability: 120, price: 1600 },
+      { name: 'Sleeper', availability: 200, price: 900 },
     ],
   },
   {
@@ -456,8 +471,9 @@ export const trains: Train[] = [
     arrivalTime: '04:15',
     duration: '28h 30m',
     classes: [
-      { name: 'Economy', availability: 210, price: 910 },
-      { name: 'Business', availability: 65, price: 2320 },
+      { name: '2AC', availability: 65, price: 2320 },
+      { name: '3AC', availability: 130, price: 1620 },
+      { name: 'Sleeper', availability: 210, price: 910 },
     ],
   },
   {
@@ -470,8 +486,9 @@ export const trains: Train[] = [
     arrivalTime: '12:00',
     duration: '22h 45m',
     classes: [
-      { name: 'Economy', availability: 180, price: 920 },
-      { name: 'Business', availability: 50, price: 2350 },
+      { name: '2AC', availability: 50, price: 2350 },
+      { name: '3AC', availability: 110, price: 1650 },
+      { name: 'Sleeper', availability: 180, price: 920 },
     ],
   },
   {
@@ -484,8 +501,9 @@ export const trains: Train[] = [
     arrivalTime: '05:40',
     duration: '29h 45m',
     classes: [
-      { name: 'Economy', availability: 190, price: 930 },
-      { name: 'Business', availability: 55, price: 2380 },
+      { name: '2AC', availability: 55, price: 2380 },
+      { name: '3AC', availability: 120, price: 1680 },
+      { name: 'Sleeper', availability: 190, price: 930 },
     ],
   },
   // 9. Mumbai Central <=> Howrah Junction
@@ -499,8 +517,9 @@ export const trains: Train[] = [
     arrivalTime: '11:40',
     duration: '37h 25m',
     classes: [
-      { name: 'Economy', availability: 150, price: 1200 },
-      { name: 'Business', availability: 40, price: 3000 },
+      { name: '2AC', availability: 40, price: 3000 },
+      { name: '3AC', availability: 100, price: 2000 },
+      { name: 'Sleeper', availability: 150, price: 1200 },
     ],
   },
   {
@@ -513,8 +532,9 @@ export const trains: Train[] = [
     arrivalTime: '12:30',
     duration: '30h 30m',
     classes: [
-      { name: 'Economy', availability: 160, price: 1210 },
-      { name: 'Business', availability: 45, price: 3020 },
+      { name: '2AC', availability: 45, price: 3020 },
+      { name: '3AC', availability: 110, price: 2020 },
+      { name: 'Sleeper', availability: 160, price: 1210 },
     ],
   },
   {
@@ -527,8 +547,9 @@ export const trains: Train[] = [
     arrivalTime: '13:15',
     duration: '39h 15m',
     classes: [
-      { name: 'Economy', availability: 140, price: 1250 },
-      { name: 'Business', availability: 35, price: 3050 },
+      { name: '2AC', availability: 35, price: 3050 },
+      { name: '3AC', availability: 90, price: 2050 },
+      { name: 'Sleeper', availability: 140, price: 1250 },
     ],
   },
   {
@@ -541,8 +562,9 @@ export const trains: Train[] = [
     arrivalTime: '21:20',
     duration: '31h 30m',
     classes: [
-      { name: 'Economy', availability: 145, price: 1260 },
-      { name: 'Business', availability: 40, price: 3080 },
+      { name: '2AC', availability: 40, price: 3080 },
+      { name: '3AC', availability: 100, price: 2080 },
+      { name: 'Sleeper', availability: 145, price: 1260 },
     ],
   },
   // 10. Mumbai Central <=> Bengaluru City
@@ -556,8 +578,9 @@ export const trains: Train[] = [
     arrivalTime: '08:50',
     duration: '24h 40m',
     classes: [
-      { name: 'Economy', availability: 180, price: 850 },
-      { name: 'Business', availability: 50, price: 2200 },
+      { name: '2AC', availability: 50, price: 2200 },
+      { name: '3AC', availability: 120, price: 1500 },
+      { name: 'Sleeper', availability: 180, price: 850 },
     ],
   },
   {
@@ -570,8 +593,9 @@ export const trains: Train[] = [
     arrivalTime: '21:30',
     duration: '22h 55m',
     classes: [
-      { name: 'Economy', availability: 170, price: 860 },
-      { name: 'Business', availability: 45, price: 2220 },
+      { name: '2AC', availability: 45, price: 2220 },
+      { name: '3AC', availability: 110, price: 1520 },
+      { name: 'Sleeper', availability: 170, price: 860 },
     ],
   },
   {
@@ -584,8 +608,9 @@ export const trains: Train[] = [
     arrivalTime: '19:45',
     duration: '23h 15m',
     classes: [
-      { name: 'Economy', availability: 170, price: 860 },
-      { name: 'Business', availability: 45, price: 2250 },
+      { name: '2AC', availability: 45, price: 2250 },
+      { name: '3AC', availability: 110, price: 1550 },
+      { name: 'Sleeper', availability: 170, price: 860 },
     ],
   },
   {
@@ -598,8 +623,9 @@ export const trains: Train[] = [
     arrivalTime: '14:30',
     duration: '23h 15m',
     classes: [
-      { name: 'Economy', availability: 180, price: 870 },
-      { name: 'Business', availability: 50, price: 2280 },
+      { name: '2AC', availability: 50, price: 2280 },
+      { name: '3AC', availability: 120, price: 1580 },
+      { name: 'Sleeper', availability: 180, price: 870 },
     ],
   },
   // 11. Mumbai Central <=> Secunderabad Jn
@@ -613,8 +639,9 @@ export const trains: Train[] = [
     arrivalTime: '14:45',
     duration: '17h 15m',
     classes: [
-      { name: 'Economy', availability: 120, price: 700 },
-      { name: 'Business', availability: 30, price: 1800 },
+      { name: '2AC', availability: 30, price: 1800 },
+      { name: '3AC', availability: 80, price: 1200 },
+      { name: 'Sleeper', availability: 120, price: 700 },
     ],
   },
   {
@@ -627,8 +654,9 @@ export const trains: Train[] = [
     arrivalTime: '12:05',
     duration: '14h 15m',
     classes: [
-      { name: 'Economy', availability: 130, price: 720 },
-      { name: 'Business', availability: 35, price: 1850 },
+      { name: '2AC', availability: 35, price: 1850 },
+      { name: '3AC', availability: 90, price: 1250 },
+      { name: 'Sleeper', availability: 130, price: 720 },
     ],
   },
   {
@@ -641,8 +669,9 @@ export const trains: Train[] = [
     arrivalTime: '07:10',
     duration: '17h 45m',
     classes: [
-      { name: 'Economy', availability: 110, price: 720 },
-      { name: 'Business', availability: 25, price: 1850 },
+      { name: '2AC', availability: 25, price: 1850 },
+      { name: '3AC', availability: 70, price: 1250 },
+      { name: 'Sleeper', availability: 110, price: 720 },
     ],
   },
   {
@@ -655,8 +684,9 @@ export const trains: Train[] = [
     arrivalTime: '05:00',
     duration: '14h 10m',
     classes: [
-      { name: 'Economy', availability: 115, price: 730 },
-      { name: 'Business', availability: 30, price: 1880 },
+      { name: '2AC', availability: 30, price: 1880 },
+      { name: '3AC', availability: 80, price: 1280 },
+      { name: 'Sleeper', availability: 115, price: 730 },
     ],
   },
   // 12. Mumbai Central <=> Pune Junction
@@ -670,8 +700,8 @@ export const trains: Train[] = [
     arrivalTime: '09:05',
     duration: '3h 25m',
     classes: [
-      { name: 'Economy', availability: 400, price: 450 },
-      { name: 'Business', availability: 80, price: 900 },
+      { name: '2AC', availability: 80, price: 900 },
+      { name: 'Sleeper', availability: 400, price: 450 },
     ],
   },
   {
@@ -684,8 +714,9 @@ export const trains: Train[] = [
     arrivalTime: '20:25',
     duration: '3h 15m',
     classes: [
-      { name: 'Economy', availability: 350, price: 500 },
-      { name: 'Business', availability: 70, price: 1000 },
+      { name: '1AC', availability: 20, price: 1200 },
+      { name: '2AC', availability: 70, price: 1000 },
+      { name: 'Sleeper', availability: 350, price: 500 },
     ],
   },
   {
@@ -698,8 +729,8 @@ export const trains: Train[] = [
     arrivalTime: '22:00',
     duration: '3h 25m',
     classes: [
-      { name: 'Economy', availability: 380, price: 460 },
-      { name: 'Business', availability: 75, price: 920 },
+      { name: '2AC', availability: 75, price: 920 },
+      { name: 'Sleeper', availability: 380, price: 460 },
     ],
   },
   {
@@ -712,8 +743,9 @@ export const trains: Train[] = [
     arrivalTime: '10:25',
     duration: '3h 10m',
     classes: [
-      { name: 'Economy', availability: 340, price: 510 },
-      { name: 'Business', availability: 65, price: 1020 },
+      { name: '1AC', availability: 25, price: 1220 },
+      { name: '2AC', availability: 65, price: 1020 },
+      { name: 'Sleeper', availability: 340, price: 510 },
     ],
   },
   // 13. Mumbai Central <=> Ahmedabad Junction
@@ -727,9 +759,9 @@ export const trains: Train[] = [
     arrivalTime: '23:55',
     duration: '6h 25m',
     classes: [
-        { name: 'Economy', availability: 100, price: 1150 },
-        { name: 'Business', availability: 35, price: 2250 },
-        { name: 'First', availability: 8, price: 3350 },
+        { name: '1AC', availability: 8, price: 3350 },
+        { name: '2AC', availability: 35, price: 2250 },
+        { name: '3AC', availability: 100, price: 1150 },
     ],
   },
   {
@@ -742,8 +774,8 @@ export const trains: Train[] = [
     arrivalTime: '21:05',
     duration: '7h 00m',
     classes: [
-        { name: 'Economy', availability: 190, price: 620 },
-        { name: 'Business', availability: 45, price: 1350 },
+        { name: '2AC', availability: 45, price: 1350 },
+        { name: 'Sleeper', availability: 190, price: 620 },
     ],
   },
   {
@@ -756,9 +788,9 @@ export const trains: Train[] = [
     arrivalTime: '12:45',
     duration: '6h 35m',
     classes: [
-      { name: 'Economy', availability: 110, price: 1100 },
-      { name: 'Business', availability: 40, price: 2200 },
-      { name: 'First', availability: 10, price: 3300 },
+      { name: '1AC', availability: 10, price: 3300 },
+      { name: '2AC', availability: 40, price: 2200 },
+      { name: '3AC', availability: 110, price: 1100 },
     ],
   },
   {
@@ -771,8 +803,8 @@ export const trains: Train[] = [
     arrivalTime: '12:25',
     duration: '7h 25m',
     classes: [
-        { name: 'Economy', availability: 200, price: 600 },
-        { name: 'Business', availability: 50, price: 1300 },
+        { name: '2AC', availability: 50, price: 1300 },
+        { name: 'Sleeper', availability: 200, price: 600 },
     ],
   },
   // 14. Chennai Central <=> Howrah Junction
@@ -786,8 +818,9 @@ export const trains: Train[] = [
     arrivalTime: '10:40',
     duration: '27h 40m',
     classes: [
-      { name: 'Economy', availability: 220, price: 1000 },
-      { name: 'Business', availability: 60, price: 2600 },
+      { name: '2AC', availability: 60, price: 2600 },
+      { name: '3AC', availability: 120, price: 1800 },
+      { name: 'Sleeper', availability: 220, price: 1000 },
     ],
   },
   {
@@ -800,8 +833,9 @@ export const trains: Train[] = [
     arrivalTime: '04:10',
     duration: '28h 25m',
     classes: [
-      { name: 'Economy', availability: 230, price: 1010 },
-      { name: 'Business', availability: 65, price: 2620 },
+      { name: '2AC', availability: 65, price: 2620 },
+      { name: '3AC', availability: 130, price: 1820 },
+      { name: 'Sleeper', availability: 230, price: 1010 },
     ],
   },
   {
@@ -814,8 +848,9 @@ export const trains: Train[] = [
     arrivalTime: '17:00',
     duration: '26h 10m',
     classes: [
-      { name: 'Economy', availability: 210, price: 1020 },
-      { name: 'Business', availability: 55, price: 2650 },
+      { name: '2AC', availability: 55, price: 2650 },
+      { name: '3AC', availability: 110, price: 1850 },
+      { name: 'Sleeper', availability: 210, price: 1020 },
     ],
   },
   {
@@ -828,8 +863,9 @@ export const trains: Train[] = [
     arrivalTime: '03:50',
     duration: '27h 55m',
     classes: [
-      { name: 'Economy', availability: 215, price: 1030 },
-      { name: 'Business', availability: 60, price: 2680 },
+      { name: '2AC', availability: 60, price: 2680 },
+      { name: '3AC', availability: 120, price: 1880 },
+      { name: 'Sleeper', availability: 215, price: 1030 },
     ],
   },
   // 15. Chennai Central <=> Bengaluru City
@@ -843,8 +879,9 @@ export const trains: Train[] = [
     arrivalTime: '22:25',
     duration: '4h 55m',
     classes: [
-      { name: 'Economy', availability: 250, price: 800 },
-      { name: 'Business', availability: 50, price: 1500 },
+      { name: '1AC', availability: 20, price: 1800 },
+      { name: '2AC', availability: 50, price: 1500 },
+      { name: '3AC', availability: 250, price: 800 },
     ],
   },
   {
@@ -857,8 +894,9 @@ export const trains: Train[] = [
     arrivalTime: '21:35',
     duration: '6h 05m',
     classes: [
-      { name: 'Economy', availability: 300, price: 450 },
-      { name: 'Business', availability: 100, price: 950 },
+      { name: '2AC', availability: 100, price: 950 },
+      { name: '3AC Eco', availability: 200, price: 650 },
+      { name: 'Sleeper', availability: 300, price: 450 },
     ],
   },
   {
@@ -871,8 +909,9 @@ export const trains: Train[] = [
     arrivalTime: '11:00',
     duration: '5h 00m',
     classes: [
-      { name: 'Economy', availability: 240, price: 820 },
-      { name: 'Business', availability: 45, price: 1550 },
+      { name: '1AC', availability: 18, price: 1850 },
+      { name: '2AC', availability: 45, price: 1550 },
+      { name: '3AC', availability: 240, price: 820 },
     ],
   },
   {
@@ -885,8 +924,9 @@ export const trains: Train[] = [
     arrivalTime: '12:10',
     duration: '5h 50m',
     classes: [
-      { name: 'Economy', availability: 290, price: 470 },
-      { name: 'Business', availability: 90, price: 980 },
+      { name: '2AC', availability: 90, price: 980 },
+      { name: '3AC Eco', availability: 180, price: 680 },
+      { name: 'Sleeper', availability: 290, price: 470 },
     ],
   },
   // 16. Chennai Central <=> Secunderabad Jn
@@ -900,8 +940,9 @@ export const trains: Train[] = [
     arrivalTime: '06:35',
     duration: '12h 50m',
     classes: [
-      { name: 'Economy', availability: 150, price: 650 },
-      { name: 'Business', availability: 40, price: 1600 },
+      { name: '2AC', availability: 40, price: 1600 },
+      { name: '3AC', availability: 100, price: 1100 },
+      { name: 'Sleeper', availability: 150, price: 650 },
     ],
   },
   {
@@ -914,8 +955,9 @@ export const trains: Train[] = [
     arrivalTime: '05:45',
     duration: '13h 00m',
     classes: [
-      { name: 'Economy', availability: 160, price: 660 },
-      { name: 'Business', availability: 45, price: 1620 },
+      { name: '2AC', availability: 45, price: 1620 },
+      { name: '3AC', availability: 110, price: 1120 },
+      { name: 'Sleeper', availability: 160, price: 660 },
     ],
   },
   {
@@ -928,8 +970,9 @@ export const trains: Train[] = [
     arrivalTime: '07:00',
     duration: '13h 00m',
     classes: [
-      { name: 'Economy', availability: 140, price: 670 },
-      { name: 'Business', availability: 35, price: 1650 },
+      { name: '2AC', availability: 35, price: 1650 },
+      { name: '3AC', availability: 90, price: 1150 },
+      { name: 'Sleeper', availability: 140, price: 670 },
     ],
   },
   {
@@ -942,8 +985,9 @@ export const trains: Train[] = [
     arrivalTime: '05:50',
     duration: '13h 00m',
     classes: [
-      { name: 'Economy', availability: 145, price: 680 },
-      { name: 'Business', availability: 40, price: 1680 },
+      { name: '2AC', availability: 40, price: 1680 },
+      { name: '3AC', availability: 100, price: 1180 },
+      { name: 'Sleeper', availability: 145, price: 680 },
     ],
   },
   // 17. Chennai Central <=> Pune Junction
@@ -957,8 +1001,9 @@ export const trains: Train[] = [
     arrivalTime: '05:00',
     duration: '22h 15m',
     classes: [
-      { name: 'Economy', availability: 100, price: 800 },
-      { name: 'Business', availability: 30, price: 2100 },
+      { name: '2AC', availability: 30, price: 2100 },
+      { name: '3AC', availability: 80, price: 1500 },
+      { name: 'Sleeper', availability: 100, price: 800 },
     ],
   },
   {
@@ -971,8 +1016,9 @@ export const trains: Train[] = [
     arrivalTime: '08:10',
     duration: '18h 55m',
     classes: [
-      { name: 'Economy', availability: 110, price: 810 },
-      { name: 'Business', availability: 35, price: 2120 },
+      { name: '2AC', availability: 35, price: 2120 },
+      { name: '3AC', availability: 90, price: 1520 },
+      { name: 'Sleeper', availability: 110, price: 810 },
     ],
   },
   {
@@ -985,8 +1031,9 @@ export const trains: Train[] = [
     arrivalTime: '20:30',
     duration: '20h 20m',
     classes: [
-      { name: 'Economy', availability: 90, price: 820 },
-      { name: 'Business', availability: 25, price: 2150 },
+      { name: '2AC', availability: 25, price: 2150 },
+      { name: '3AC', availability: 70, price: 1550 },
+      { name: 'Sleeper', availability: 90, price: 820 },
     ],
   },
   {
@@ -999,8 +1046,9 @@ export const trains: Train[] = [
     arrivalTime: '10:45',
     duration: '18h 30m',
     classes: [
-      { name: 'Economy', availability: 95, price: 830 },
-      { name: 'Business', availability: 30, price: 2180 },
+      { name: '2AC', availability: 30, price: 2180 },
+      { name: '3AC', availability: 80, price: 1580 },
+      { name: 'Sleeper', availability: 95, price: 830 },
     ],
   },
   // 18. Chennai Central <=> Ahmedabad Junction
@@ -1014,8 +1062,9 @@ export const trains: Train[] = [
     arrivalTime: '18:00',
     duration: '31h 50m',
     classes: [
-      { name: 'Economy', availability: 120, price: 1100 },
-      { name: 'Business', availability: 40, price: 2800 },
+      { name: '2AC', availability: 40, price: 2800 },
+      { name: '3AC', availability: 90, price: 1900 },
+      { name: 'Sleeper', availability: 120, price: 1100 },
     ],
   },
   {
@@ -1028,8 +1077,8 @@ export const trains: Train[] = [
     arrivalTime: '21:15',
     duration: '29h 15m',
     classes: [
-      { name: 'Economy', availability: 130, price: 1120 },
-      { name: 'Business', availability: 45, price: 2850 },
+      { name: '3AC', availability: 130, price: 2850 },
+      { name: '3AC Eco', availability: 45, price: 2500 },
     ],
   },
   {
@@ -1042,8 +1091,9 @@ export const trains: Train[] = [
     arrivalTime: '15:25',
     duration: '31h 50m',
     classes: [
-      { name: 'Economy', availability: 110, price: 1120 },
-      { name: 'Business', availability: 35, price: 2850 },
+      { name: '2AC', availability: 35, price: 2850 },
+      { name: '3AC', availability: 80, price: 1950 },
+      { name: 'Sleeper', availability: 110, price: 1120 },
     ],
   },
   {
@@ -1056,8 +1106,8 @@ export const trains: Train[] = [
     arrivalTime: '16:15',
     duration: '30h 35m',
     classes: [
-      { name: 'Economy', availability: 115, price: 1130 },
-      { name: 'Business', availability: 40, price: 2880 },
+      { name: '3AC', availability: 115, price: 2880 },
+      { name: '3AC Eco', availability: 40, price: 2550 },
     ],
   },
   // 19. Howrah Junction <=> Bengaluru City
@@ -1071,8 +1121,9 @@ export const trains: Train[] = [
     arrivalTime: '15:50',
     duration: '29h 00m',
     classes: [
-      { name: 'Economy', availability: 100, price: 2300 },
-      { name: 'Business', availability: 40, price: 3800 },
+      { name: '1AC', availability: 20, price: 4200 },
+      { name: '2AC', availability: 40, price: 3800 },
+      { name: '3AC', availability: 100, price: 2300 },
     ],
   },
   {
@@ -1085,8 +1136,9 @@ export const trains: Train[] = [
     arrivalTime: '06:45',
     duration: '31h 55m',
     classes: [
-      { name: 'Economy', availability: 110, price: 2320 },
-      { name: 'Business', availability: 45, price: 3850 },
+      { name: '2AC', availability: 45, price: 3850 },
+      { name: '3AC', availability: 110, price: 2320 },
+      { name: 'Sleeper', availability: 200, price: 1300 },
     ],
   },
   {
@@ -1099,8 +1151,9 @@ export const trains: Train[] = [
     arrivalTime: '16:40',
     duration: '29h 20m',
     classes: [
-      { name: 'Economy', availability: 90, price: 2350 },
-      { name: 'Business', availability: 35, price: 3850 },
+      { name: '1AC', availability: 18, price: 4250 },
+      { name: '2AC', availability: 35, price: 3850 },
+      { name: '3AC', availability: 90, price: 2350 },
     ],
   },
   {
@@ -1113,8 +1166,9 @@ export const trains: Train[] = [
     arrivalTime: '02:05',
     duration: '30h 30m',
     classes: [
-      { name: 'Economy', availability: 95, price: 2380 },
-      { name: 'Business', availability: 40, price: 3880 },
+      { name: '2AC', availability: 40, price: 3880 },
+      { name: '3AC', availability: 95, price: 2380 },
+      { name: 'Sleeper', availability: 180, price: 1320 },
     ],
   },
   // 20. Howrah Junction <=> Secunderabad Jn
@@ -1128,8 +1182,9 @@ export const trains: Train[] = [
     arrivalTime: '09:35',
     duration: '26h 10m',
     classes: [
-      { name: 'Economy', availability: 160, price: 950 },
-      { name: 'Business', availability: 50, price: 2500 },
+      { name: '2AC', availability: 50, price: 2500 },
+      { name: '3AC', availability: 110, price: 1700 },
+      { name: 'Sleeper', availability: 160, price: 950 },
     ],
   },
   {
@@ -1142,8 +1197,9 @@ export const trains: Train[] = [
     arrivalTime: '18:30',
     duration: '30h 45m',
     classes: [
-      { name: 'Economy', availability: 170, price: 960 },
-      { name: 'Business', availability: 55, price: 2520 },
+      { name: '2AC', availability: 55, price: 2520 },
+      { name: '3AC', availability: 120, price: 1720 },
+      { name: 'Sleeper', availability: 170, price: 960 },
     ],
   },
   {
@@ -1156,8 +1212,9 @@ export const trains: Train[] = [
     arrivalTime: '17:40',
     duration: '25h 45m',
     classes: [
-      { name: 'Economy', availability: 150, price: 970 },
-      { name: 'Business', availability: 45, price: 2550 },
+      { name: '2AC', availability: 45, price: 2550 },
+      { name: '3AC', availability: 100, price: 1750 },
+      { name: 'Sleeper', availability: 150, price: 970 },
     ],
   },
   {
@@ -1170,8 +1227,9 @@ export const trains: Train[] = [
     arrivalTime: '16:10',
     duration: '30h 20m',
     classes: [
-      { name: 'Economy', availability: 155, price: 980 },
-      { name: 'Business', availability: 50, price: 2580 },
+      { name: '2AC', availability: 50, price: 2580 },
+      { name: '3AC', availability: 110, price: 1780 },
+      { name: 'Sleeper', availability: 155, price: 980 },
     ],
   },
   // 21. Howrah Junction <=> Pune Junction
@@ -1185,8 +1243,9 @@ export const trains: Train[] = [
     arrivalTime: '06:50',
     duration: '33h 00m',
     classes: [
-      { name: 'Economy', availability: 110, price: 1150 },
-      { name: 'Business', availability: 30, price: 2900 },
+      { name: '2AC', availability: 30, price: 2900 },
+      { name: '3AC', availability: 80, price: 2000 },
+      { name: 'Sleeper', availability: 110, price: 1150 },
     ],
   },
   {
@@ -1199,8 +1258,9 @@ export const trains: Train[] = [
     arrivalTime: '11:45',
     duration: '27h 25m',
     classes: [
-      { name: 'Economy', availability: 120, price: 1160 },
-      { name: 'Business', availability: 35, price: 2920 },
+      { name: '1AC', availability: 15, price: 3500 },
+      { name: '2AC', availability: 35, price: 2920 },
+      { name: '3AC', availability: 120, price: 1160 },
     ],
   },
   {
@@ -1213,8 +1273,9 @@ export const trains: Train[] = [
     arrivalTime: '03:55',
     duration: '33h 30m',
     classes: [
-      { name: 'Economy', availability: 100, price: 1170 },
-      { name: 'Business', availability: 25, price: 2950 },
+      { name: '2AC', availability: 25, price: 2950 },
+      { name: '3AC', availability: 70, price: 2050 },
+      { name: 'Sleeper', availability: 100, price: 1170 },
     ],
   },
   {
@@ -1227,8 +1288,9 @@ export const trains: Train[] = [
     arrivalTime: '20:15',
     duration: '29h 00m',
     classes: [
-      { name: 'Economy', availability: 105, price: 1180 },
-      { name: 'Business', availability: 30, price: 2980 },
+      { name: '1AC', availability: 12, price: 3550 },
+      { name: '2AC', availability: 30, price: 2980 },
+      { name: '3AC', availability: 105, price: 1180 },
     ],
   },
   // 22. Howrah Junction <=> Ahmedabad Junction
@@ -1242,8 +1304,9 @@ export const trains: Train[] = [
     arrivalTime: '12:05',
     duration: '36h 10m',
     classes: [
-      { name: 'Economy', availability: 130, price: 1200 },
-      { name: 'Business', availability: 40, price: 3100 },
+      { name: '2AC', availability: 40, price: 3100 },
+      { name: '3AC', availability: 90, price: 2100 },
+      { name: 'Sleeper', availability: 130, price: 1200 },
     ],
   },
   {
@@ -1256,8 +1319,9 @@ export const trains: Train[] = [
     arrivalTime: '06:05',
     duration: '31h 05m',
     classes: [
-      { name: 'Economy', availability: 140, price: 1210 },
-      { name: 'Business', availability: 45, price: 3120 },
+      { name: '2AC', availability: 45, price: 3120 },
+      { name: '3AC', availability: 100, price: 2120 },
+      { name: 'Sleeper', availability: 140, price: 1210 },
     ],
   },
   {
@@ -1270,8 +1334,9 @@ export const trains: Train[] = [
     arrivalTime: '13:30',
     duration: '37h 05m',
     classes: [
-      { name: 'Economy', availability: 120, price: 1220 },
-      { name: 'Business', availability: 35, price: 3150 },
+      { name: '2AC', availability: 35, price: 3150 },
+      { name: '3AC', availability: 80, price: 2150 },
+      { name: 'Sleeper', availability: 120, price: 1220 },
     ],
   },
   {
@@ -1284,8 +1349,9 @@ export const trains: Train[] = [
     arrivalTime: '07:00',
     duration: '31h 45m',
     classes: [
-      { name: 'Economy', availability: 125, price: 1230 },
-      { name: 'Business', availability: 40, price: 3180 },
+      { name: '2AC', availability: 40, price: 3180 },
+      { name: '3AC', availability: 90, price: 2180 },
+      { name: 'Sleeper', availability: 125, price: 1230 },
     ],
   },
   // 23. Bengaluru City <=> Secunderabad Jn
@@ -1299,8 +1365,8 @@ export const trains: Train[] = [
     arrivalTime: '04:00',
     duration: '11h 45m',
     classes: [
-      { name: 'Economy', availability: 200, price: 600 },
-      { name: 'Business', availability: 70, price: 1400 },
+      { name: '3AC', availability: 200, price: 1400 },
+      { name: '3AC Eco', availability: 70, price: 1200 },
     ],
   },
   {
@@ -1313,8 +1379,9 @@ export const trains: Train[] = [
     arrivalTime: '05:40',
     duration: '11h 20m',
     classes: [
-      { name: 'Economy', availability: 210, price: 610 },
-      { name: 'Business', availability: 75, price: 1420 },
+      { name: '2AC', availability: 75, price: 1420 },
+      { name: '3AC', availability: 150, price: 1000 },
+      { name: 'Sleeper', availability: 210, price: 610 },
     ],
   },
   {
@@ -1327,8 +1394,8 @@ export const trains: Train[] = [
     arrivalTime: '08:20',
     duration: '11h 50m',
     classes: [
-      { name: 'Economy', availability: 190, price: 620 },
-      { name: 'Business', availability: 65, price: 1450 },
+      { name: '3AC', availability: 190, price: 1450 },
+      { name: '3AC Eco', availability: 65, price: 1250 },
     ],
   },
   {
@@ -1341,8 +1408,9 @@ export const trains: Train[] = [
     arrivalTime: '06:25',
     duration: '11h 20m',
     classes: [
-      { name: 'Economy', availability: 195, price: 630 },
-      { name: 'Business', availability: 70, price: 1480 },
+      { name: '2AC', availability: 70, price: 1480 },
+      { name: '3AC', availability: 140, price: 1050 },
+      { name: 'Sleeper', availability: 195, price: 630 },
     ],
   },
   // 24. Bengaluru City <=> Pune Junction
@@ -1356,8 +1424,9 @@ export const trains: Train[] = [
     arrivalTime: '17:30',
     duration: '25h 45m',
     classes: [
-      { name: 'Economy', availability: 90, price: 750 },
-      { name: 'Business', availability: 20, price: 1900 },
+      { name: '2AC', availability: 20, price: 1900 },
+      { name: '3AC', availability: 60, price: 1300 },
+      { name: 'Sleeper', availability: 90, price: 750 },
     ],
   },
   {
@@ -1370,8 +1439,9 @@ export const trains: Train[] = [
     arrivalTime: '05:00',
     duration: '17h 30m',
     classes: [
-      { name: 'Economy', availability: 100, price: 760 },
-      { name: 'Business', availability: 25, price: 1920 },
+      { name: '2AC', availability: 25, price: 1920 },
+      { name: '3AC', availability: 70, price: 1320 },
+      { name: 'Sleeper', availability: 100, price: 760 },
     ],
   },
   {
@@ -1384,8 +1454,9 @@ export const trains: Train[] = [
     arrivalTime: '04:40',
     duration: '27h 35m',
     classes: [
-      { name: 'Economy', availability: 80, price: 770 },
-      { name: 'Business', availability: 15, price: 1950 },
+      { name: '2AC', availability: 15, price: 1950 },
+      { name: '3AC', availability: 50, price: 1350 },
+      { name: 'Sleeper', availability: 80, price: 770 },
     ],
   },
   {
@@ -1398,8 +1469,9 @@ export const trains: Train[] = [
     arrivalTime: '15:50',
     duration: '18h 35m',
     classes: [
-      { name: 'Economy', availability: 85, price: 780 },
-      { name: 'Business', availability: 20, price: 1980 },
+      { name: '2AC', availability: 20, price: 1980 },
+      { name: '3AC', availability: 60, price: 1380 },
+      { name: 'Sleeper', availability: 85, price: 780 },
     ],
   },
   // 25. Bengaluru City <=> Ahmedabad Junction
@@ -1413,8 +1485,9 @@ export const trains: Train[] = [
     arrivalTime: '08:45',
     duration: '34h 25m',
     classes: [
-      { name: 'Economy', availability: 80, price: 1150 },
-      { name: 'Business', availability: 25, price: 2900 },
+      { name: '2AC', availability: 25, price: 2900 },
+      { name: '3AC', availability: 60, price: 2000 },
+      { name: 'Sleeper', availability: 80, price: 1150 },
     ],
   },
   {
@@ -1427,8 +1500,9 @@ export const trains: Train[] = [
     arrivalTime: '18:50',
     duration: '32h 20m',
     classes: [
-      { name: 'Economy', availability: 90, price: 1160 },
-      { name: 'Business', availability: 30, price: 2920 },
+      { name: '1AC', availability: 10, price: 3500 },
+      { name: '2AC', availability: 30, price: 2920 },
+      { name: '3AC', availability: 90, price: 1160 },
     ],
   },
   {
@@ -1441,8 +1515,9 @@ export const trains: Train[] = [
     arrivalTime: '03:45',
     duration: '34h 00m',
     classes: [
-      { name: 'Economy', availability: 70, price: 1170 },
-      { name: 'Business', availability: 20, price: 2950 },
+      { name: '2AC', availability: 20, price: 2950 },
+      { name: '3AC', availability: 50, price: 2050 },
+      { name: 'Sleeper', availability: 70, price: 1170 },
     ],
   },
   {
@@ -1455,8 +1530,9 @@ export const trains: Train[] = [
     arrivalTime: '15:20',
     duration: '32h 10m',
     classes: [
-      { name: 'Economy', availability: 75, price: 1180 },
-      { name: 'Business', availability: 25, price: 2980 },
+      { name: '1AC', availability: 8, price: 3550 },
+      { name: '2AC', availability: 25, price: 2980 },
+      { name: '3AC', availability: 75, price: 1180 },
     ],
   },
   // 26. Secunderabad Jn <=> Pune Junction
@@ -1470,9 +1546,9 @@ export const trains: Train[] = [
     arrivalTime: '23:10',
     duration: '8h 25m',
     classes: [
-      { name: 'Economy', availability: 85, price: 1250 },
-      { name: 'Business', availability: 25, price: 2050 },
-      { name: 'First', availability: 5, price: 3050 },
+      { name: '1AC', availability: 5, price: 3050 },
+      { name: '2AC', availability: 25, price: 2050 },
+      { name: '3AC', availability: 85, price: 1250 },
     ],
   },
   {
@@ -1485,8 +1561,9 @@ export const trains: Train[] = [
     arrivalTime: '09:55',
     duration: '13h 15m',
     classes: [
-      { name: 'Economy', availability: 95, price: 600 },
-      { name: 'Business', availability: 30, price: 1500 },
+      { name: '2AC', availability: 30, price: 1500 },
+      { name: '3AC', availability: 70, price: 1000 },
+      { name: 'Sleeper', availability: 95, price: 600 },
     ],
   },
   {
@@ -1499,8 +1576,9 @@ export const trains: Train[] = [
     arrivalTime: '14:20',
     duration: '8h 20m',
     classes: [
-      { name: 'Economy', availability: 90, price: 1200 },
-      { name: 'Business', availability: 30, price: 2000 },
+      { name: '1AC', availability: 8, price: 3000 },
+      { name: '2AC', availability: 30, price: 2000 },
+      { name: '3AC', availability: 90, price: 1200 },
     ],
   },
   {
@@ -1513,8 +1591,9 @@ export const trains: Train[] = [
     arrivalTime: '04:55',
     duration: '14h 40m',
     classes: [
-      { name: 'Economy', availability: 100, price: 620 },
-      { name: 'Business', availability: 35, price: 1550 },
+      { name: '2AC', availability: 35, price: 1550 },
+      { name: '3AC', availability: 80, price: 1050 },
+      { name: 'Sleeper', availability: 100, price: 620 },
     ],
   },
   // 27. Secunderabad Jn <=> Ahmedabad Junction
@@ -1528,8 +1607,9 @@ export const trains: Train[] = [
     arrivalTime: '16:00',
     duration: '24h 45m',
     classes: [
-      { name: 'Economy', availability: 90, price: 850 },
-      { name: 'Business', availability: 20, price: 2200 },
+      { name: '2AC', availability: 20, price: 2200 },
+      { name: '3AC', availability: 60, price: 1500 },
+      { name: 'Sleeper', availability: 90, price: 850 },
     ],
   },
   {
@@ -1542,8 +1622,9 @@ export const trains: Train[] = [
     arrivalTime: '14:00',
     duration: '22h 50m',
     classes: [
-      { name: 'Economy', availability: 100, price: 860 },
-      { name: 'Business', availability: 25, price: 2220 },
+      { name: '2AC', availability: 25, price: 2220 },
+      { name: '3AC', availability: 70, price: 1520 },
+      { name: 'Sleeper', availability: 100, price: 860 },
     ],
   },
   {
@@ -1556,8 +1637,9 @@ export const trains: Train[] = [
     arrivalTime: '10:30',
     duration: '25h 10m',
     classes: [
-      { name: 'Economy', availability: 80, price: 870 },
-      { name: 'Business', availability: 15, price: 2250 },
+      { name: '2AC', availability: 15, price: 2250 },
+      { name: '3AC', availability: 50, price: 1550 },
+      { name: 'Sleeper', availability: 80, price: 870 },
     ],
   },
   {
@@ -1570,8 +1652,9 @@ export const trains: Train[] = [
     arrivalTime: '10:50',
     duration: '22h 05m',
     classes: [
-      { name: 'Economy', availability: 85, price: 880 },
-      { name: 'Business', availability: 20, price: 2280 },
+      { name: '2AC', availability: 20, price: 2280 },
+      { name: '3AC', availability: 60, price: 1580 },
+      { name: 'Sleeper', availability: 85, price: 880 },
     ],
   },
   // 28. Pune Junction <=> Ahmedabad Junction
@@ -1585,8 +1668,9 @@ export const trains: Train[] = [
     arrivalTime: '06:25',
     duration: '8h 50m',
     classes: [
-      { name: 'Economy', availability: 130, price: 1300 },
-      { name: 'Business', availability: 40, price: 2400 },
+      { name: '1AC', availability: 10, price: 2600 },
+      { name: '2AC', availability: 40, price: 2400 },
+      { name: '3AC', availability: 130, price: 1300 },
     ],
   },
   {
@@ -1599,8 +1683,9 @@ export const trains: Train[] = [
     arrivalTime: '07:30',
     duration: '11h 40m',
     classes: [
-      { name: 'Economy', availability: 140, price: 650 },
-      { name: 'Business', availability: 45, price: 1500 },
+      { name: '2AC', availability: 45, price: 1500 },
+      { name: '3AC', availability: 100, price: 1000 },
+      { name: 'Sleeper', availability: 140, price: 650 },
     ],
   },
   {
@@ -1613,8 +1698,9 @@ export const trains: Train[] = [
     arrivalTime: '07:15',
     duration: '8h 45m',
     classes: [
-      { name: 'Economy', availability: 120, price: 1320 },
-      { name: 'Business', availability: 35, price: 2450 },
+      { name: '1AC', availability: 8, price: 2650 },
+      { name: '2AC', availability: 35, price: 2450 },
+      { name: '3AC', availability: 120, price: 1320 },
     ],
   },
   {
@@ -1627,8 +1713,9 @@ export const trains: Train[] = [
     arrivalTime: '04:40',
     duration: '12h 40m',
     classes: [
-      { name: 'Economy', availability: 125, price: 660 },
-      { name: 'Business', availability: 40, price: 1520 },
+      { name: '2AC', availability: 40, price: 1520 },
+      { name: '3AC', availability: 90, price: 1020 },
+      { name: 'Sleeper', availability: 125, price: 660 },
     ],
   },
 ];
@@ -1636,7 +1723,7 @@ export const trains: Train[] = [
 
 // In a real application, this would be a database call.
 // For this prototype, we'll just modify the in-memory array.
-export function updateTrainAvailability(trainId: string, className: 'Economy' | 'Business' | 'First', passengers: number) {
+export function updateTrainAvailability(trainId: string, className: '1AC' | '2AC' | '3AC' | '3AC Eco' | 'Sleeper', passengers: number) {
     const train = trains.find(t => t.id === trainId);
     if (!train) return false;
 
