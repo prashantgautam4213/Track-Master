@@ -34,6 +34,7 @@ To get the project up and running on your local machine, follow these simple ste
 
 - [Node.js](https://nodejs.org/) (v18 or later)
 - [npm](https://www.npmjs.com/) (usually comes with Node.js)
+- A [Google AI API Key](https://aistudio.google.com/app/apikey).
 
 ### Installation & Setup
 
@@ -47,13 +48,33 @@ To get the project up and running on your local machine, follow these simple ste
     ```bash
     npm install
     ```
-
-3.  **Run the development server:**
-    ```bash
-    npm run dev
+    
+3.  **Set up environment variables:**
+    
+    The AI features in this project use Google's Genkit, which requires an API key for Google AI.
+    
+    Create a file named `.env` in the root of the project and add your API key:
+    ```
+    GEMINI_API_KEY=YOUR_API_KEY_HERE
     ```
 
-The application will now be running at [http://localhost:9002](http://localhost:9002).
+4.  **Run the development servers:**
+
+    You need to run two processes simultaneously: the Next.js frontend and the Genkit backend.
+
+    *   **Terminal 1: Start the Next.js Frontend**
+        ```bash
+        npm run dev
+        ```
+        The application will be running at [http://localhost:9002](http://localhost:9002).
+
+    *   **Terminal 2: Start the Genkit Backend**
+        ```bash
+        npm run genkit:watch
+        ```
+        This command starts the Genkit development UI, where you can inspect your AI flows. It typically runs on [http://localhost:4000](http://localhost:4000).
+
+Now, both your frontend and backend are running. The frontend will automatically connect to the Genkit backend to power the AI features.
 
 ## 📁 Project Structure
 
