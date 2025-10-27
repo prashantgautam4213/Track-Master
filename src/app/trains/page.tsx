@@ -4,8 +4,9 @@ import { useMemo, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { trains } from '@/lib/data';
-import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown, Clock, Route, Train } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 type SortKey = 'name' | 'departureTime' | 'duration' | 'from';
 
@@ -52,35 +53,58 @@ export default function TrainsPage() {
     return sortOrder === 'asc' ? <ArrowUp className="ml-2 h-4 w-4" /> : <ArrowDown className="ml-2 h-4 w-4" />;
   }
 
+  const sortOptions: { key: SortKey, label: string, icon: React.ReactNode }[] = [
+    { key: 'name', label: 'Train Name', icon: <Train /> },
+    { key: 'from', label: 'Route', icon: <Route /> },
+    { key: 'departureTime', label: 'Time', icon: <Clock /> },
+    { key: 'duration', label: 'Duration', icon: <Clock /> },
+  ];
+
   return (
     <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold font-headline">Train Schedules</h1>
       </div>
+      
+      <div className="mb-4">
+        <Card>
+            <CardContent className="p-4 flex flex-wrap items-center gap-2">
+                <span className="text-sm font-medium mr-2">Sort by:</span>
+                {sortOptions.map(option => (
+                    <Button key={option.key} variant={sortKey === option.key ? 'default' : 'outline'} onClick={() => handleSort(option.key)}>
+                        {option.icon}
+                        {option.label}
+                        {sortKey === option.key && (sortOrder === 'asc' ? <ArrowUp className="ml-2 h-4 w-4" /> : <ArrowDown className="ml-2 h-4 w-4" />)}
+                    </Button>
+                ))}
+            </CardContent>
+        </Card>
+      </div>
+
 
       <div className="border rounded-lg">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>
-                <Button variant="ghost" onClick={() => handleSort('name')}>
+                <div className="flex items-center">
                   Train {getSortIcon('name')}
-                </Button>
+                </div>
               </TableHead>
               <TableHead>
-                 <Button variant="ghost" onClick={() => handleSort('from')}>
+                <div className="flex items-center">
                   Route {getSortIcon('from')}
-                </Button>
+                </div>
               </TableHead>
               <TableHead>
-                <Button variant="ghost" onClick={() => handleSort('departureTime')}>
+                <div className="flex items-center">
                   Timings {getSortIcon('departureTime')}
-                </Button>
+                </div>
               </TableHead>
               <TableHead>
-                <Button variant="ghost" onClick={() => handleSort('duration')}>
+                <div className="flex items-center">
                   Duration {getSortIcon('duration')}
-                </Button>
+                </div>
               </TableHead>
               <TableHead className="text-right">Classes</TableHead>
             </TableRow>
