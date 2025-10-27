@@ -1,3 +1,4 @@
+
 export type TrainClass = {
   name: 'Economy' | 'Business' | 'First';
   availability: number;
@@ -31,7 +32,6 @@ export type Booking = {
   status?: 'upcoming' | 'missed-rescheduled' | 'missed-failed';
 };
 
-// This represents the data stored in the /users/{uid} document in Firestore
 export type UserProfile = {
   uid: string;
   name: string;
