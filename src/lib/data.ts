@@ -12,7 +12,7 @@ export const stations = [
 ];
 
 export const trains: Train[] = [
-  // 1. New Delhi -> Mumbai Central
+  // 1. New Delhi <=> Mumbai Central
   {
     id: 'TM101',
     name: 'Delhi-Mumbai Rajdhani',
@@ -43,10 +43,9 @@ export const trains: Train[] = [
       { name: 'First', availability: 12, price: 4800 },
     ],
   },
-  // 2. Mumbai Central -> New Delhi
   {
     id: 'T123',
-    name: 'Mumbai Rajdhani',
+    name: 'Mumbai-Delhi Rajdhani',
     number: '12951',
     from: 'Mumbai Central, MH',
     to: 'New Delhi, DL',
@@ -74,7 +73,7 @@ export const trains: Train[] = [
       { name: 'First', availability: 5, price: 5200 },
     ],
   },
-   // 3. New Delhi -> Chennai Central
+   // 2. New Delhi <=> Chennai Central
   {
     id: 'TM201',
     name: 'Tamil Nadu Express',
@@ -105,7 +104,6 @@ export const trains: Train[] = [
         { name: 'First', availability: 18, price: 6300 },
     ],
   },
-  // 4. Chennai Central -> New Delhi
   {
     id: 'T601',
     name: 'Grand Trunk Express',
@@ -123,7 +121,7 @@ export const trains: Train[] = [
   },
   {
     id: 'T212',
-    name: 'Chennai Rajdhani',
+    name: 'Chennai-Delhi Rajdhani',
     number: '12433',
     from: 'Chennai Central, TN',
     to: 'New Delhi, DL',
@@ -136,7 +134,7 @@ export const trains: Train[] = [
       { name: 'First', availability: 15, price: 6200 },
     ],
   },
-  // 5. New Delhi -> Howrah Junction
+  // 3. New Delhi <=> Howrah Junction
   {
     id: 'T789R',
     name: 'Delhi-Howrah Rajdhani',
@@ -154,7 +152,7 @@ export const trains: Train[] = [
   },
   {
     id: 'T790R',
-    name: 'Poorva Express Return',
+    name: 'Poorva Express',
     number: '12304',
     from: 'New Delhi, DL',
     to: 'Howrah Junction, WB',
@@ -167,10 +165,9 @@ export const trains: Train[] = [
       { name: 'First', availability: 25, price: 2850 },
     ],
   },
-  // 6. Howrah Junction -> New Delhi
   {
     id: 'T789',
-    name: 'Howrah Rajdhani',
+    name: 'Howrah-Delhi Rajdhani',
     number: '12301',
     from: 'Howrah Junction, WB',
     to: 'New Delhi, DL',
@@ -198,7 +195,7 @@ export const trains: Train[] = [
       { name: 'First', availability: 30, price: 2800 },
     ],
   },
-  // 7. New Delhi -> Bengaluru City
+  // 4. New Delhi <=> Bengaluru City
   {
     id: 'T456R',
     name: 'Delhi-Bengaluru Rajdhani',
@@ -216,7 +213,7 @@ export const trains: Train[] = [
   },
   {
     id: 'T457R',
-    name: 'Karnataka Express Return',
+    name: 'Karnataka Express',
     number: '12628',
     from: 'New Delhi, DL',
     to: 'Bengaluru City, KA',
@@ -229,10 +226,9 @@ export const trains: Train[] = [
       { name: 'First', availability: 3, price: 3450 },
     ],
   },
-  // 8. Bengaluru City -> New Delhi
   {
     id: 'T456',
-    name: 'Bengaluru Rajdhani',
+    name: 'Bengaluru-Delhi Rajdhani',
     number: '22691',
     from: 'Bengaluru City, KA',
     to: 'New Delhi, DL',
@@ -260,7 +256,7 @@ export const trains: Train[] = [
       { name: 'First', availability: 2, price: 3400 },
     ],
   },
-  // 9. New Delhi -> Secunderabad Jn
+  // 5. New Delhi <=> Secunderabad Jn
   {
     id: 'T101R',
     name: 'Delhi-Secunderabad Duronto',
@@ -290,10 +286,9 @@ export const trains: Train[] = [
       { name: 'Business', availability: 60, price: 2400 },
     ],
   },
-  // 10. Secunderabad Jn -> New Delhi
   {
     id: 'T101',
-    name: 'Duronto Express',
+    name: 'Secunderabad-Delhi Duronto',
     number: '12285',
     from: 'Secunderabad Jn, TS',
     to: 'New Delhi, DL',
@@ -320,7 +315,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 55, price: 2450 },
     ],
   },
-  // 11. New Delhi -> Pune Junction
+  // 6. New Delhi <=> Pune Junction
   {
     id: 'TM401',
     name: 'Delhi-Pune Duronto',
@@ -350,7 +345,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 2500 },
     ],
   },
-  // 12. Pune Junction -> New Delhi
   {
     id: 'TM403',
     name: 'Pune-Delhi Duronto',
@@ -380,7 +374,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 2550 },
     ],
   },
-  // 13. New Delhi -> Ahmedabad Junction
+  // 7. New Delhi <=> Ahmedabad Junction
   {
     id: 'TM501',
     name: 'Ashram Express',
@@ -409,7 +403,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 50, price: 2800 },
     ],
   },
-  // 14. Ahmedabad Junction -> New Delhi
   {
     id: 'TM502',
     name: 'Ashram Express',
@@ -438,7 +431,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 2850 },
     ],
   },
-  // 15. Mumbai Central -> Chennai Central
+  // 8. Mumbai Central <=> Chennai Central
   {
     id: 'TM601',
     name: 'Mumbai-Chennai Express',
@@ -467,7 +460,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 65, price: 2320 },
     ],
   },
-  // 16. Chennai Central -> Mumbai Central
   {
     id: 'TM602',
     name: 'Chennai-Mumbai Express',
@@ -496,10 +488,10 @@ export const trains: Train[] = [
       { name: 'Business', availability: 55, price: 2380 },
     ],
   },
-  // 17. Mumbai Central -> Howrah Junction
+  // 9. Mumbai Central <=> Howrah Junction
   {
     id: 'TM701',
-    name: 'Mumbai Mail (via Nagpur)',
+    name: 'Mumbai-Howrah Mail',
     number: '12322',
     from: 'Mumbai Central, MH',
     to: 'Howrah Junction, WB',
@@ -525,10 +517,9 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 3020 },
     ],
   },
-  // 18. Howrah Junction -> Mumbai Central
   {
     id: 'TM702',
-    name: 'Howrah Mail (via Nagpur)',
+    name: 'Howrah-Mumbai Mail',
     number: '12321',
     from: 'Howrah Junction, WB',
     to: 'Mumbai Central, MH',
@@ -554,7 +545,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 3080 },
     ],
   },
-  // 19. Mumbai Central -> Bengaluru City
+  // 10. Mumbai Central <=> Bengaluru City
   {
     id: 'TM801',
     name: 'Udyan Express',
@@ -583,7 +574,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 2220 },
     ],
   },
-  // 20. Bengaluru City -> Mumbai Central
   {
     id: 'TM802',
     name: 'Udyan Express',
@@ -612,7 +602,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 50, price: 2280 },
     ],
   },
-  // 21. Mumbai Central -> Secunderabad Jn
+  // 11. Mumbai Central <=> Secunderabad Jn
   {
     id: 'TM901',
     name: 'Devagiri Express',
@@ -641,7 +631,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 35, price: 1850 },
     ],
   },
-  // 22. Secunderabad Jn -> Mumbai Central
   {
     id: 'TM902',
     name: 'Devagiri Express',
@@ -670,7 +659,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 1880 },
     ],
   },
-  // 23. Mumbai Central -> Pune Junction
+  // 12. Mumbai Central <=> Pune Junction
   {
     id: 'TM1001',
     name: 'Indrayani Express',
@@ -699,7 +688,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 70, price: 1000 },
     ],
   },
-  // 24. Pune Junction -> Mumbai Central
   {
     id: 'TM1003',
     name: 'Indrayani Express',
@@ -728,7 +716,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 65, price: 1020 },
     ],
   },
-  // 25. Mumbai Central -> Ahmedabad Junction
+  // 13. Mumbai Central <=> Ahmedabad Junction
   {
     id: 'T502R',
     name: 'Mumbai-Ahmedabad Shatabdi',
@@ -746,7 +734,7 @@ export const trains: Train[] = [
   },
   {
     id: 'T503R',
-    name: 'Karnavati Express Return',
+    name: 'Karnavati Express',
     number: '12933',
     from: 'Mumbai Central, MH',
     to: 'Ahmedabad Junction, GJ',
@@ -758,7 +746,6 @@ export const trains: Train[] = [
         { name: 'Business', availability: 45, price: 1350 },
     ],
   },
-  // 26. Ahmedabad Junction -> Mumbai Central
   {
     id: 'T502',
     name: 'Ahmedabad-Mumbai Shatabdi',
@@ -788,7 +775,7 @@ export const trains: Train[] = [
         { name: 'Business', availability: 50, price: 1300 },
     ],
   },
-  // 27. Chennai Central -> Howrah Junction
+  // 14. Chennai Central <=> Howrah Junction
   {
     id: 'TM1101',
     name: 'Coromandel Express',
@@ -817,7 +804,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 65, price: 2620 },
     ],
   },
-  // 28. Howrah Junction -> Chennai Central
   {
     id: 'TM1102',
     name: 'Coromandel Express',
@@ -846,7 +832,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 60, price: 2680 },
     ],
   },
-  // 29. Chennai Central -> Bengaluru City
+  // 15. Chennai Central <=> Bengaluru City
   {
     id: 'TM1201',
     name: 'Chennai-Bengaluru Shatabdi',
@@ -875,7 +861,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 100, price: 950 },
     ],
   },
-  // 30. Bengaluru City -> Chennai Central
   {
     id: 'TM1203',
     name: 'Bengaluru-Chennai Shatabdi',
@@ -904,7 +889,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 90, price: 980 },
     ],
   },
-  // 31. Chennai Central -> Secunderabad Jn
+  // 16. Chennai Central <=> Secunderabad Jn
   {
     id: 'TM1301',
     name: 'Charminar Express',
@@ -933,7 +918,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 1620 },
     ],
   },
-  // 32. Secunderabad Jn -> Chennai Central
   {
     id: 'TM1302',
     name: 'Charminar Express',
@@ -962,7 +946,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 1680 },
     ],
   },
-  // 33. Chennai Central -> Pune Junction
+  // 17. Chennai Central <=> Pune Junction
   {
     id: 'TM1401',
     name: 'Chennai-Pune Superfast',
@@ -991,7 +975,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 35, price: 2120 },
     ],
   },
-  // 34. Pune Junction -> Chennai Central
   {
     id: 'TM1402',
     name: 'Pune-Chennai Superfast',
@@ -1020,7 +1003,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 2180 },
     ],
   },
-  // 35. Chennai Central -> Ahmedabad Junction
+  // 18. Chennai Central <=> Ahmedabad Junction
   {
     id: 'TM1501',
     name: 'Navjeevan Express',
@@ -1049,7 +1032,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 2850 },
     ],
   },
-  // 36. Ahmedabad Junction -> Chennai Central
   {
     id: 'TM1502',
     name: 'Navjeevan Express',
@@ -1078,10 +1060,10 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 2880 },
     ],
   },
-  // 37. Howrah Junction -> Bengaluru City
+  // 19. Howrah Junction <=> Bengaluru City
   {
     id: 'TM1601',
-    name: 'Duronto Express',
+    name: 'Howrah-Bengaluru Duronto',
     number: '12245',
     from: 'Howrah Junction, WB',
     to: 'Bengaluru City, KA',
@@ -1107,10 +1089,9 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 3850 },
     ],
   },
-  // 38. Bengaluru City -> Howrah Junction
   {
     id: 'TM1602',
-    name: 'Duronto Express',
+    name: 'Bengaluru-Howrah Duronto',
     number: '12246',
     from: 'Bengaluru City, KA',
     to: 'Howrah Junction, WB',
@@ -1136,7 +1117,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 3880 },
     ],
   },
-  // 39. Howrah Junction -> Secunderabad Jn
+  // 20. Howrah Junction <=> Secunderabad Jn
   {
     id: 'TM1701',
     name: 'Falaknuma Express',
@@ -1165,7 +1146,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 55, price: 2520 },
     ],
   },
-  // 40. Secunderabad Jn -> Howrah Junction
   {
     id: 'TM1702',
     name: 'Falaknuma Express',
@@ -1194,7 +1174,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 50, price: 2580 },
     ],
   },
-  // 41. Howrah Junction -> Pune Junction
+  // 21. Howrah Junction <=> Pune Junction
   {
     id: 'TM1801',
     name: 'Azad Hind Express',
@@ -1223,7 +1203,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 35, price: 2920 },
     ],
   },
-  // 42. Pune Junction -> Howrah Junction
   {
     id: 'TM1802',
     name: 'Azad Hind Express',
@@ -1252,7 +1231,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 2980 },
     ],
   },
-  // 43. Howrah Junction -> Ahmedabad Junction
+  // 22. Howrah Junction <=> Ahmedabad Junction
   {
     id: 'TM1901',
     name: 'Howrah-Ahmedabad Superfast',
@@ -1281,7 +1260,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 3120 },
     ],
   },
-  // 44. Ahmedabad Junction -> Howrah Junction
   {
     id: 'TM1902',
     name: 'Ahmedabad-Howrah Superfast',
@@ -1310,10 +1288,10 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 3180 },
     ],
   },
-  // 45. Bengaluru City -> Secunderabad Jn
+  // 23. Bengaluru City <=> Secunderabad Jn
   {
     id: 'TM2001',
-    name: 'Garibrath Express',
+    name: 'Bengaluru-Secunderabad Garibrath',
     number: '12736',
     from: 'Bengaluru City, KA',
     to: 'Secunderabad Jn, TS',
@@ -1339,10 +1317,9 @@ export const trains: Train[] = [
       { name: 'Business', availability: 75, price: 1420 },
     ],
   },
-  // 46. Secunderabad Jn -> Bengaluru City
   {
     id: 'TM2002',
-    name: 'Garibrath Express',
+    name: 'Secunderabad-Bengaluru Garibrath',
     number: '12735',
     from: 'Secunderabad Jn, TS',
     to: 'Bengaluru City, KA',
@@ -1368,7 +1345,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 70, price: 1480 },
     ],
   },
-  // 47. Bengaluru City -> Pune Junction
+  // 24. Bengaluru City <=> Pune Junction
   {
     id: 'TM2101',
     name: 'Chalukya Express',
@@ -1397,7 +1374,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 25, price: 1920 },
     ],
   },
-  // 48. Pune Junction -> Bengaluru City
   {
     id: 'TM2102',
     name: 'Chalukya Express',
@@ -1426,7 +1402,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 20, price: 1980 },
     ],
   },
-  // 49. Bengaluru City -> Ahmedabad Junction
+  // 25. Bengaluru City <=> Ahmedabad Junction
   {
     id: 'TM2201',
     name: 'Jodhpur Express',
@@ -1455,7 +1431,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 2920 },
     ],
   },
-  // 50. Ahmedabad Junction -> Bengaluru City
   {
     id: 'TM2202',
     name: 'Jodhpur Express',
@@ -1484,7 +1459,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 25, price: 2980 },
     ],
   },
-  // 51. Secunderabad Jn -> Pune Junction
+  // 26. Secunderabad Jn <=> Pune Junction
   {
     id: 'T501R',
     name: 'Secunderabad-Pune Shatabdi',
@@ -1514,7 +1489,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 1500 },
     ],
   },
-  // 52. Pune Junction -> Secunderabad Jn
   {
     id: 'T501',
     name: 'Pune-Secunderabad Shatabdi',
@@ -1543,7 +1517,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 35, price: 1550 },
     ],
   },
-  // 53. Secunderabad Jn -> Ahmedabad Junction
+  // 27. Secunderabad Jn <=> Ahmedabad Junction
   {
     id: 'TM2301',
     name: 'Secunderabad-Rajkot Express',
@@ -1572,7 +1546,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 25, price: 2220 },
     ],
   },
-  // 54. Ahmedabad Junction -> Secunderabad Jn
   {
     id: 'TM2302',
     name: 'Rajkot-Secunderabad Express',
@@ -1601,7 +1574,7 @@ export const trains: Train[] = [
       { name: 'Business', availability: 20, price: 2280 },
     ],
   },
-  // 55. Pune Junction -> Ahmedabad Junction
+  // 28. Pune Junction <=> Ahmedabad Junction
   {
     id: 'TM2401',
     name: 'Pune-Ahmedabad Duronto',
@@ -1630,7 +1603,6 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 1500 },
     ],
   },
-  // 56. Ahmedabad Junction -> Pune Junction
   {
     id: 'TM2402',
     name: 'Ahmedabad-Pune Duronto',
