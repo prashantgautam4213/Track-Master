@@ -46,13 +46,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [firebaseUser]);
 
   const login = async (email: string, pass: string) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, pass);
-      return true;
-    } catch (error) {
-      console.error("Login error:", error);
-      return false;
-    }
+    // This will now throw an error if login fails, which the form can catch.
+    await signInWithEmailAndPassword(auth, email, pass);
+    return true;
   };
 
   const logout = async () => {
@@ -60,23 +56,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const register = async (name: string, email: string, pass: string) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-      const user = userCredential.user;
-      
-      // Create user profile in Firestore
-      const userRef = doc(firestore, 'users', user.uid);
-      await setDoc(userRef, { uid: user.uid, name, email });
-      
-      return true;
-    } catch (error: any) {
-        if (error.code === 'auth/email-already-in-use') {
-            // Re-throw specific error to be caught in the form
-            throw new Error('email-already-in-use');
-        }
-        console.error("Registration error:", error);
-        return false;
-    }
+    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+    const user = userCredential.user;
+    
+    // Create user profile in Firestore
+    const userRef = doc(firestore, 'users', user.uid);
+    // Use `await` to ensure the document is created before returning
+    await setDoc(userRef, { uid: user.uid, name, email });
+    
+    return true;
   };
   
   const addBooking = (booking: Booking, oldBookingId?: string) => {
@@ -85,18 +73,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (oldBookingId) {
         // If it's a reschedule, we replace the old booking document
         const bookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', oldBookingId);
-        setDoc(bookingRef, booking, { merge: true });
+        setDoc(bookingRef, booking, { merge: true }).catch((serverError) => {
+            const contextualError = new FirestorePermissionError({
+              path: bookingRef.path,
+              operation: 'update',
+              requestResourceData: booking,
+            });
+            errorEmitter.emit('permission-error', contextualError);
+        });
     } else {
         // For a new booking, add a new document
         const bookingRef = collection(firestore, 'users', userProfile.uid, 'bookings');
-        addDoc(bookingRef, booking);
+        addDoc(bookingRef, booking).catch((serverError) => {
+            const contextualError = new FirestorePermissionError({
+              path: bookingRef.path,
+              operation: 'create',
+              requestResourceData: booking,
+            });
+            errorEmitter.emit('permission-error', contextualError);
+        });
     }
   };
   
   const updateBookingStatus = (bookingId: string, status: Booking['status']) => {
       if (!userProfile) return;
       const bookingRef = doc(firestore, 'users', userProfile.uid, 'bookings', bookingId);
-      setDoc(bookingRef, { status }, { merge: true });
+      setDoc(bookingRef, { status }, { merge: true }).catch((serverError) => {
+        const contextualError = new FirestorePermissionError({
+          path: bookingRef.path,
+          operation: 'update',
+          requestResourceData: { status },
+        });
+        errorEmitter.emit('permission-error', contextualError);
+      });
   };
 
 

@@ -38,15 +38,20 @@ export function LoginForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const success = await login(data.email, data.password);
-    if (success) {
+    try {
+      await login(data.email, data.password);
       toast({ title: "Login Successful", description: "Welcome back!" });
       router.push(redirectUrl || "/profile");
-    } else {
+    } catch (error: any) {
+      // Handle Firebase auth errors
+      let description = "An unexpected error occurred. Please try again.";
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        description = "Invalid email or password. Please try again.";
+      }
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: "Invalid email or password. Please try again.",
+        description: description,
       });
     }
   }
