@@ -1,5 +1,65 @@
-# Firebase Studio
+# Track Master: Online Train Information and Reservation System
 
-This is a NextJS starter in Firebase Studio.
+Track Master is a modern, full-featured web application designed to simulate an online train booking platform. It provides users with tools to search for trains, view schedules, get fare estimates, and manage their bookings. The project is built with a cutting-edge tech stack and incorporates AI-powered features for an enhanced user experience.
 
-To get started, take a look at src/app/page.tsx.
+## ✨ Features
+
+- **Train Search**: Search for trains between major Indian railway stations on a specific date.
+- **Detailed Schedules**: View a list of all available trains, including their routes, timings, and duration.
+- **Class-based Availability**: See seat availability and pricing for different classes (Economy, Business, First).
+- **User Authentication**: A complete, mock authentication system allowing users to register and log in.
+- **User Profile**: Registered users can view their profile and a history of all their bookings.
+- **AI-Powered Fare Enquiry**: A generative AI tool that provides detailed fare information and potential discounts for any given route.
+- **AI-Powered Missed Train Rescheduling**: An intelligent feature that allows users to automatically reschedule a missed train to the next available one.
+- **Responsive Design**: A modern, mobile-first interface that works beautifully across all devices.
+
+## 🚀 Tech Stack
+
+This project is built using a modern, component-based web architecture.
+
+- **Framework**: [Next.js](https://nextjs.org/) (with App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **UI Library**: [React](https://react.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Component Library**: [ShadCN UI](https://ui.shadcn.com/)
+- **AI & Generative Features**: [Google's Genkit](https://firebase.google.com/docs/genkit)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Form Handling**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
+
+## 🏁 Getting Started
+
+To get the project up and running on your local machine, follow these simple steps.
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or later)
+- [npm](https://www.npmjs.com/) (usually comes with Node.js)
+
+### Installation & Setup
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/track-master.git
+    cd track-master
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+
+The application will now be running at [http://localhost:9002](http://localhost:9002).
+
+## 📁 Project Structure
+
+- **`src/app`**: Contains all the pages and routes for the application, following the Next.js App Router structure.
+- **`src/components`**: Contains all reusable React components, including UI components from ShadCN.
+- **`src/lib`**: Contains shared utilities, mock data (`data.ts`), and type definitions (`types.ts`).
+- **`src/context`**: Holds React context providers, such as the `AuthContext` for managing user sessions.
+- **`src/ai`**: Contains the Genkit flows and prompts that power the application's AI features.
+- **`public`**: For static assets like images.
