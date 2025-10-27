@@ -204,7 +204,7 @@ export default function ProfilePage() {
                         </div>
                       </div>
                       <div className="text-left sm:text-right space-y-2">
-                        <p className="font-bold text-lg">${booking.totalPrice.toFixed(2)}</p>
+                        <p className="font-bold text-lg">₹{booking.totalPrice.toFixed(2)}</p>
                         {getBookingStatus(booking)}
                       </div>
                     </CardContent>

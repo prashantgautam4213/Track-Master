@@ -28,7 +28,7 @@ export async function fareInformationLookup(input: FareInformationLookupInput): 
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        fareInformation: `Fare for ${input.trainClass} from ${input.departureStation} to ${input.arrivalStation} on ${input.date} typically ranges from $50 to $150. Prices may vary based on demand and time of booking. Early bookings often get the best rates.`
+        fareInformation: `Fare for ${input.trainClass} from ${input.departureStation} to ${input.arrivalStation} on ${input.date} typically ranges from ₹50 to ₹150. Prices may vary based on demand and time of booking. Early bookings often get the best rates.`
       });
     }, 1000);
   });

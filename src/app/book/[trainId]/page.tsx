@@ -247,18 +247,18 @@ function BookingComponent() {
               <h3 className="text-lg font-bold mb-4">Price Summary</h3>
               <div className="flow-root text-sm">
                 <dl className="space-y-2">
-                  <div className="flex justify-between"><dt className="text-muted-foreground">Seat Price</dt><dd>${trainClass.price.toFixed(2)}</dd></div>
+                  <div className="flex justify-between"><dt className="text-muted-foreground">Seat Price</dt><dd>₹{trainClass.price.toFixed(2)}</dd></div>
                   <div className="flex justify-between"><dt className="text-muted-foreground">Passengers</dt><dd>x {passengers}</dd></div>
-                  <div className="flex justify-between"><dt className="text-muted-foreground">Base Total</dt><dd>${basePrice.toFixed(2)}</dd></div>
+                  <div className="flex justify-between"><dt className="text-muted-foreground">Base Total</dt><dd>₹{basePrice.toFixed(2)}</dd></div>
                   {couponApplied && (
-                    <div className="flex justify-between text-green-600"><dt>Coupon Discount</dt><dd>-${discount.toFixed(2)}</dd></div>
+                    <div className="flex justify-between text-green-600"><dt>Coupon Discount</dt><dd>-₹{discount.toFixed(2)}</dd></div>
                   )}
                 </dl>
               </div>
               <Separator className="my-4" />
               <div className="flex justify-between items-center">
                 <p className="text-lg font-bold">Total Price</p>
-                <p className="text-2xl font-bold text-primary">${totalPrice.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-primary">₹{totalPrice.toFixed(2)}</p>
               </div>
             </div>
             <Alert className="mt-4">
@@ -272,7 +272,7 @@ function BookingComponent() {
         </CardContent>
         <CardFooter>
           <Button size="lg" className="w-full md:w-auto ml-auto" onClick={handleBooking} disabled={isBooking || trainClass.availability < passengers}>
-            {isBooking ? 'Processing Payment...' : `Pay $${totalPrice.toFixed(2)} & Confirm`}
+            {isBooking ? 'Processing Payment...' : `Pay ₹${totalPrice.toFixed(2)} & Confirm`}
           </Button>
         </CardFooter>
       </Card>

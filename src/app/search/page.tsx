@@ -112,7 +112,7 @@ function SearchResults() {
                             {cls.availability} seats available
                           </p>
                           <p className="text-lg font-bold mt-2">
-                            ${cls.price.toFixed(2)}{' '}
+                            ₹{cls.price.toFixed(2)}{' '}
                             <span className="text-sm font-normal text-muted-foreground">/ seat</span>
                           </p>
                         </>
