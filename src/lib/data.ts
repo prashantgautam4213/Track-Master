@@ -366,6 +366,20 @@ export const trains: Train[] = [
       { name: 'First', availability: 8, price: 4550 },
     ],
   },
+  {
+    id: 'TM404',
+    name: 'Goa Express (Return)',
+    number: '12779',
+    from: 'Pune Junction, MH',
+    to: 'New Delhi, DL',
+    departureTime: '04:20',
+    arrivalTime: '15:00',
+    duration: '34h 40m',
+    classes: [
+      { name: 'Economy', availability: 160, price: 960 },
+      { name: 'Business', availability: 45, price: 2550 },
+    ],
+  },
   // 13. New Delhi -> Ahmedabad Junction
   {
     id: 'TM501',
@@ -379,6 +393,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 300, price: 750 },
       { name: 'Business', availability: 80, price: 1800 },
+    ],
+  },
+  {
+    id: 'TM501B',
+    name: 'Delhi-Ahmedabad Rajdhani',
+    number: '12958',
+    from: 'New Delhi, DL',
+    to: 'Ahmedabad Junction, GJ',
+    departureTime: '19:55',
+    arrivalTime: '09:40',
+    duration: '13h 45m',
+    classes: [
+      { name: 'Economy', availability: 120, price: 1500 },
+      { name: 'Business', availability: 50, price: 2800 },
     ],
   },
   // 14. Ahmedabad Junction -> New Delhi
@@ -396,6 +424,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 70, price: 1820 },
     ],
   },
+  {
+    id: 'TM502B',
+    name: 'Ahmedabad-Delhi Rajdhani',
+    number: '12957',
+    from: 'Ahmedabad Junction, GJ',
+    to: 'New Delhi, DL',
+    departureTime: '18:50',
+    arrivalTime: '07:30',
+    duration: '12h 40m',
+    classes: [
+      { name: 'Economy', availability: 110, price: 1550 },
+      { name: 'Business', availability: 45, price: 2850 },
+    ],
+  },
   // 15. Mumbai Central -> Chennai Central
   {
     id: 'TM601',
@@ -409,6 +451,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 200, price: 900 },
       { name: 'Business', availability: 60, price: 2300 },
+    ],
+  },
+  {
+    id: 'TM601B',
+    name: 'Mumbai-Chennai Mail',
+    number: '11027',
+    from: 'Mumbai Central, MH',
+    to: 'Chennai Central, TN',
+    departureTime: '23:45',
+    arrivalTime: '04:15',
+    duration: '28h 30m',
+    classes: [
+      { name: 'Economy', availability: 210, price: 910 },
+      { name: 'Business', availability: 65, price: 2320 },
     ],
   },
   // 16. Chennai Central -> Mumbai Central
@@ -426,6 +482,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 50, price: 2350 },
     ],
   },
+  {
+    id: 'TM602B',
+    name: 'Chennai-Mumbai Mail',
+    number: '11028',
+    from: 'Chennai Central, TN',
+    to: 'Mumbai Central, MH',
+    departureTime: '23:55',
+    arrivalTime: '05:40',
+    duration: '29h 45m',
+    classes: [
+      { name: 'Economy', availability: 190, price: 930 },
+      { name: 'Business', availability: 55, price: 2380 },
+    ],
+  },
   // 17. Mumbai Central -> Howrah Junction
   {
     id: 'TM701',
@@ -439,6 +509,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 150, price: 1200 },
       { name: 'Business', availability: 40, price: 3000 },
+    ],
+  },
+  {
+    id: 'TM701B',
+    name: 'Gitanjali Express',
+    number: '12859',
+    from: 'Mumbai Central, MH',
+    to: 'Howrah Junction, WB',
+    departureTime: '06:00',
+    arrivalTime: '12:30',
+    duration: '30h 30m',
+    classes: [
+      { name: 'Economy', availability: 160, price: 1210 },
+      { name: 'Business', availability: 45, price: 3020 },
     ],
   },
   // 18. Howrah Junction -> Mumbai Central
@@ -456,6 +540,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 35, price: 3050 },
     ],
   },
+  {
+    id: 'TM702B',
+    name: 'Gitanjali Express',
+    number: '12860',
+    from: 'Howrah Junction, WB',
+    to: 'Mumbai Central, MH',
+    departureTime: '13:50',
+    arrivalTime: '21:20',
+    duration: '31h 30m',
+    classes: [
+      { name: 'Economy', availability: 145, price: 1260 },
+      { name: 'Business', availability: 40, price: 3080 },
+    ],
+  },
   // 19. Mumbai Central -> Bengaluru City
   {
     id: 'TM801',
@@ -469,6 +567,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 180, price: 850 },
       { name: 'Business', availability: 50, price: 2200 },
+    ],
+  },
+  {
+    id: 'TM801B',
+    name: 'Coimbatore Express',
+    number: '11013',
+    from: 'Mumbai Central, MH',
+    to: 'Bengaluru City, KA',
+    departureTime: '22:35',
+    arrivalTime: '21:30',
+    duration: '22h 55m',
+    classes: [
+      { name: 'Economy', availability: 170, price: 860 },
+      { name: 'Business', availability: 45, price: 2220 },
     ],
   },
   // 20. Bengaluru City -> Mumbai Central
@@ -486,6 +598,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 45, price: 2250 },
     ],
   },
+  {
+    id: 'TM802B',
+    name: 'Coimbatore Express (Return)',
+    number: '11014',
+    from: 'Bengaluru City, KA',
+    to: 'Mumbai Central, MH',
+    departureTime: '15:15',
+    arrivalTime: '14:30',
+    duration: '23h 15m',
+    classes: [
+      { name: 'Economy', availability: 180, price: 870 },
+      { name: 'Business', availability: 50, price: 2280 },
+    ],
+  },
   // 21. Mumbai Central -> Secunderabad Jn
   {
     id: 'TM901',
@@ -501,6 +627,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 1800 },
     ],
   },
+  {
+    id: 'TM901B',
+    name: 'Hussain Sagar Express',
+    number: '12701',
+    from: 'Mumbai Central, MH',
+    to: 'Secunderabad Jn, TS',
+    departureTime: '21:50',
+    arrivalTime: '12:05',
+    duration: '14h 15m',
+    classes: [
+      { name: 'Economy', availability: 130, price: 720 },
+      { name: 'Business', availability: 35, price: 1850 },
+    ],
+  },
   // 22. Secunderabad Jn -> Mumbai Central
   {
     id: 'TM902',
@@ -514,6 +654,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 110, price: 720 },
       { name: 'Business', availability: 25, price: 1850 },
+    ],
+  },
+  {
+    id: 'TM902B',
+    name: 'Hussain Sagar Express (Return)',
+    number: '12702',
+    from: 'Secunderabad Jn, TS',
+    to: 'Mumbai Central, MH',
+    departureTime: '14:50',
+    arrivalTime: '05:00',
+    duration: '14h 10m',
+    classes: [
+      { name: 'Economy', availability: 115, price: 730 },
+      { name: 'Business', availability: 30, price: 1880 },
     ],
   },
   // 23. Mumbai Central -> Pune Junction
@@ -649,6 +803,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 60, price: 2600 },
     ],
   },
+  {
+    id: 'TM1101B',
+    name: 'Chennai-Howrah Mail',
+    number: '12840',
+    from: 'Chennai Central, TN',
+    to: 'Howrah Junction, WB',
+    departureTime: '23:45',
+    arrivalTime: '04:10',
+    duration: '28h 25m',
+    classes: [
+      { name: 'Economy', availability: 230, price: 1010 },
+      { name: 'Business', availability: 65, price: 2620 },
+    ],
+  },
   // 28. Howrah Junction -> Chennai Central
   {
     id: 'TM1102',
@@ -662,6 +830,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 210, price: 1020 },
       { name: 'Business', availability: 55, price: 2650 },
+    ],
+  },
+  {
+    id: 'TM1102B',
+    name: 'Howrah-Chennai Mail',
+    number: '12839',
+    from: 'Howrah Junction, WB',
+    to: 'Chennai Central, TN',
+    departureTime: '23:55',
+    arrivalTime: '03:50',
+    duration: '27h 55m',
+    classes: [
+      { name: 'Economy', availability: 215, price: 1030 },
+      { name: 'Business', availability: 60, price: 2680 },
     ],
   },
   // 29. Chennai Central -> Bengaluru City
@@ -737,6 +919,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 1600 },
     ],
   },
+  {
+    id: 'TM1301B',
+    name: 'Hyderabad Express',
+    number: '12603',
+    from: 'Chennai Central, TN',
+    to: 'Secunderabad Jn, TS',
+    departureTime: '16:45',
+    arrivalTime: '05:45',
+    duration: '13h 00m',
+    classes: [
+      { name: 'Economy', availability: 160, price: 660 },
+      { name: 'Business', availability: 45, price: 1620 },
+    ],
+  },
   // 32. Secunderabad Jn -> Chennai Central
   {
     id: 'TM1302',
@@ -750,6 +946,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 140, price: 670 },
       { name: 'Business', availability: 35, price: 1650 },
+    ],
+  },
+  {
+    id: 'TM1302B',
+    name: 'Hyderabad Express (Return)',
+    number: '12604',
+    from: 'Secunderabad Jn, TS',
+    to: 'Chennai Central, TN',
+    departureTime: '16:50',
+    arrivalTime: '05:50',
+    duration: '13h 00m',
+    classes: [
+      { name: 'Economy', availability: 145, price: 680 },
+      { name: 'Business', availability: 40, price: 1680 },
     ],
   },
   // 33. Chennai Central -> Pune Junction
@@ -767,6 +977,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 2100 },
     ],
   },
+  {
+    id: 'TM1401B',
+    name: 'Chennai-Mumbai Express (via Pune)',
+    number: '22160',
+    from: 'Chennai Central, TN',
+    to: 'Pune Junction, MH',
+    departureTime: '13:15',
+    arrivalTime: '08:10',
+    duration: '18h 55m',
+    classes: [
+      { name: 'Economy', availability: 110, price: 810 },
+      { name: 'Business', availability: 35, price: 2120 },
+    ],
+  },
   // 34. Pune Junction -> Chennai Central
   {
     id: 'TM1402',
@@ -780,6 +1004,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 90, price: 820 },
       { name: 'Business', availability: 25, price: 2150 },
+    ],
+  },
+  {
+    id: 'TM1402B',
+    name: 'Mumbai-Chennai Express (via Pune, Return)',
+    number: '22159',
+    from: 'Pune Junction, MH',
+    to: 'Chennai Central, TN',
+    departureTime: '16:15',
+    arrivalTime: '10:45',
+    duration: '18h 30m',
+    classes: [
+      { name: 'Economy', availability: 95, price: 830 },
+      { name: 'Business', availability: 30, price: 2180 },
     ],
   },
   // 35. Chennai Central -> Ahmedabad Junction
@@ -797,6 +1035,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 2800 },
     ],
   },
+  {
+    id: 'TM1501B',
+    name: 'Chennai-Ahmedabad Humsafar',
+    number: '22919',
+    from: 'Chennai Central, TN',
+    to: 'Ahmedabad Junction, GJ',
+    departureTime: '16:00',
+    arrivalTime: '21:15',
+    duration: '29h 15m',
+    classes: [
+      { name: 'Economy', availability: 130, price: 1120 },
+      { name: 'Business', availability: 45, price: 2850 },
+    ],
+  },
   // 36. Ahmedabad Junction -> Chennai Central
   {
     id: 'TM1502',
@@ -810,6 +1062,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 110, price: 1120 },
       { name: 'Business', availability: 35, price: 2850 },
+    ],
+  },
+  {
+    id: 'TM1502B',
+    name: 'Ahmedabad-Chennai Humsafar',
+    number: '22920',
+    from: 'Ahmedabad Junction, GJ',
+    to: 'Chennai Central, TN',
+    departureTime: '09:40',
+    arrivalTime: '16:15',
+    duration: '30h 35m',
+    classes: [
+      { name: 'Economy', availability: 115, price: 1130 },
+      { name: 'Business', availability: 40, price: 2880 },
     ],
   },
   // 37. Howrah Junction -> Bengaluru City
@@ -827,6 +1093,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 3800 },
     ],
   },
+  {
+    id: 'TM1601B',
+    name: 'HWH-YPR Superfast',
+    number: '12863',
+    from: 'Howrah Junction, WB',
+    to: 'Bengaluru City, KA',
+    departureTime: '22:50',
+    arrivalTime: '06:45',
+    duration: '31h 55m',
+    classes: [
+      { name: 'Economy', availability: 110, price: 2320 },
+      { name: 'Business', availability: 45, price: 3850 },
+    ],
+  },
   // 38. Bengaluru City -> Howrah Junction
   {
     id: 'TM1602',
@@ -840,6 +1120,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 90, price: 2350 },
       { name: 'Business', availability: 35, price: 3850 },
+    ],
+  },
+  {
+    id: 'TM1602B',
+    name: 'YPR-HWH Superfast',
+    number: '12864',
+    from: 'Bengaluru City, KA',
+    to: 'Howrah Junction, WB',
+    departureTime: '19:35',
+    arrivalTime: '02:05',
+    duration: '30h 30m',
+    classes: [
+      { name: 'Economy', availability: 95, price: 2380 },
+      { name: 'Business', availability: 40, price: 3880 },
     ],
   },
   // 39. Howrah Junction -> Secunderabad Jn
@@ -857,6 +1151,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 50, price: 2500 },
     ],
   },
+  {
+    id: 'TM1701B',
+    name: 'East Coast Express',
+    number: '18645',
+    from: 'Howrah Junction, WB',
+    to: 'Secunderabad Jn, TS',
+    departureTime: '11:45',
+    arrivalTime: '18:30',
+    duration: '30h 45m',
+    classes: [
+      { name: 'Economy', availability: 170, price: 960 },
+      { name: 'Business', availability: 55, price: 2520 },
+    ],
+  },
   // 40. Secunderabad Jn -> Howrah Junction
   {
     id: 'TM1702',
@@ -870,6 +1178,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 150, price: 970 },
       { name: 'Business', availability: 45, price: 2550 },
+    ],
+  },
+  {
+    id: 'TM1702B',
+    name: 'East Coast Express (Return)',
+    number: '18646',
+    from: 'Secunderabad Jn, TS',
+    to: 'Howrah Junction, WB',
+    departureTime: '09:50',
+    arrivalTime: '16:10',
+    duration: '30h 20m',
+    classes: [
+      { name: 'Economy', availability: 155, price: 980 },
+      { name: 'Business', availability: 50, price: 2580 },
     ],
   },
   // 41. Howrah Junction -> Pune Junction
@@ -887,6 +1209,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 30, price: 2900 },
     ],
   },
+  {
+    id: 'TM1801B',
+    name: 'Howrah-Pune Duronto',
+    number: '12222',
+    from: 'Howrah Junction, WB',
+    to: 'Pune Junction, MH',
+    departureTime: '08:20',
+    arrivalTime: '11:45',
+    duration: '27h 25m',
+    classes: [
+      { name: 'Economy', availability: 120, price: 1160 },
+      { name: 'Business', availability: 35, price: 2920 },
+    ],
+  },
   // 42. Pune Junction -> Howrah Junction
   {
     id: 'TM1802',
@@ -900,6 +1236,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 100, price: 1170 },
       { name: 'Business', availability: 25, price: 2950 },
+    ],
+  },
+  {
+    id: 'TM1802B',
+    name: 'Pune-Howrah Duronto',
+    number: '12221',
+    from: 'Pune Junction, MH',
+    to: 'Howrah Junction, WB',
+    departureTime: '15:15',
+    arrivalTime: '20:15',
+    duration: '29h 00m',
+    classes: [
+      { name: 'Economy', availability: 105, price: 1180 },
+      { name: 'Business', availability: 30, price: 2980 },
     ],
   },
   // 43. Howrah Junction -> Ahmedabad Junction
@@ -917,6 +1267,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 3100 },
     ],
   },
+  {
+    id: 'TM1901B',
+    name: 'Garba Express',
+    number: '12938',
+    from: 'Howrah Junction, WB',
+    to: 'Ahmedabad Junction, GJ',
+    departureTime: '23:00',
+    arrivalTime: '06:05',
+    duration: '31h 05m',
+    classes: [
+      { name: 'Economy', availability: 140, price: 1210 },
+      { name: 'Business', availability: 45, price: 3120 },
+    ],
+  },
   // 44. Ahmedabad Junction -> Howrah Junction
   {
     id: 'TM1902',
@@ -930,6 +1294,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 120, price: 1220 },
       { name: 'Business', availability: 35, price: 3150 },
+    ],
+  },
+  {
+    id: 'TM1902B',
+    name: 'Garba Express (Return)',
+    number: '12937',
+    from: 'Ahmedabad Junction, GJ',
+    to: 'Howrah Junction, WB',
+    departureTime: '23:15',
+    arrivalTime: '07:00',
+    duration: '31h 45m',
+    classes: [
+      { name: 'Economy', availability: 125, price: 1230 },
+      { name: 'Business', availability: 40, price: 3180 },
     ],
   },
   // 45. Bengaluru City -> Secunderabad Jn
@@ -947,6 +1325,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 70, price: 1400 },
     ],
   },
+  {
+    id: 'TM2001B',
+    name: 'Kacheguda Express',
+    number: '12786',
+    from: 'Bengaluru City, KA',
+    to: 'Secunderabad Jn, TS',
+    departureTime: '18:20',
+    arrivalTime: '05:40',
+    duration: '11h 20m',
+    classes: [
+      { name: 'Economy', availability: 210, price: 610 },
+      { name: 'Business', availability: 75, price: 1420 },
+    ],
+  },
   // 46. Secunderabad Jn -> Bengaluru City
   {
     id: 'TM2002',
@@ -960,6 +1352,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 190, price: 620 },
       { name: 'Business', availability: 65, price: 1450 },
+    ],
+  },
+  {
+    id: 'TM2002B',
+    name: 'Kacheguda Express (Return)',
+    number: '12785',
+    from: 'Secunderabad Jn, TS',
+    to: 'Bengaluru City, KA',
+    departureTime: '19:05',
+    arrivalTime: '06:25',
+    duration: '11h 20m',
+    classes: [
+      { name: 'Economy', availability: 195, price: 630 },
+      { name: 'Business', availability: 70, price: 1480 },
     ],
   },
   // 47. Bengaluru City -> Pune Junction
@@ -977,6 +1383,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 20, price: 1900 },
     ],
   },
+  {
+    id: 'TM2101B',
+    name: 'Vivek Express',
+    number: '19567',
+    from: 'Bengaluru City, KA',
+    to: 'Pune Junction, MH',
+    departureTime: '11:30',
+    arrivalTime: '05:00',
+    duration: '17h 30m',
+    classes: [
+      { name: 'Economy', availability: 100, price: 760 },
+      { name: 'Business', availability: 25, price: 1920 },
+    ],
+  },
   // 48. Pune Junction -> Bengaluru City
   {
     id: 'TM2102',
@@ -990,6 +1410,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 80, price: 770 },
       { name: 'Business', availability: 15, price: 1950 },
+    ],
+  },
+  {
+    id: 'TM2102B',
+    name: 'Vivek Express (Return)',
+    number: '19568',
+    from: 'Pune Junction, MH',
+    to: 'Bengaluru City, KA',
+    departureTime: '21:15',
+    arrivalTime: '15:50',
+    duration: '18h 35m',
+    classes: [
+      { name: 'Economy', availability: 85, price: 780 },
+      { name: 'Business', availability: 20, price: 1980 },
     ],
   },
   // 49. Bengaluru City -> Ahmedabad Junction
@@ -1007,6 +1441,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 25, price: 2900 },
     ],
   },
+  {
+    id: 'TM2201B',
+    name: 'Barmer AC Express',
+    number: '14805',
+    from: 'Bengaluru City, KA',
+    to: 'Ahmedabad Junction, GJ',
+    departureTime: '10:30',
+    arrivalTime: '18:50',
+    duration: '32h 20m',
+    classes: [
+      { name: 'Economy', availability: 90, price: 1160 },
+      { name: 'Business', availability: 30, price: 2920 },
+    ],
+  },
   // 50. Ahmedabad Junction -> Bengaluru City
   {
     id: 'TM2202',
@@ -1020,6 +1468,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 70, price: 1170 },
       { name: 'Business', availability: 20, price: 2950 },
+    ],
+  },
+  {
+    id: 'TM2202B',
+    name: 'Barmer AC Express (Return)',
+    number: '14806',
+    from: 'Ahmedabad Junction, GJ',
+    to: 'Bengaluru City, KA',
+    departureTime: '07:10',
+    arrivalTime: '15:20',
+    duration: '32h 10m',
+    classes: [
+      { name: 'Economy', availability: 75, price: 1180 },
+      { name: 'Business', availability: 25, price: 2980 },
     ],
   },
   // 51. Secunderabad Jn -> Pune Junction
@@ -1038,6 +1500,20 @@ export const trains: Train[] = [
       { name: 'First', availability: 5, price: 3050 },
     ],
   },
+  {
+    id: 'T501R-B',
+    name: 'Mumbai Express (via Pune)',
+    number: '17032',
+    from: 'Secunderabad Jn, TS',
+    to: 'Pune Junction, MH',
+    departureTime: '20:40',
+    arrivalTime: '09:55',
+    duration: '13h 15m',
+    classes: [
+      { name: 'Economy', availability: 95, price: 600 },
+      { name: 'Business', availability: 30, price: 1500 },
+    ],
+  },
   // 52. Pune Junction -> Secunderabad Jn
   {
     id: 'T501',
@@ -1051,6 +1527,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 90, price: 1200 },
       { name: 'Business', availability: 30, price: 2000 },
+    ],
+  },
+  {
+    id: 'T501-B',
+    name: 'Hyderabad Express (via Pune)',
+    number: '17031',
+    from: 'Pune Junction, MH',
+    to: 'Secunderabad Jn, TS',
+    departureTime: '14:15',
+    arrivalTime: '04:55',
+    duration: '14h 40m',
+    classes: [
+      { name: 'Economy', availability: 100, price: 620 },
+      { name: 'Business', availability: 35, price: 1550 },
     ],
   },
   // 53. Secunderabad Jn -> Ahmedabad Junction
@@ -1068,6 +1558,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 20, price: 2200 },
     ],
   },
+  {
+    id: 'TM2301B',
+    name: 'Porbandar Express',
+    number: '19201',
+    from: 'Secunderabad Jn, TS',
+    to: 'Ahmedabad Junction, GJ',
+    departureTime: '15:10',
+    arrivalTime: '14:00',
+    duration: '22h 50m',
+    classes: [
+      { name: 'Economy', availability: 100, price: 860 },
+      { name: 'Business', availability: 25, price: 2220 },
+    ],
+  },
   // 54. Ahmedabad Junction -> Secunderabad Jn
   {
     id: 'TM2302',
@@ -1081,6 +1585,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 80, price: 870 },
       { name: 'Business', availability: 15, price: 2250 },
+    ],
+  },
+  {
+    id: 'TM2302B',
+    name: 'Porbandar Express (Return)',
+    number: '19202',
+    from: 'Ahmedabad Junction, GJ',
+    to: 'Secunderabad Jn, TS',
+    departureTime: '12:45',
+    arrivalTime: '10:50',
+    duration: '22h 05m',
+    classes: [
+      { name: 'Economy', availability: 85, price: 880 },
+      { name: 'Business', availability: 20, price: 2280 },
     ],
   },
   // 55. Pune Junction -> Ahmedabad Junction
@@ -1098,6 +1616,20 @@ export const trains: Train[] = [
       { name: 'Business', availability: 40, price: 2400 },
     ],
   },
+  {
+    id: 'TM2401B',
+    name: 'Ahinsa Express',
+    number: '11096',
+    from: 'Pune Junction, MH',
+    to: 'Ahmedabad Junction, GJ',
+    departureTime: '19:50',
+    arrivalTime: '07:30',
+    duration: '11h 40m',
+    classes: [
+      { name: 'Economy', availability: 140, price: 650 },
+      { name: 'Business', availability: 45, price: 1500 },
+    ],
+  },
   // 56. Ahmedabad Junction -> Pune Junction
   {
     id: 'TM2402',
@@ -1111,6 +1643,20 @@ export const trains: Train[] = [
     classes: [
       { name: 'Economy', availability: 120, price: 1320 },
       { name: 'Business', availability: 35, price: 2450 },
+    ],
+  },
+  {
+    id: 'TM2402B',
+    name: 'Ahinsa Express (Return)',
+    number: '11095',
+    from: 'Ahmedabad Junction, GJ',
+    to: 'Pune Junction, MH',
+    departureTime: '16:00',
+    arrivalTime: '04:40',
+    duration: '12h 40m',
+    classes: [
+      { name: 'Economy', availability: 125, price: 660 },
+      { name: 'Business', availability: 40, price: 1520 },
     ],
   },
 ];
