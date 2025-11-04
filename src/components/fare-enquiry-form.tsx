@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -46,10 +46,15 @@ export function FareEnquiryForm() {
   
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      date: new Date(),
-    }
+    // No default date here to avoid hydration mismatch
   });
+
+  useEffect(() => {
+    // Set default date on the client side only
+    if (!form.getValues('date')) {
+      form.setValue('date', new Date());
+    }
+  }, [form]);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setLoading(true);

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useRouter } from 'next/navigation';
 import { format } from "date-fns";
 import { CalendarIcon, Search } from "lucide-react";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -46,10 +47,16 @@ export function TrainSearchForm() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      date: new Date(),
-    }
+    // No default date here to avoid hydration mismatch
   });
+
+  useEffect(() => {
+    // Set default date on the client side only
+    if (!form.getValues('date')) {
+      form.setValue('date', new Date());
+    }
+  }, [form]);
+
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     const params = new URLSearchParams({
