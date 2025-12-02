@@ -4,7 +4,7 @@
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import type { Booking, UserProfile } from '@/lib/types';
 import { supabase } from '@/lib/supabase-client';
-import type { User } from '@supabase/supabase-js';
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -26,39 +26,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    // This effect runs once when the component mounts to check the initial auth state.
-    const getSession = async () => {
+    // This effect runs once to get the initial user session
+    const getInitialSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-
       if (session) {
-        // TODO: Here you would fetch the user's profile from your `profiles` table
-        // and their bookings from the `bookings` table.
-        // For now, we'll create a mock profile from the session data.
-        const userProfile: UserProfile = {
-          uid: session.user.id,
-          email: session.user.email || '',
-          name: session.user.user_metadata?.name || 'User',
-        };
-        setUser(userProfile);
+        const { data: userProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+        
+        setUser(userProfile ? {
+          uid: userProfile.id,
+          name: userProfile.name,
+          email: userProfile.email,
+        } : null);
       }
       setIsUserLoading(false);
     };
+    
+    getInitialSession();
 
-    getSession();
+    // This listener will update the state on any auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event: AuthChangeEvent, session: Session | null) => {
+        if (session) {
+          const { data: userProfile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
 
-    // This listener will update the state whenever the user logs in or out.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        const userProfile: UserProfile = {
-          uid: session.user.id,
-          email: session.user.email || '',
-          name: session.user.user_metadata?.name || 'User',
-        };
-        setUser(userProfile);
-      } else {
-        setUser(null);
+          setUser(userProfile ? {
+            uid: userProfile.id,
+            name: userProfile.name,
+            email: userProfile.email,
+          } : null);
+        } else {
+          setUser(null);
+        }
+        setIsUserLoading(false);
       }
-    });
+    );
 
     return () => {
       subscription?.unsubscribe();
@@ -66,25 +75,42 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, pass: string) => {
-    // TODO: Implement Supabase call for login
-    // Example: const { error } = await supabase.auth.signInWithPassword({ email, password });
-    console.log('Login attempt with:', email);
-    alert('Login functionality needs to be connected to Supabase.');
-    return false;
+    const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+    return !error;
   };
 
   const logout = async () => {
-    // TODO: Implement Supabase call for logout
-    // Example: await supabase.auth.signOut();
+    await supabase.auth.signOut();
     setUser(null);
   };
 
   const register = async (name: string, email: string, pass: string) => {
-    // TODO: Implement Supabase call for registration
-    // Example: const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name } } });
-    console.log('Register attempt for:', email);
-    alert('Registration functionality needs to be connected to Supabase.');
-    return false;
+    const { data: authData, error: authError } = await supabase.auth.signUp({ 
+      email, 
+      password: pass,
+      options: {
+        // You can pass user metadata here, but it's better to create a profile record
+      }
+    });
+
+    if (authError || !authData.user) {
+      console.error('Auth registration error:', authError);
+      return false;
+    }
+
+    // Insert a new record into the public.profiles table
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert({ id: authData.user.id, name, email });
+    
+    if (profileError) {
+      console.error('Profile creation error:', profileError);
+      // Optional: you might want to delete the created user if profile creation fails
+      return false;
+    }
+    
+    // The onAuthStateChange listener will handle setting the user state
+    return true;
   };
 
   const addBooking = (booking: Booking) => {
