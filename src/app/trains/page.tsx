@@ -92,6 +92,12 @@ export default function TrainsPage() {
     </motion.div>
   );
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Filtering is already handled by the useMemo hook based on state changes.
+    // This function just prevents the page from reloading.
+  };
+
   return (
     <div className="bg-slate-50/50 min-h-full">
       <header className="bg-primary/5">
@@ -107,7 +113,7 @@ export default function TrainsPage() {
       
       <div className="container mx-auto py-8 -mt-12">
         <Card className="shadow-lg mb-8">
-          <form>
+          <form onSubmit={handleSubmit}>
             <CardContent className="p-4 flex flex-col md:flex-row items-center gap-4">
               <div className="w-full flex-1 grid md:grid-cols-2 gap-4">
                 <div className="relative">
@@ -129,7 +135,7 @@ export default function TrainsPage() {
                   <Select value={toStation} onValueChange={(value) => setToStation(value === 'all' ? undefined : value)}>
                     <SelectTrigger className="pl-10 h-12 text-base">
                       <SelectValue placeholder="To station..." />
-                    </SelectTrigger>
+                    </Trigger>
                     <SelectContent>
                        <SelectItem value="all">All Stations</SelectItem>
                       {stations.map(station => (
@@ -139,7 +145,7 @@ export default function TrainsPage() {
                   </Select>
                 </div>
               </div>
-              <Button type="submit" size="lg" className="w-full md:w-auto h-12 bg-green-600 hover:bg-green-700 text-base shadow-md" disabled>
+              <Button type="submit" size="lg" className="w-full md:w-auto h-12 bg-accent text-accent-foreground hover:bg-accent/90 text-base shadow-md">
                 <Search className="mr-2 h-5 w-5" />
                 Find Trains
               </Button>
