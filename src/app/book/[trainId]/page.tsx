@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, Suspense, useMemo } from 'react';
@@ -25,7 +26,7 @@ function BookingComponent() {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
-  const { isAuthenticated, addBooking } = useAuth();
+  const { isAuthenticated, user, addBooking } = useAuth();
   const { toast } = useToast();
 
   const trainId = params.trainId as string;
@@ -92,13 +93,13 @@ function BookingComponent() {
     }
   };
 
-  const handleBooking = () => {
-    if (!train || !trainClass || !date) return;
+  const handleBooking = async () => {
+    if (!train || !trainClass || !date || !user) return;
     setIsBooking(true);
 
-    setTimeout(() => {
-      const newBooking: Booking = {
-        id: new Date().toISOString(), // Mock ID
+    try {
+      const newBooking: Omit<Booking, 'id'> = {
+        user_id: user.uid,
         trainId: train.id,
         trainName: train.name,
         trainNumber: train.number,
@@ -112,7 +113,7 @@ function BookingComponent() {
         status: 'upcoming',
       };
 
-      addBooking(newBooking);
+      await addBooking(newBooking);
 
       toast({
         title: 'Booking Successful!',
@@ -120,7 +121,15 @@ function BookingComponent() {
       });
 
       router.push('/profile');
-    }, 1500); // 1.5 second delay to simulate payment
+    } catch (error) {
+      console.error("Booking failed:", error);
+      toast({
+        variant: 'destructive',
+        title: 'Booking Failed',
+        description: 'There was an error while confirming your booking. Please try again.',
+      });
+      setIsBooking(false);
+    }
   };
 
   if (!isAuthenticated) {

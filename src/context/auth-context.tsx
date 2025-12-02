@@ -14,8 +14,8 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<boolean>;
   logout: () => Promise<void>;
   register: (name: string, email: string, pass: string) => Promise<boolean>;
-  addBooking: (booking: Booking) => void;
-  updateBooking: (bookingId: string, updatedBooking: Booking) => void;
+  addBooking: (booking: Omit<Booking, 'id'>) => Promise<void>;
+  updateBooking: (bookingId: string, updatedFields: Partial<Booking>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,30 +26,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    // This effect runs once to get the initial user session
-    const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { data: userProfile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        
-        setUser(userProfile ? {
-          uid: userProfile.id,
-          name: userProfile.name,
-          email: userProfile.email,
-        } : null);
-      }
-      setIsUserLoading(false);
-    };
-    
-    getInitialSession();
-
-    // This listener will update the state on any auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event: AuthChangeEvent, session: Session | null) => {
+        setIsUserLoading(true);
         if (session) {
           const { data: userProfile } = await supabase
             .from('profiles')
@@ -57,13 +36,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             .eq('id', session.user.id)
             .single();
 
-          setUser(userProfile ? {
-            uid: userProfile.id,
-            name: userProfile.name,
-            email: userProfile.email,
-          } : null);
+          if (userProfile) {
+            const profile = {
+              uid: userProfile.id,
+              name: userProfile.name,
+              email: userProfile.email,
+            };
+            setUser(profile);
+            
+            const { data: userBookings, error: bookingsError } = await supabase
+              .from('bookings')
+              .select('*')
+              .eq('user_id', session.user.id);
+
+            if (bookingsError) {
+              console.error("Error fetching bookings:", bookingsError);
+              setBookings([]);
+            } else {
+              // Map Supabase fields to application's Booking type
+              const formattedBookings = userBookings.map((b: any) => ({
+                id: b.id,
+                user_id: b.user_id,
+                trainId: b.train_id,
+                trainName: b.train_name,
+                trainNumber: b.train_number,
+                date: b.booking_date,
+                departureTime: b.departure_time,
+                from: b.from_station,
+                to: b.to_station,
+                passengers: b.passengers,
+                totalPrice: b.total_price,
+                class: b.travel_class,
+                status: b.status,
+              }));
+              setBookings(formattedBookings);
+            }
+          } else {
+            setUser(null);
+            setBookings([]);
+          }
         } else {
           setUser(null);
+          setBookings([]);
         }
         setIsUserLoading(false);
       }
@@ -81,46 +95,83 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     await supabase.auth.signOut();
-    setUser(null);
   };
 
-  const register = async (name: string, email: string, pass: string) => {
-    const { data: authData, error: authError } = await supabase.auth.signUp({ 
-      email, 
-      password: pass,
-      options: {
-        // You can pass user metadata here, but it's better to create a profile record
-      }
-    });
-
-    if (authError || !authData.user) {
-      console.error('Auth registration error:', authError);
+  const register = async (name: string, email: string, pass:string) => {
+    const { data, error } = await supabase.auth.signUp({ email, password: pass });
+    if (error || !data.user) {
+      console.error('Auth registration error:', error);
       return false;
     }
-
-    // Insert a new record into the public.profiles table
     const { error: profileError } = await supabase
       .from('profiles')
-      .insert({ id: authData.user.id, name, email });
+      .insert({ id: data.user.id, name, email });
     
     if (profileError) {
       console.error('Profile creation error:', profileError);
-      // Optional: you might want to delete the created user if profile creation fails
       return false;
     }
-    
-    // The onAuthStateChange listener will handle setting the user state
     return true;
   };
 
-  const addBooking = (booking: Booking) => {
-    // TODO: This should make an API call to insert a row into your Supabase `bookings` table.
-    setBookings(prev => [...prev, booking]);
+  const addBooking = async (booking: Omit<Booking, 'id'>) => {
+    if (!user) throw new Error("User must be logged in to add a booking.");
+    
+    // Map application fields to Supabase table columns
+    const { data, error } = await supabase
+      .from('bookings')
+      .insert({
+        user_id: user.uid,
+        train_id: booking.trainId,
+        train_name: booking.trainName,
+        train_number: booking.trainNumber,
+        booking_date: booking.date,
+        departure_time: booking.departureTime,
+        from_station: booking.from,
+        to_station: booking.to,
+        passengers: booking.passengers,
+        total_price: booking.totalPrice,
+        travel_class: booking.class,
+        status: booking.status || 'upcoming'
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error adding booking:", error);
+    } else if (data) {
+      const newBooking: Booking = {
+        id: data.id,
+        user_id: data.user_id,
+        trainId: data.train_id,
+        trainName: data.train_name,
+        trainNumber: data.train_number,
+        date: data.booking_date,
+        departureTime: data.departure_time,
+        from: data.from_station,
+        to: data.to_station,
+        passengers: data.passengers,
+        totalPrice: data.total_price,
+        class: data.travel_class,
+        status: data.status,
+      };
+      setBookings(prev => [...prev, newBooking]);
+    }
   };
   
-  const updateBooking = (bookingId: string, updatedBooking: Booking) => {
-     // TODO: This should make an API call to update a row in your Supabase `bookings` table.
-    setBookings(prev => prev.map(b => b.id === bookingId ? updatedBooking : b));
+  const updateBooking = async (bookingId: string, updatedFields: Partial<Booking>) => {
+    const { data, error } = await supabase
+      .from('bookings')
+      .update({ status: updatedFields.status })
+      .eq('id', bookingId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating booking:", error);
+    } else if (data) {
+      setBookings(prev => prev.map(b => (b.id === bookingId ? { ...b, ...updatedFields } : b)));
+    }
   };
 
   return (

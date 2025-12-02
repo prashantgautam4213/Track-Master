@@ -19,6 +19,7 @@ export type Train = {
 
 export type Booking = {
   id: string;
+  user_id?: string; // Foreign key to auth.users
   trainId: string;
   trainName: string;
   trainNumber: string;
