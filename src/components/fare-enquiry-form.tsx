@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { stations, trains } from '@/lib/data';
+import { getStations, getTrains } from '@/lib/data';
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "./ui/card";
 import { fareInformationLookup, FareInformationLookupOutput } from "@/ai/flows/fare-information-lookup";
@@ -43,11 +43,24 @@ export function FareEnquiryForm() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<FareInformationLookupOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [stations, setStations] = useState<string[]>([]);
+  const [travelClasses, setTravelClasses] = useState<string[]>([]);
   
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     // No default date here to avoid hydration mismatch
   });
+
+  useEffect(() => {
+    async function loadInitialData() {
+      const stationNames = await getStations();
+      setStations(stationNames);
+      const trains = await getTrains();
+      const classes = [...new Set(trains.flatMap(t => t.classes.map(c => c.name)))];
+      setTravelClasses(classes);
+    }
+    loadInitialData();
+  }, []);
 
   useEffect(() => {
     // Set default date on the client side only
@@ -74,8 +87,6 @@ export function FareEnquiryForm() {
       setLoading(false);
     }
   }
-
-  const travelClasses = [...new Set(trains.flatMap(t => t.classes.map(c => c.name)))];
 
   return (
     <Card>

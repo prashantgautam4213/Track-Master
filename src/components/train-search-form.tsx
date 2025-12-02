@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useRouter } from 'next/navigation';
 import { format } from "date-fns";
 import { CalendarIcon, Search } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { stations } from '@/lib/data';
+import { getStations } from '@/lib/data';
 import { cn } from "@/lib/utils";
 import { Card } from "./ui/card";
 
@@ -44,6 +44,15 @@ const FormSchema = z.object({
 
 export function TrainSearchForm() {
   const router = useRouter();
+  const [stations, setStations] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function loadStations() {
+      const stationNames = await getStations();
+      setStations(stationNames);
+    }
+    loadStations();
+  }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState, Suspense, useMemo } from 'react';
@@ -8,7 +7,7 @@ import { useAuth } from '@/context/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { format, parseISO } from 'date-fns';
 import { ArrowLeft, BaggageClaim, Calendar, Clock, Minus, Plus, TrainFront, Users, CreditCard, Landmark, Sparkles } from 'lucide-react';
-import { trains as allTrains } from '@/lib/data';
+import { getTrainById } from '@/lib/data';
 import type { Train, TrainClass, Booking } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -54,9 +53,12 @@ function BookingComponent() {
   
   useEffect(() => {
     if (trainId) {
-      const foundTrain = allTrains.find(t => t.id === trainId);
-      setTrain(foundTrain || null);
-      setIsTrainLoading(false);
+      async function fetchTrain() {
+        const foundTrain = await getTrainById(trainId);
+        setTrain(foundTrain || null);
+        setIsTrainLoading(false);
+      }
+      fetchTrain();
     }
   }, [trainId]);
 

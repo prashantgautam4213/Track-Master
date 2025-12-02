@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Ticket } from 'lucide-react';
 import type { Booking } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
-import { trains as allTrains } from '@/lib/data';
+import { getNextAvailableTrain } from '@/lib/data';
 import { v4 as uuidv4 } from 'uuid';
 
 const Badge = ({
@@ -43,66 +43,63 @@ export default function ProfilePage() {
     if (!user) return;
     setIsRescheduling(booking.id);
 
-    // Mock AI rescheduling logic
-    setTimeout(() => {
-      const missedDepartureTime = new Date(`${booking.date}T${booking.departureTime}`).getTime();
-
-      const sameDayTrains = allTrains.filter(train => {
-        const departureTime = new Date(`${booking.date}T${train.departureTime}`).getTime();
-        return (
-          train.from === booking.from &&
-          train.to === booking.to &&
-          departureTime > missedDepartureTime
-        );
-      });
-
-      let newBooking: Booking | undefined;
+    try {
+      const nextTrain = await getNextAvailableTrain(booking);
+      
+      let newBooking: Omit<Booking, 'id'> | undefined;
       let message = "No alternative trains found for the same day.";
       let success = false;
 
-      if (sameDayTrains.length > 0) {
-        const nextTrain = sameDayTrains[0];
-        const sameClass = nextTrain.classes.find(c => c.name === booking.class && c.availability >= booking.passengers);
-        if (sameClass) {
-          const createdBooking: Booking = {
-            id: uuidv4(),
-            trainId: nextTrain.id,
-            trainName: nextTrain.name,
-            trainNumber: nextTrain.number,
-            date: booking.date,
-            departureTime: nextTrain.departureTime,
-            from: nextTrain.from,
-            to: nextTrain.to,
-            passengers: booking.passengers,
-            totalPrice: sameClass.price * booking.passengers,
-            class: sameClass.name,
-            status: 'upcoming'
-          };
-          newBooking = createdBooking;
-          success = true;
-          message = `Successfully rescheduled to ${nextTrain.name}.`;
-        } else {
-            message = "Found alternative trains, but none have sufficient seat availability in the same class.";
-        }
+      if (nextTrain) {
+          const sameClass = nextTrain.classes.find(c => c.name === booking.class && c.availability >= booking.passengers);
+          if (sameClass) {
+              newBooking = {
+                  user_id: user.uid,
+                  trainId: nextTrain.id,
+                  trainName: nextTrain.name,
+                  trainNumber: nextTrain.number,
+                  date: booking.date,
+                  departureTime: nextTrain.departureTime,
+                  from: nextTrain.from,
+                  to: nextTrain.to,
+                  passengers: booking.passengers,
+                  totalPrice: sameClass.price * booking.passengers,
+                  class: sameClass.name,
+                  status: 'upcoming'
+              };
+              success = true;
+              message = `Successfully rescheduled to ${nextTrain.name}.`;
+          } else {
+              message = "Found alternative trains, but none have sufficient seat availability in the same class.";
+          }
       }
 
       if (success && newBooking) {
-        addBooking(newBooking);
-        updateBooking(booking.id, { ...booking, status: 'missed-rescheduled' });
-        toast({
-          title: 'Reschedule Successful',
-          description: message,
-        });
+          await addBooking(newBooking);
+          await updateBooking(booking.id, { status: 'missed-rescheduled' });
+          toast({
+              title: 'Reschedule Successful',
+              description: message,
+          });
       } else {
-        updateBooking(booking.id, { ...booking, status: 'missed-failed' });
-        toast({
-          variant: 'destructive',
-          title: 'Reschedule Failed',
-          description: message,
-        });
+          await updateBooking(booking.id, { status: 'missed-failed' });
+          toast({
+              variant: 'destructive',
+              title: 'Reschedule Failed',
+              description: message,
+          });
       }
-      setIsRescheduling(null);
-    }, 1500);
+    } catch (error) {
+        console.error("Rescheduling failed:", error);
+        await updateBooking(booking.id, { status: 'missed-failed' });
+        toast({
+            variant: 'destructive',
+            title: 'Reschedule Error',
+            description: "An unexpected error occurred while trying to reschedule.",
+        });
+    } finally {
+        setIsRescheduling(null);
+    }
   };
 
   const getBookingStatus = (booking: Booking) => {
@@ -116,7 +113,7 @@ export default function ProfilePage() {
       return <Badge variant="destructive">Reschedule Failed</Badge>;
     }
 
-    if (isMissed && !booking.status) {
+    if (isMissed && booking.status === 'upcoming') {
       return (
         <Button
           size="sm"
@@ -128,7 +125,7 @@ export default function ProfilePage() {
       );
     }
     
-    if (isMissed) {
+    if (isMissed && booking.status !== 'upcoming') {
          return <Badge variant="destructive">Missed</Badge>;
     }
 

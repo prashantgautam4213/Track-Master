@@ -1,11 +1,10 @@
-
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Route, Search, Train, MapPin } from 'lucide-react';
 
-import { trains, stations } from '@/lib/data';
+import { getTrains, getStations } from '@/lib/data';
 import type { Train as TrainType } from '@/lib/types';
 
 import { Button } from '@/components/ui/button';
@@ -16,9 +15,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 export default function TrainsPage() {
   const [fromStation, setFromStation] = useState<string | undefined>();
   const [toStation, setToStation] = useState<string | undefined>();
+  const [allTrains, setAllTrains] = useState<TrainType[]>([]);
+  const [stations, setStations] = useState<string[]>([]);
+  
+  useEffect(() => {
+    async function loadData() {
+      const [trainsData, stationsData] = await Promise.all([getTrains(), getStations()]);
+      setAllTrains(trainsData);
+      setStations(stationsData);
+    }
+    loadData();
+  }, []);
   
   const filteredTrains = useMemo(() => {
-    let results = trains;
+    let results = allTrains;
 
     if (fromStation) {
       results = results.filter(train => train.from === fromStation);
@@ -28,13 +38,8 @@ export default function TrainsPage() {
     }
 
     return results;
-  }, [fromStation, toStation]);
+  }, [allTrains, fromStation, toStation]);
   
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Filtering is already handled by the useMemo hook
-  };
-
   const TrainCard = ({ train }: { train: TrainType }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -102,7 +107,7 @@ export default function TrainsPage() {
       
       <div className="container mx-auto py-8 -mt-12">
         <Card className="shadow-lg mb-8">
-          <form onSubmit={handleSearch}>
+          <form>
             <CardContent className="p-4 flex flex-col md:flex-row items-center gap-4">
               <div className="w-full flex-1 grid md:grid-cols-2 gap-4">
                 <div className="relative">
@@ -134,7 +139,7 @@ export default function TrainsPage() {
                   </Select>
                 </div>
               </div>
-              <Button type="submit" size="lg" className="w-full md:w-auto h-12 bg-green-600 hover:bg-green-700 text-base shadow-md">
+              <Button type="submit" size="lg" className="w-full md:w-auto h-12 bg-green-600 hover:bg-green-700 text-base shadow-md" disabled>
                 <Search className="mr-2 h-5 w-5" />
                 Find Trains
               </Button>

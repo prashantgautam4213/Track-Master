@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Clock, Ticket, TrainFront } from 'lucide-react';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
-import { trains as allTrains } from '@/lib/data';
+import { getTrains } from '@/lib/data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { Train } from '@/lib/types';
@@ -21,14 +21,15 @@ function SearchResults() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    if (from && to) {
-      const filteredTrains = allTrains.filter(
-        train => train.from === from && train.to === to
-      );
-      setResults(filteredTrains);
+    async function fetchTrains() {
+      setIsLoading(true);
+      if (from && to) {
+        const filteredTrains = await getTrains(from, to);
+        setResults(filteredTrains);
+      }
+      setIsLoading(false);
     }
-    setIsLoading(false);
+    fetchTrains();
   }, [from, to]);
 
   if (!from || !to || !dateStr) {
