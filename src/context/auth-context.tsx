@@ -1,39 +1,19 @@
+
 'use client';
 
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import type { Booking, UserProfile } from '@/lib/types';
-import { v4 as uuidv4 } from 'uuid';
-
-// Mock user data for a purely frontend experience
-const mockUsers: UserProfile[] = [
-  { uid: '1', name: 'Demo User', email: 'demo@example.com' },
-];
-
-const mockBookings: Booking[] = [
-    {
-        id: 'B001',
-        trainId: 'T123',
-        trainName: 'Mumbai Rajdhani',
-        trainNumber: '12951',
-        date: '2024-08-15',
-        departureTime: '17:00',
-        from: 'Mumbai Central, MH',
-        to: 'New Delhi, DL',
-        passengers: 1,
-        totalPrice: 3500,
-        class: '2AC',
-        status: 'upcoming',
-    }
-];
+import { supabase } from '@/lib/supabase-client';
+import type { User } from '@supabase/supabase-js';
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: UserProfile | null;
   isUserLoading: boolean;
   bookings: Booking[];
-  login: (email: string, pass: string) => boolean;
-  logout: () => void;
-  register: (name: string, email: string, pass: string) => boolean;
+  login: (email: string, pass: string) => Promise<boolean>;
+  logout: () => Promise<void>;
+  register: (name: string, email: string, pass: string) => Promise<boolean>;
   addBooking: (booking: Booking) => void;
   updateBooking: (bookingId: string, updatedBooking: Booking) => void;
 }
@@ -42,56 +22,86 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(true);
   const [bookings, setBookings] = useState<Booking[]>([]);
 
-  const login = (email: string, pass: string) => {
-    // Mock login logic
-    const foundUser = mockUsers.find(u => u.email === email);
-    if (foundUser) {
-      setUser(foundUser);
-      setIsAuthenticated(true);
-      // Load mock bookings for the demo user
-      if (foundUser.email === 'demo@example.com') {
-          setBookings(mockBookings);
+  useEffect(() => {
+    // This effect runs once when the component mounts to check the initial auth state.
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session) {
+        // TODO: Here you would fetch the user's profile from your `profiles` table
+        // and their bookings from the `bookings` table.
+        // For now, we'll create a mock profile from the session data.
+        const userProfile: UserProfile = {
+          uid: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || 'User',
+        };
+        setUser(userProfile);
       }
-      return true;
-    }
+      setIsUserLoading(false);
+    };
+
+    getSession();
+
+    // This listener will update the state whenever the user logs in or out.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        const userProfile: UserProfile = {
+          uid: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || 'User',
+        };
+        setUser(userProfile);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
+
+  const login = async (email: string, pass: string) => {
+    // TODO: Implement Supabase call for login
+    // Example: const { error } = await supabase.auth.signInWithPassword({ email, password });
+    console.log('Login attempt with:', email);
+    alert('Login functionality needs to be connected to Supabase.');
     return false;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // TODO: Implement Supabase call for logout
+    // Example: await supabase.auth.signOut();
     setUser(null);
-    setIsAuthenticated(false);
-    setBookings([]);
   };
 
-  const register = (name: string, email: string, pass: string) => {
-    // Mock register logic
-    if (mockUsers.find(u => u.email === email)) {
-      return false; // User already exists
-    }
-    const newUser: UserProfile = { uid: uuidv4(), name, email };
-    mockUsers.push(newUser);
-    setUser(newUser);
-    setIsAuthenticated(true);
-    setBookings([]); // Start with no bookings
-    return true;
+  const register = async (name: string, email: string, pass: string) => {
+    // TODO: Implement Supabase call for registration
+    // Example: const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name } } });
+    console.log('Register attempt for:', email);
+    alert('Registration functionality needs to be connected to Supabase.');
+    return false;
   };
 
   const addBooking = (booking: Booking) => {
+    // TODO: This should make an API call to insert a row into your Supabase `bookings` table.
     setBookings(prev => [...prev, booking]);
   };
   
   const updateBooking = (bookingId: string, updatedBooking: Booking) => {
+     // TODO: This should make an API call to update a row in your Supabase `bookings` table.
     setBookings(prev => prev.map(b => b.id === bookingId ? updatedBooking : b));
   };
 
   return (
     <AuthContext.Provider value={{ 
-      isAuthenticated, 
+      isAuthenticated: !!user, 
       user, 
-      isUserLoading: false, // Always false in mock setup
+      isUserLoading,
       bookings,
       login, 
       logout, 
