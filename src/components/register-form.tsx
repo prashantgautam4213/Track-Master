@@ -1,5 +1,7 @@
+
 'use client';
 
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -16,6 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { Eye, EyeOff } from 'lucide-react';
 
 const FormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -27,6 +30,7 @@ export function RegisterForm() {
   const router = useRouter();
   const { register } = useAuth();
   const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -37,16 +41,17 @@ export function RegisterForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    const success = register(data.name, data.email, data.password);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const success = await register(data.name, data.email, data.password);
     if (success) {
       toast({ title: 'Registration Successful', description: 'Welcome to Track Master!' });
       router.push('/profile');
+      router.refresh();
     } else {
       toast({
         variant: 'destructive',
         title: 'Registration Failed',
-        description: 'This email address is already in use.',
+        description: 'This email address may already be in use.',
       });
     }
   }
@@ -86,9 +91,26 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" {...field} />
-              </FormControl>
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="********"
+                    {...field}
+                  />
+                </FormControl>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
               <FormMessage />
             </FormItem>
           )}
