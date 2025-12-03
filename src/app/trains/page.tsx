@@ -84,7 +84,7 @@ export default function TrainsPage() {
     loadData();
   }, []);
 
-  const handleSearch = () => {
+  function handleSearch() {
     setIsSearching(true);
     let results = allTrains;
     if (fromStation && fromStation !== 'all') {
