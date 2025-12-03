@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
@@ -94,6 +95,7 @@ export default function TrainsPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Filtering is already handled by useMemo, this just prevents reload
   };
 
   return (
