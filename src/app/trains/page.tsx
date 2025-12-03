@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Route, Search, Train as TrainIcon, MapPin } from 'lucide-react';
 
@@ -97,7 +96,9 @@ export default function TrainsPage() {
     setIsSearching(false);
   };
   
-  const displayedTrains = filteredTrains === null ? allTrains : filteredTrains;
+  const displayedTrains = useMemo(() => {
+    return filteredTrains === null ? allTrains : filteredTrains;
+  }, [filteredTrains, allTrains]);
 
   return (
     <div className="bg-slate-50/50 min-h-full">
