@@ -18,9 +18,10 @@ Track Master is a modern, full-featured web application designed to simulate an 
 This project is built using a modern, component-based web architecture.
 
 - **Framework**: [Next.js](https://nextjs.org/) (with App Router)
+- **Markup**: HTML
+- **Styling**: CSS, [Tailwind CSS](https://tailwindcss.com/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **UI Library**: [React](https://react.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Component Library**: [ShadCN UI](https://ui.shadcn.com/)
 - **AI & Generative Features**: [Google's Genkit](https://firebase.google.com/docs/genkit)
 - **Icons**: [Lucide React](https://lucide.dev/)
