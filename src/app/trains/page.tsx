@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -83,7 +84,7 @@ export default function TrainsPage() {
     loadData();
   }, []);
 
-  function handleSearch() {
+  const handleSearch = () => {
     setIsSearching(true);
     let results = allTrains;
     if (fromStation && fromStation !== 'all') {
