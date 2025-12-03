@@ -40,18 +40,19 @@ To get the project up and running on your local machine, follow these simple ste
 ### Installation & Setup
 
 1.  **Clone the repository:**
+    If you haven't already, get the code on your machine.
     ```bash
     git clone https://github.com/your-username/track-master.git
     cd track-master
     ```
 
 2.  **Install dependencies:**
+    Open a terminal in your code editor (like VS Code) and run:
     ```bash
     npm install
     ```
     
 3.  **Set up environment variables:**
-    
     The AI features in this project use Google's Genkit, which requires an API key for Google AI.
     
     Create a file named `.env` in the root of the project and add your API key:
@@ -59,23 +60,12 @@ To get the project up and running on your local machine, follow these simple ste
     GEMINI_API_KEY=YOUR_API_KEY_HERE
     ```
 
-4.  **Run the development servers:**
-
-    You need to run two processes simultaneously: the Next.js frontend and the Genkit backend.
-
-    *   **Terminal 1: Start the Next.js Frontend**
-        ```bash
-        npm run dev
-        ```
-        The application will be running at [http://localhost:9002](http://localhost:9002).
-
-    *   **Terminal 2: Start the Genkit Backend**
-        ```bash
-        npm run genkit:watch
-        ```
-        This command starts the Genkit development UI, where you can inspect your AI flows. It typically runs on [http://localhost:4000](http://localhost:4000).
-
-Now, both your frontend and backend are running. The frontend will automatically connect to the Genkit backend to power the AI features.
+4.  **Run the development server:**
+    To start the app on your local machine, run the following command in your terminal:
+    ```bash
+    npm run dev
+    ```
+    The application will be running at [http://localhost:9002](http://localhost:9002). Because this project uses Genkit for its AI features, a second process for the Genkit backend may be required if you modify or extend the AI flows.
 
 ## 📁 Project Structure
 
