@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
@@ -12,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+// Correctly defined as a standalone component
 const TrainCard = ({ train }: { train: TrainType }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -69,6 +71,7 @@ export default function TrainsPage() {
   const [toStation, setToStation] = useState<string | undefined>();
   const [allTrains, setAllTrains] = useState<TrainType[]>([]);
   const [stations, setStations] = useState<string[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   
   useEffect(() => {
     async function loadData() {
@@ -78,19 +81,23 @@ export default function TrainsPage() {
     }
     loadData();
   }, []);
-  
-  const filteredTrains = useMemo(() => {
-    let results = allTrains;
 
-    if (fromStation) {
+  const [filteredTrains, setFilteredTrains] = useState<TrainType[] | null>(null);
+
+  const handleSearch = () => {
+    setIsSearching(true);
+    let results = allTrains;
+    if (fromStation && fromStation !== 'all') {
       results = results.filter(train => train.from === fromStation);
     }
-    if (toStation) {
+    if (toStation && toStation !== 'all') {
       results = results.filter(train => train.to === toStation);
     }
-
-    return results;
-  }, [allTrains, fromStation, toStation]);
+    setFilteredTrains(results);
+    setIsSearching(false);
+  };
+  
+  const displayedTrains = filteredTrains === null ? allTrains : filteredTrains;
 
   return (
     <div className="bg-slate-50/50 min-h-full">
@@ -107,12 +114,11 @@ export default function TrainsPage() {
       
       <div className="container mx-auto py-8 -mt-12">
         <Card className="shadow-lg mb-8">
-          <form>
             <CardContent className="p-4 flex flex-col md:flex-row items-center gap-4">
               <div className="w-full flex-1 grid md:grid-cols-2 gap-4">
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Select value={fromStation} onValueChange={(value) => setFromStation(value === 'all' ? undefined : value)}>
+                  <Select value={fromStation} onValueChange={(value) => setFromStation(value)}>
                     <SelectTrigger className="pl-10 h-12 text-base">
                       <SelectValue placeholder="From station..." />
                     </SelectTrigger>
@@ -126,7 +132,7 @@ export default function TrainsPage() {
                 </div>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Select value={toStation} onValueChange={(value) => setToStation(value === 'all' ? undefined : value)}>
+                  <Select value={toStation} onValueChange={(value) => setToStation(value)}>
                     <SelectTrigger className="pl-10 h-12 text-base">
                       <SelectValue placeholder="To station..." />
                     </Trigger>
@@ -139,17 +145,16 @@ export default function TrainsPage() {
                   </Select>
                 </div>
               </div>
-              <Button type="button" size="lg" className="w-full md:w-auto h-12 bg-accent text-accent-foreground hover:bg-accent/90 text-base shadow-md">
+              <Button type="button" size="lg" className="w-full md:w-auto h-12 bg-accent text-accent-foreground hover:bg-accent/90 text-base shadow-md" onClick={handleSearch} disabled={isSearching}>
                 <Search className="mr-2 h-5 w-5" />
-                Find Trains
+                {isSearching ? 'Searching...' : 'Find Trains'}
               </Button>
             </CardContent>
-          </form>
         </Card>
 
-        {filteredTrains.length > 0 ? (
+        {displayedTrains.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTrains.map((train) => (
+            {displayedTrains.map((train) => (
               <TrainCard key={train.id} train={train} />
             ))}
           </div>
