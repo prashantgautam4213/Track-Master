@@ -1,3 +1,4 @@
+
 import type { Train } from './types';
 import { supabase } from './supabase-client';
 
