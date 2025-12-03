@@ -94,8 +94,6 @@ export default function TrainsPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Filtering is already handled by the useMemo hook based on state changes.
-    // This function just prevents the page from reloading.
   };
 
   return (
