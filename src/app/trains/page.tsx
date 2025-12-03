@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Route, Search, Train as TrainIcon, MapPin } from 'lucide-react';
 
@@ -13,7 +13,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-// Correctly defined as a standalone component
 const TrainCard = ({ train }: { train: TrainType }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
