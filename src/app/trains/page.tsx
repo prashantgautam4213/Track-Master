@@ -66,11 +66,12 @@ const TrainCard = ({ train }: { train: TrainType }) => (
 );
 
 export default function TrainsPage() {
-  const [fromStation, setFromStation] = useState<string | undefined>();
-  const [toStation, setToStation] = useState<string | undefined>();
+  const [fromStation, setFromStation] = useState<string>('all');
+  const [toStation, setToStation] = useState<string>('all');
   const [allTrains, setAllTrains] = useState<TrainType[]>([]);
   const [stations, setStations] = useState<string[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [filteredTrains, setFilteredTrains] = useState<TrainType[] | null>(null);
   
   useEffect(() => {
     async function loadData() {
@@ -80,8 +81,6 @@ export default function TrainsPage() {
     }
     loadData();
   }, []);
-
-  const [filteredTrains, setFilteredTrains] = useState<TrainType[] | null>(null);
 
   const handleSearch = () => {
     setIsSearching(true);
