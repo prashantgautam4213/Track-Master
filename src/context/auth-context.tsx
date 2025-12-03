@@ -98,20 +98,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const register = async (name: string, email: string, pass:string) => {
-    const { data, error } = await supabase.auth.signUp({ email, password: pass });
-    if (error || !data.user) {
-      console.error('Auth registration error:', error);
-      return false;
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: pass,
+      options: {
+        data: {
+          name: name,
+        }
+      }
+    });
+
+    if (error) {
+        console.error('Auth registration error:', error);
+        return false;
     }
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert({ id: data.user.id, name, email });
     
-    if (profileError) {
-      console.error('Profile creation error:', profileError);
-      return false;
-    }
-    return true;
+    // The profile is now created by a database trigger, so we don't need to insert it here.
+    // We just need to check if the user object exists.
+    return !!data.user;
   };
 
   const addBooking = async (booking: Omit<Booking, 'id'>) => {
