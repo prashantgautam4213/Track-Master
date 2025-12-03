@@ -3,7 +3,7 @@
 
 import { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Route, Search, Train, MapPin } from 'lucide-react';
+import { Clock, Route, Search, Train as TrainIcon, MapPin } from 'lucide-react';
 
 import { getTrains, getStations } from '@/lib/data';
 import type { Train as TrainType } from '@/lib/types';
@@ -13,59 +13,58 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const TrainCard = ({ train }: { train: TrainType }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      whileHover={{ y: -5, boxShadow: "0px 10px 20px rgba(0,0,0,0.1)" }}
-      className="bg-card rounded-lg border shadow-sm transition-all"
-    >
-      <CardHeader className="p-4 border-b">
-        <CardTitle className="flex items-center gap-3">
-          <Train className="w-6 h-6 text-primary" />
-          <div className="flex-1">
-            <p className="text-lg font-semibold">{train.name}</p>
-            <p className="text-sm text-muted-foreground">#{train.number}</p>
-          </div>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between text-sm mb-4">
-          <div className="flex items-center gap-2">
-            <Route className="w-4 h-4 text-muted-foreground" />
-            <span className="font-medium">{train.from} &rarr; {train.to}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-muted-foreground" />
-            <span>{train.duration}</span>
-          </div>
+// Correctly defined TrainCard component outside of TrainsPage
+const TrainCard = ({ train }: { train: TrainType }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
+    whileHover={{ y: -5, boxShadow: "0px 10px 20px rgba(0,0,0,0.1)" }}
+    className="bg-card rounded-lg border shadow-sm transition-all"
+  >
+    <CardHeader className="p-4 border-b">
+      <CardTitle className="flex items-center gap-3">
+        <TrainIcon className="w-6 h-6 text-primary" />
+        <div className="flex-1">
+          <p className="text-lg font-semibold">{train.name}</p>
+          <p className="text-sm text-muted-foreground">#{train.number}</p>
         </div>
-        <div className="flex items-center justify-between bg-muted/50 p-3 rounded-md">
-            <div>
-              <p className="text-xs text-muted-foreground">Departure</p>
-              <p className="font-semibold text-base">{train.departureTime}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground text-right">Arrival</p>
-              <p className="font-semibold text-base text-right">{train.arrivalTime}</p>
-            </div>
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="p-4">
+      <div className="flex items-center justify-between text-sm mb-4">
+        <div className="flex items-center gap-2">
+          <Route className="w-4 h-4 text-muted-foreground" />
+          <span className="font-medium">{train.from} &rarr; {train.to}</span>
         </div>
-        <div className="mt-4 flex items-center justify-between">
-          <div className="flex gap-2">
-              {train.classes.map(c => c.availability > 0 && (
-                <Badge key={c.name} variant="outline">{c.name}</Badge>
-              ))}
+        <div className="flex items-center gap-2">
+          <Clock className="w-4 h-4 text-muted-foreground" />
+          <span>{train.duration}</span>
+        </div>
+      </div>
+      <div className="flex items-center justify-between bg-muted/50 p-3 rounded-md">
+          <div>
+            <p className="text-xs text-muted-foreground">Departure</p>
+            <p className="font-semibold text-base">{train.departureTime}</p>
           </div>
-          <span className="text-xs font-semibold text-primary hover:underline cursor-pointer">
-            View Details
-          </span>
+          <div>
+            <p className="text-xs text-muted-foreground text-right">Arrival</p>
+            <p className="font-semibold text-base text-right">{train.arrivalTime}</p>
+          </div>
+      </div>
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex gap-2">
+            {train.classes.map(c => c.availability > 0 && (
+              <Badge key={c.name} variant="outline">{c.name}</Badge>
+            ))}
         </div>
-      </CardContent>
-    </motion.div>
-  );
-};
+        <span className="text-xs font-semibold text-primary hover:underline cursor-pointer">
+          View Details
+        </span>
+      </div>
+    </CardContent>
+  </motion.div>
+);
 
 export default function TrainsPage() {
   const [fromStation, setFromStation] = useState<string | undefined>();
