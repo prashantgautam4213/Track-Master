@@ -95,7 +95,7 @@ export default function TrainsPage() {
     }
     setFilteredTrains(results);
     setIsSearching(false);
-  }
+  };
   
   const displayedTrains = filteredTrains === null ? allTrains : filteredTrains;
 
