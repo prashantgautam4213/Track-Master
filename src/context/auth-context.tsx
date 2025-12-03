@@ -4,7 +4,7 @@
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import type { Booking, UserProfile } from '@/lib/types';
 import { supabase } from '@/lib/supabase-client';
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -20,65 +20,34 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Helper to format Supabase user to our app's UserProfile
+const formatUserProfile = (user: User | null): UserProfile | null => {
+  if (!user) return null;
+  return {
+    uid: user.id,
+    email: user.email || '',
+    name: user.user_metadata?.name || 'User',
+  };
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
   const [bookings, setBookings] = useState<Booking[]>([]);
-
+  
   useEffect(() => {
+    const fetchSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(formatUserProfile(session?.user ?? null));
+      setIsUserLoading(false);
+    };
+
+    fetchSession();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event: AuthChangeEvent, session: Session | null) => {
-        setIsUserLoading(true);
-        if (session) {
-          const { data: userProfile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-
-          if (userProfile) {
-            const profile = {
-              uid: userProfile.id,
-              name: userProfile.name,
-              email: userProfile.email,
-            };
-            setUser(profile);
-            
-            const { data: userBookings, error: bookingsError } = await supabase
-              .from('bookings')
-              .select('*')
-              .eq('user_id', session.user.id);
-
-            if (bookingsError) {
-              console.error("Error fetching bookings:", bookingsError);
-              setBookings([]);
-            } else {
-              // Map Supabase fields to application's Booking type
-              const formattedBookings = userBookings.map((b: any) => ({
-                id: b.id,
-                user_id: b.user_id,
-                trainId: b.train_id,
-                trainName: b.train_name,
-                trainNumber: b.train_number,
-                date: b.booking_date,
-                departureTime: b.departure_time,
-                from: b.from_station,
-                to: b.to_station,
-                passengers: b.passengers,
-                totalPrice: b.total_price,
-                class: b.travel_class,
-                status: b.status,
-              }));
-              setBookings(formattedBookings);
-            }
-          } else {
-            setUser(null);
-            setBookings([]);
-          }
-        } else {
-          setUser(null);
-          setBookings([]);
-        }
+        const currentUser = formatUserProfile(session?.user ?? null);
+        setUser(currentUser);
         setIsUserLoading(false);
       }
     );
@@ -87,6 +56,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       subscription?.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const fetchUserBookings = async () => {
+      if (user) {
+        const { data: userBookings, error: bookingsError } = await supabase
+          .from('bookings')
+          .select('*')
+          .eq('user_id', user.uid);
+
+        if (bookingsError) {
+          console.error("Error fetching bookings:", bookingsError);
+          setBookings([]);
+        } else {
+          const formattedBookings = userBookings.map((b: any) => ({
+            id: b.id,
+            user_id: b.user_id,
+            trainId: b.train_id,
+            trainName: b.train_name,
+            trainNumber: b.train_number,
+            date: b.booking_date,
+            departureTime: b.departure_time,
+            from: b.from_station,
+            to: b.to_station,
+            passengers: b.passengers,
+            totalPrice: b.total_price,
+            class: b.travel_class,
+            status: b.status,
+          }));
+          setBookings(formattedBookings);
+        }
+      } else {
+        setBookings([]);
+      }
+    };
+    
+    if(!isUserLoading) {
+      fetchUserBookings();
+    }
+  }, [user, isUserLoading]);
+
 
   const login = async (email: string, pass: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
@@ -114,14 +123,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     
     // The profile is now created by a database trigger, so we don't need to insert it here.
-    // We just need to check if the user object exists.
     return !!data.user;
   };
 
   const addBooking = async (booking: Omit<Booking, 'id'>) => {
     if (!user) throw new Error("User must be logged in to add a booking.");
     
-    // Map application fields to Supabase table columns
     const { data, error } = await supabase
       .from('bookings')
       .insert({
