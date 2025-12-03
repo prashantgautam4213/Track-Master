@@ -13,7 +13,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-// Correctly defined TrainCard component outside of TrainsPage
 const TrainCard = ({ train }: { train: TrainType }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
