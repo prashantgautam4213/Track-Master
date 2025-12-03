@@ -1,5 +1,5 @@
 
-import type { Train } from './types';
+import type { Booking, Train } from './types';
 import { supabase } from './supabase-client';
 
 export async function getStations() {
@@ -104,8 +104,7 @@ export async function getTrainById(trainId: string): Promise<Train | null> {
   };
 }
 
-export async function getNextAvailableTrain(booking: any) {
-    const missedDepartureTime = new Date(`${booking.date}T${booking.departureTime}`).toISOString();
+export async function getNextAvailableTrain(booking: Booking): Promise<Train | null> {
     
     const { data, error } = await supabase
         .from('trains')
@@ -135,10 +134,13 @@ export async function getNextAvailableTrain(booking: any) {
         from: nextTrain.from_station,
         to: nextTrain.to_station,
         departureTime: nextTrain.departure_time,
+        // The relationship is one-to-many, so train_classes is an array
         classes: nextTrain.train_classes.map((c: any) => ({
             name: c.class_name,
             availability: c.availability,
             price: c.price,
         })),
+        duration: nextTrain.duration,
+        arrivalTime: nextTrain.arrival_time,
     };
 }
