@@ -53,11 +53,17 @@ To get the project up and running on your local machine, follow these simple ste
     ```
     
 3.  **Set up environment variables:**
-    The AI features in this project use Google's Genkit, which requires an API key for Google AI.
+    The AI and authentication features in this project require API keys.
     
-    Create a file named `.env` in the root of the project and add your API key:
+    Create a file named `.env` in the root of the project and add your keys:
     ```
+    # For Google AI features
     GEMINI_API_KEY=YOUR_API_KEY_HERE
+    
+    # For Supabase Authentication and Database
+    # You can get these from your Supabase project's API settings
+    NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
     ```
 
 4.  **Run the development server:**
@@ -65,7 +71,7 @@ To get the project up and running on your local machine, follow these simple ste
     ```bash
     npm run dev
     ```
-    The application will be running at [http://localhost:9002](http://localhost:9002). Because this project uses Genkit for its AI features, a second process for the Genkit backend may be required if you modify or extend the AI flows.
+    The application will be running at [http://localhost:9002](http://localhost:9002).
 
 ## 📁 Project Structure
 
@@ -75,3 +81,15 @@ To get the project up and running on your local machine, follow these simple ste
 - **`src/context`**: Holds React context providers, such as the `AuthContext` for managing user sessions.
 - **`src/ai`**: Contains the Genkit flows and prompts that power the application's AI features.
 - **`public`**: For static assets like images.
+
+## 🚀 Deploying to Vercel
+
+This Next.js application is ready to be deployed on [Vercel](https://vercel.com/).
+
+1.  **Push to Git**: Make sure your code is pushed to a Git repository (e.g., GitHub, GitLab).
+2.  **Import Project**: In your Vercel dashboard, import the project from your Git repository.
+3.  **Configure Environment Variables**: In the Vercel project settings, navigate to the "Environment Variables" section and add the following:
+    - `GEMINI_API_KEY`
+    - `NEXT_PUBLIC_SUPABASE_URL`
+    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4.  **Deploy**: Vercel will automatically detect that this is a Next.js project and deploy it. After the build is complete, your site will be live!
