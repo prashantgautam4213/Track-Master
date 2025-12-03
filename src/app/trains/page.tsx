@@ -136,7 +136,7 @@ export default function TrainsPage() {
                   <Select value={toStation} onValueChange={(value) => setToStation(value)}>
                     <SelectTrigger className="pl-10 h-12 text-base">
                       <SelectValue placeholder="To station..." />
-                    </Trigger>
+                    </SelectTrigger>
                     <SelectContent>
                        <SelectItem value="all">All Stations</SelectItem>
                       {stations.map(station => (
