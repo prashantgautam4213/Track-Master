@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
@@ -92,10 +91,6 @@ export default function TrainsPage() {
 
     return results;
   }, [allTrains, fromStation, toStation]);
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
 
   return (
     <div className="bg-slate-50/50 min-h-full">
@@ -112,7 +107,7 @@ export default function TrainsPage() {
       
       <div className="container mx-auto py-8 -mt-12">
         <Card className="shadow-lg mb-8">
-          <form onSubmit={handleSubmit}>
+          <form>
             <CardContent className="p-4 flex flex-col md:flex-row items-center gap-4">
               <div className="w-full flex-1 grid md:grid-cols-2 gap-4">
                 <div className="relative">
@@ -144,7 +139,7 @@ export default function TrainsPage() {
                   </Select>
                 </div>
               </div>
-              <Button type="submit" size="lg" className="w-full md:w-auto h-12 bg-accent text-accent-foreground hover:bg-accent/90 text-base shadow-md">
+              <Button type="button" size="lg" className="w-full md:w-auto h-12 bg-accent text-accent-foreground hover:bg-accent/90 text-base shadow-md">
                 <Search className="mr-2 h-5 w-5" />
                 Find Trains
               </Button>
