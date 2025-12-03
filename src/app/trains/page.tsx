@@ -114,7 +114,7 @@ export default function TrainsPage() {
       
       <div className="container mx-auto py-8 -mt-12">
         <Card className="shadow-lg mb-8">
-            <CardContent className="p-4 flex flex-col md:flex-row items-center gap-4">
+            <CardContent className="p-4 flex flex-col md:flex-row items-center gap-4 pt-6">
               <div className="w-full flex-1 grid md:grid-cols-2 gap-4">
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
